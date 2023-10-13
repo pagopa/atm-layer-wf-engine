@@ -1,0 +1,14 @@
+{{- if eq (include "atm-layer-wf-engine.h2DatabaseIsUsed" .) "true" -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "atm-layer-wf-engine.fullname" . }}-database-h2
+  labels:
+    {{- include "atm-layer-wf-engine.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1G
+{{- end }}

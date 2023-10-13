@@ -1,0 +1,51 @@
+{{- if .Values.service.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "atm-layer-wf-engine.fullname" . }}
+  labels:
+    {{- include "atm-layer-wf-engine.labels" . | nindent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  {{- if and (eq .Values.service.type "LoadBalancer") (not (empty .Values.service.loadBalancerIP)) }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP | quote }}
+  {{- end }}
+  ports:
+    - name: {{ .Values.service.portName }}
+      protocol: {{ .Values.service.protocol }}
+      targetPort: {{ .Values.service.portName }}
+      port: {{ .Values.service.port }}
+      {{- if and (or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer")) (not (empty .Values.service.nodePort)) }}
+      nodePort: {{ .Values.service.nodePort }}
+      {{- end }}
+
+
+  selector:
+    {{- include "atm-layer-wf-engine.selectorLabels" . | nindent 4 }}
+{{- end }}
+---
+{{- if and .Values.metrics.enabled .Values.metrics.service.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "atm-layer-wf-engine.fullname" . }}-metrics
+  labels:
+    {{- include "atm-layer-wf-engine.labels" . | nindent 4 }}
+  {{- with .Values.metrics.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.metrics.service.type }}
+  selector:
+    {{- include "atm-layer-wf-engine.selectorLabels" . | nindent 4 }}
+  ports:
+  - protocol: TCP
+    port: {{ .Values.metrics.service.port }}
+    targetPort: {{ .Values.metrics.service.portName }}
+    name: {{ .Values.metrics.service.portName }}
+{{- end }}

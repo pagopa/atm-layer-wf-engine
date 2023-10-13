@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "atm-layer-wf-engine.fullname" . }}-test-connection"
+  labels:
+    {{- include "atm-layer-wf-engine.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+    {{- with .Values.tests.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  containers:
+    - name: curl
+      image: curlimages/curl
+      command: ['curl']
+      # Camunda BPM Platform service could take sometime to start, so setting a retry mechanism.
+      args: [
+        '--retry-connrefused',
+        '--connect-timeout', '5',
+        '--max-time', '10',
+        '--retry', '15',
+        '--retry-max-time', '300',
+        '{{ include "atm-layer-wf-engine.fullname" . }}:{{ .Values.service.port }}',
+      ]
+  restartPolicy: Never
