@@ -51,7 +51,7 @@ jobs:
           REPOSITORY: ${{ vars.DOCKER_IMAGE_NAME}}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -f src/main/docker/Dockerfile.native -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker build -f Dockerfile -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: Update Kubernetes Config
@@ -68,7 +68,7 @@ jobs:
         run: |
           helm upgrade --install ${{ vars.DOCKER_IMAGE_NAME }} helm-chart/ \
           --namespace pagopa \
-          -f helm-chart/environments/values-${{ inputs.env }}.yaml \
+          -f charts/environments/values-${{ inputs.env }}.yaml \
           --set image.tag=${{ github.sha }} \
           --set image.repository=${{ steps.login-ecr.outputs.registry }}/${{ vars.DOCKER_IMAGE_NAME }} \
           --set serviceAccount.name=${{ vars.DOCKER_IMAGE_NAME }} 
