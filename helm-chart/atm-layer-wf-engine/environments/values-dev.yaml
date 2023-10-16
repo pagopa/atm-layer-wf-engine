@@ -59,6 +59,9 @@ webuser:
     username: WEB_USER
     password: WEB_PASSWORD
 
+configmap:
+  enabled: true
+
 service:
   enabled: true
   annotations: {}

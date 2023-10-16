@@ -1,3 +1,4 @@
+{{- if .Values.configmap.enabled -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -5,3 +6,5 @@ metadata:
 data:
   production.yml: |-
 {{ .Files.Get ".config/camunda.yaml" | nindent 4 }}
+
+{{- end}}

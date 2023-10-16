@@ -90,7 +90,7 @@ Check if the deployment will have volumes
 Note that Helm template always retruns string, so this is not really a bool.
 */}}
 {{- define "atm-layer-wf-engine.withVolumes" -}}
-{{ if or (eq (include "atm-layer-wf-engine.h2DatabaseIsUsed" .) "true") (not (empty .Values.extraVolumeMounts)) (not (empty .Values.extraVolumes)) -}}
+{{ if or (eq (include "atm-layer-wf-engine.h2DatabaseIsUsed" .) "true") (not (empty .Values.extraVolumeMounts)) (not (empty .Values.extraVolumes)) (.Values.configmap.enabled) -}}
 true
 {{- else -}}
 false
