@@ -25,7 +25,7 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
   pullSecrets: []
-  command: [./camunda.sh --production --rest --swaggerui --webapps]
+  command: [./camunda/camunda.sh --production --rest --swaggerui --webapps]
   args: []
 
 # Extra environment variables to customize the deployment.
