@@ -130,7 +130,7 @@ ingress:
   hosts:
     - host: atm-layer-wf-engine.local
       paths:
-        - /
+        - /camunda/
   tls: []
   #  - secretName: atm-layer-wf-engine-tls
   #    hosts:
