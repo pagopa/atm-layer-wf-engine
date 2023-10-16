@@ -128,10 +128,10 @@ ingress:
   enabled: true
   annotations: 
     kubernetes.io/ingress.class: "alb"
-    alb.ingress.kubernetes.io/scheme: "internal"
-    alb.ingress.kubernetes.io/group.name: "alb-controller"
-    alb.ingress.kubernetes.io/load-balancer-name: "pagopa-dev-atm-layer-alb-int"
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTP": 8080}]'
+    alb.ingress.kubernetes.io/scheme: "internet-facing"
+    alb.ingress.kubernetes.io/group.name: "alb-controller-external"
+    alb.ingress.kubernetes.io/load-balancer-name: "pagopa-dev-atm-layer-alb-ext"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
     alb.ingress.kubernetes.io/target-type: 'ip'
   hosts:
     - paths:
