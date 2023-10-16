@@ -135,7 +135,7 @@ ingress:
     alb.ingress.kubernetes.io/target-type: 'ip'
   hosts:
     - paths:
-        - /camunda/
+        - /
   tls: []
   #  - secretName: atm-layer-wf-engine-tls
   #    hosts:
