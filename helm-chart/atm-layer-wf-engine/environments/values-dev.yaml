@@ -6,7 +6,7 @@ general:
   log_level: false
   replicaCount: 1
   nameOverride: ""
-  fullnameOverride: ""
+  fullnameOverride: "atm-layer-wf-engine"
 
 # Set deployment initContainers for any pre-startup proposes.
 initContainers: []
