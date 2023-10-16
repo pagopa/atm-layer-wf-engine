@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 general:
-  log_level: false
+  log_level: INFO
   replicaCount: 1
   nameOverride: ""
   fullnameOverride: ""
@@ -45,6 +45,8 @@ database:
   driver: org.postgresql.Driver
   url: jdbc:postgresql://pagopa-dev-atm-layer-rds.cluster-cyezwzpjc2tj.eu-south-1.rds.amazonaws.com:5431
   db_name: pagopadb
+  db_type: postgres
+  db_schema_update_config: true
   schema: atm_layer_engine
   credentialsSecretEnabled: true
   credentialsSecretName: "atm-layer-wf-engine-database"

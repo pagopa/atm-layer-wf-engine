@@ -69,6 +69,12 @@ spec:
               value: "{{ .Values.database.driver }}"
             - name: CAMUNDA_ENGINE_DB_BASE_URL
               value: "{{ .Values.database.url }}"
+            - name: CAMUNDA_ENGINE_DB_NAME
+              value: "{{ .Values.database.db_name }}"
+            - name: CAMUNDA_ENGINE_DB_TYPE
+              value: "{{ .Values.database.db_type }}"
+            - name: CAMUNDA_ENGINE_DB_SCHEMA_UPDATE_CONFIG
+              value: "{{ .Values.database.db_schema_update_config }}"
             - name: CAMUNDA_ENGINE_DB_SCHEMA
               value: "{{ .Values.database.schema }}"
             {{- if .Values.database.credentialsSecretEnabled }}
@@ -123,7 +129,7 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-            {{ if eq (include "atm-layer-wf-engine.withVolumes" .) "true" -}}
+          {{ if eq (include "atm-layer-wf-engine.withVolumes" .) "true" -}}
           volumeMounts:
              {{- if eq (include "atm-layer-wf-engine.h2DatabaseIsUsed" .) "true" }}
              - name: {{ $fullName }}-database-h2
