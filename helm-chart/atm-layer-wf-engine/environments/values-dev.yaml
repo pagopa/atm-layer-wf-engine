@@ -119,6 +119,7 @@ livenessProbe:
     periodSeconds: 60
 
 ingress:
+  apiVersion: "networking.k8s.io/v1"
   enabled: true
   annotations: 
     kubernetes.io/ingress.class: "alb"

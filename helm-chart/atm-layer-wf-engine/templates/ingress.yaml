@@ -1,9 +1,8 @@
 {{- if .Values.ingress.enabled -}}
-# {{- $apiVersion := include "atm-layer-wf-engine.ingress.apiVersion" . -}}
+{{- $apiVersion := include "atm-layer-wf-engine.ingress.apiVersion" . -}}
 {{- $fullName := include "atm-layer-wf-engine.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
-# apiVersion: {{ $apiVersion }}
-apiVersion: networking.k8s.io/v1
+apiVersion: {{ $apiVersion }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}
@@ -31,18 +30,18 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ . }}
-            # {{- if eq $apiVersion "networking.k8s.io/v1" }}
+            {{- if eq $apiVersion "networking.k8s.io/v1" }}
             pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}
                 port:
                   number: {{ $svcPort }}
-            # {{ else }}
-            # backend:
-            #   serviceName: {{ $fullName }}
-            #   servicePort: {{ $svcPort }}
-            # {{ end }}
+            {{ else }}
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: {{ $svcPort }}
+            {{ end }}
           {{- end }}
     {{- end }}
   {{- end }}
