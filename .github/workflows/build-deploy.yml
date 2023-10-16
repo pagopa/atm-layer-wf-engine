@@ -9,9 +9,9 @@ on:
         required: true
         default: dev
         options:
-          - dev
-          - uat
-          - prod
+        - dev
+        - uat
+        - prod
 
 defaults:
   run:
@@ -30,6 +30,7 @@ jobs:
 
     name: "manual-build"
     runs-on: ubuntu-latest
+    environment: ${{ matrix.environment }}
 
     steps:
       - name: Checkout code
