@@ -128,6 +128,8 @@ spec:
             {{- if eq (include "atm-layer-wf-engine.h2DatabaseIsUsed" .) "true" }}
             - name: {{ $fullName }}-database-h2
               mountPath: /camunda/camunda-h2-dbs
+            - name: config-volume
+              mountPath: /helm-chart/atm-layer-wf-engine/templates/config
             {{- end }}
             {{- if .Values.extraVolumeMounts }}
               {{- tpl (toYaml .Values.extraVolumeMounts) . | nindent 12 }}
@@ -139,6 +141,9 @@ spec:
         - name: {{ $fullName }}-database-h2
           persistentVolumeClaim:
             claimName: {{ $fullName }}-database-h2
+        - name: config-volume
+          configMap:
+            name: {{ include "atm-layer-wf-engine.fullname" . }}
         {{- end -}}
         {{- if .Values.extraVolumes }}
           {{- tpl (toYaml .Values.extraVolumes) . | nindent 8 }}

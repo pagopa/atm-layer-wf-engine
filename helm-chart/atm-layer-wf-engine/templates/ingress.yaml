@@ -2,7 +2,7 @@
 {{- $apiVersion := include "atm-layer-wf-engine.ingress.apiVersion" . -}}
 {{- $fullName := include "atm-layer-wf-engine.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
-apiVersion: {{ $apiVersion }}
+apiVersion: networking.k8s.io/v1 #{{ $apiVersion }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}
@@ -30,7 +30,7 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ . }}
-            {{- if eq $apiVersion "networking.k8s.io/v1" }}
+            # {{- if eq $apiVersion "networking.k8s.io/v1" }}
             pathType: Prefix
             backend:
               service:
