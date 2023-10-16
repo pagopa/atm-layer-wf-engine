@@ -4,4 +4,4 @@ metadata:
   name: {{ include "atm-layer-wf-engine.fullname" . }}
 data:
   production.yml: |-
-{{ .Files.Get "config/camunda.yaml" | nindent 4 }}
+  {{ toYaml .Values.configMap | nindent 4 }}
