@@ -9,9 +9,9 @@ on:
         required: true
         default: dev
         options:
-          - dev
-          - uat
-          - prod
+        - dev
+        - uat
+        - prod
 
 defaults:
   run:
@@ -67,9 +67,9 @@ jobs:
 
       - name: Upgrade Helm Chart
         run: |
-          helm upgrade --install ${{ vars.DOCKER_IMAGE_NAME }} helm-chart/ \
+          helm upgrade --install ${{ vars.DOCKER_IMAGE_NAME }} helm-chart/atm-layer-wf-engine/ \
           --namespace pagopa \
-          -f charts/environments/values-${{ inputs.env }}.yaml \
+          -f helm-chart/atm-layer-wf-engine/environments/values-${{ inputs.env }}.yaml \
           --set image.tag=${{ github.sha }} \
           --set image.repository=${{ steps.login-ecr.outputs.registry }}/${{ vars.DOCKER_IMAGE_NAME }} \
           --set serviceAccount.name=${{ vars.DOCKER_IMAGE_NAME }} 

@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 general:
-  log_level: false
+  log_level: INFO
   replicaCount: 1
   nameOverride: ""
   fullnameOverride: ""
@@ -25,8 +25,8 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
   pullSecrets: []
-  command: []
-  args: []
+  command: ['./camunda.sh']
+  args: ['--production','--webapps','--rest','--swaggerui']
 
 # Extra environment variables to customize the deployment.
 # For more details: https://github.com/camunda/docker-atm-layer-wf-engine
@@ -45,19 +45,24 @@ database:
   driver: org.postgresql.Driver
   url: jdbc:postgresql://pagopa-dev-atm-layer-rds.cluster-cyezwzpjc2tj.eu-south-1.rds.amazonaws.com:5431
   db_name: pagopadb
+  db_type: postgres
+  db_schema_update_config: true
   schema: atm_layer_engine
   credentialsSecretEnabled: true
-  credentialsSecretName: ""
+  credentialsSecretName: "atm-layer-wf-engine-database"
   credentialsSecretKeys:
     username: DB_USERNAME
     password: DB_PASSWORD
 
 webuser:
   credentialsSecretEnabled: true
-  credentialsSecretName: ""
+  credentialsSecretName: "atm-layer-wf-engine-webuser"
   credentialsSecretKeys:
     username: WEB_USER
     password: WEB_PASSWORD
+
+configmap:
+  enabled: true
 
 service:
   enabled: true
@@ -119,14 +124,17 @@ livenessProbe:
     periodSeconds: 60
 
 ingress:
-  enabled: false
-  annotations:
-    {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  apiVersion: "networking.k8s.io/v1"
+  enabled: true
+  annotations: 
+    kubernetes.io/ingress.class: "alb"
+    alb.ingress.kubernetes.io/scheme: "internet-facing"
+    alb.ingress.kubernetes.io/group.name: "alb-controller-external"
+    alb.ingress.kubernetes.io/load-balancer-name: "pagopa-dev-atm-layer-alb-ext"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/target-type: 'ip'
   hosts:
-    - host: atm-layer-wf-engine.local
-      paths:
+    - paths:
         - /
   tls: []
   #  - secretName: atm-layer-wf-engine-tls
@@ -188,3 +196,47 @@ affinity: {}
 
 tests:
   annotations: {}
+
+configMap:
+  camunda.bpm:
+    admin-user:
+      id: ${CAMUNDA_ENGINE_ADMIN_USER}
+      password: ${CAMUNDA_ENGINE_ADMIN_PASSWORD}
+
+    database:
+      schema-update: ${CAMUNDA_ENGINE_DB_SCHEMA_UPDATE_CONFIG}
+      type: ${CAMUNDA_ENGINE_DB_TYPE}
+      schema-name: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}
+      table-prefix: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}.
+
+    webapp:
+      csrf:
+        enable-same-site-cookie: true
+        same-site-cookie-option: STRICT
+      header-security:
+        hsts-disabled: false
+    authorization.enabled: true
+
+    generic-properties.properties:
+      deserialization-type-validation-enabled: true
+      deserialization-allowed-packages:
+      deserialization-allowed-classes:
+      enable-password-policy: true
+
+    run:
+      auth.enabled: true
+      example: false
+
+  server:
+
+  logging:
+    level.root: ${CAMUNDA_ENGINE_LOG_LEVEL_ROOT:INFO}
+
+  spring.datasource:
+    url: ${CAMUNDA_ENGINE_DB_BASE_URL}/${CAMUNDA_ENGINE_DB_NAME}?currentSchema=${CAMUNDA_ENGINE_DB_SCHEMA:camunda}
+    driver-class-name: ${CAMUNDA_ENGINE_DB_DRIVER}
+    username: ${CAMUNDA_ENGINE_DB_USERNAME}
+    password: ${CAMUNDA_ENGINE_DB_PASSWORD}
+
+  spring.web.resources:
+    static-locations: NULL

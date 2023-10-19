@@ -1,7 +1,10 @@
+{{- if .Values.configmap.enabled -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ include "atm-layer-wf-engine.fullname" . }}
 data:
   production.yml: |-
-{{ .Files.Get "config/camunda.yaml" | nindent 4 }}
+{{ .Files.Get ".config/camunda.yaml" | nindent 4 }}
+
+{{- end}}
