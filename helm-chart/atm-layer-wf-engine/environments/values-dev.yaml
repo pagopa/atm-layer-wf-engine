@@ -49,14 +49,14 @@ database:
   db_schema_update_config: true
   schema: atm_layer_engine
   credentialsSecretEnabled: true
-  credentialsSecretName: "atm-layer-wf-engine-database"
+  credentialsSecretName: "atm-layer-database"
   credentialsSecretKeys:
     username: DB_USERNAME
     password: DB_PASSWORD
 
 webuser:
   credentialsSecretEnabled: true
-  credentialsSecretName: "atm-layer-wf-engine-webuser"
+  credentialsSecretName: "atm-layer-webuser"
   credentialsSecretKeys:
     username: WEB_USER
     password: WEB_PASSWORD
@@ -84,6 +84,14 @@ metrics:
       prometheus.io/scrape: "true"
       prometheus.io/path: "/"
       prometheus.io/port: "9404"
+
+deployment:
+  annotation:
+    reloader.stakater.com/auto: "true"
+    secret.reloader.stakater.com/reload: atm-layer-database, atm-layer-webuser
+
+secretProviderClass:
+  name: atm-layer-wf-engine-secrets
 
 serviceAccount:
   # Specifies whether a service account should be created

@@ -7,7 +7,7 @@ metadata:
     {{- include "atm-layer-wf-engine.labels" . | nindent 4 }}
   {{- with .Values.annotations }}
   annotations:
-    {{- toYaml . | nindent 4 }}
+    {{- toYaml .Values.deployment.annotations | nindent 4 }}
   {{- end }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
@@ -143,6 +143,12 @@ spec:
             {{- if .Values.extraVolumeMounts }}
               {{- tpl (toYaml .Values.extraVolumeMounts) . | nindent 12 }}
             {{- end }}
+          - name: secrets-store-inline-1
+            mountPath: "/mnt/secrets-store"
+            readOnly: true
+          - name: secrets-store-inline-2
+            mountPath: "/mnt/secrets-store"
+            readOnly: true
             {{- end }}
       {{ if eq (include "atm-layer-wf-engine.withVolumes" .) "true" -}}
       volumes:
@@ -159,6 +165,18 @@ spec:
         {{- if .Values.extraVolumes }}
           {{- tpl (toYaml .Values.extraVolumes) . | nindent 8 }}
         {{- end }}
+      - name: secrets-store-inline-1
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true 
+          volumeAttributes:
+            secretProviderClass: {{ .Values.database.credentialsSecretName | default $fullName }}
+      - name: secrets-store-inline-2
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true 
+          volumeAttributes:
+            secretProviderClass: {{ .Values.webuser.credentialsSecretName | default $fullName }}
         {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
