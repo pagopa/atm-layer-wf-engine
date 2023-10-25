@@ -49,14 +49,14 @@ database:
   db_schema_update_config: true
   schema: atm_layer_engine
   credentialsSecretEnabled: true
-  credentialsSecretName: "atm-layer-database"
+  credentialsSecretName: atm-layer-database
   credentialsSecretKeys:
     username: DB_USERNAME
     password: DB_PASSWORD
 
 webuser:
   credentialsSecretEnabled: true
-  credentialsSecretName: "atm-layer-webuser"
+  credentialsSecretName: atm-layer-webuser
   credentialsSecretKeys:
     username: WEB_USER
     password: WEB_PASSWORD
@@ -97,7 +97,8 @@ serviceAccount:
   # Specifies whether a service account should be created
   create: true
   # Annotations to add to the service account
-  annotations: {}
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::00000000000:role/pagopa-dev-atm-layer-xxxxxx-serviceaccount-role
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
