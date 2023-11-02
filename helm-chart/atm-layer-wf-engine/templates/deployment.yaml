@@ -143,10 +143,7 @@ spec:
             {{- if .Values.extraVolumeMounts }}
               {{- tpl (toYaml .Values.extraVolumeMounts) . | nindent 12 }}
             {{- end }}
-            - name: secrets-store-inline-1
-              mountPath: "/mnt/secrets-store"
-              readOnly: true
-            - name: secrets-store-inline-2
+            - name: secrets-store-inline
               mountPath: "/mnt/secrets-store"
               readOnly: true
           {{- end }}
@@ -165,13 +162,7 @@ spec:
         {{- if .Values.extraVolumes }}
           {{- tpl (toYaml .Values.extraVolumes) . | nindent 8 }}
         {{- end }}
-        - name: secrets-store-inline-1
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true 
-            volumeAttributes:
-              secretProviderClass: {{ .Values.secretProviderClass.name }}
-        - name: secrets-store-inline-2
+        - name: secrets-store-inline
           csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true 

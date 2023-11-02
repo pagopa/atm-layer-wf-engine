@@ -92,6 +92,7 @@ deployment:
 
 secretProviderClass:
   name: atm-layer-wf-engine-secrets
+  env: uat
 
 serviceAccount:
   # Specifies whether a service account should be created
