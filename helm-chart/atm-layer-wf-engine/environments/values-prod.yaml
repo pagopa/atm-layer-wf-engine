@@ -141,7 +141,9 @@ ingress:
     alb.ingress.kubernetes.io/scheme: "internet-facing"
     alb.ingress.kubernetes.io/group.name: "alb-controller-external"
     alb.ingress.kubernetes.io/load-balancer-name: "pagopa-prod-atm-layer-alb-ext"
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 80}]'
+    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-south-1:xxxxx:certificate/xxxxxxx
     alb.ingress.kubernetes.io/target-type: 'ip'
   hosts:
     - paths:
