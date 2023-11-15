@@ -102,7 +102,7 @@ jobs:
       - name: Update file Chart.yaml with the new version
         if: steps.semantic-release.outputs.new_release_published == 'true'
         run: |
-          yq -i ".version = \"v${{ steps.semantic-release.outputs.new_release_version }}\"" "helm-chart/atm-layer-wfengine/Chart.yaml"
+          yq -i ".version = \"v${{ steps.semantic-release.outputs.new_release_version }}\"" "helm-chart/atm-layer-wf-engine/Chart.yaml"
           git pull
           git add "helm-chart/Chart.yaml"
           git commit -m "Chart.yaml updated with new version v${{ steps.semantic-release.outputs.new_release_version }}"
