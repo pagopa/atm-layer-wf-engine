@@ -53,7 +53,7 @@ jobs:
           
       - name: Upgrade Helm Chart
         run: |
-          helm upgrade --install ${{ vars.DOCKER_IMAGE_NAME }} helm-chart/ \
+          helm upgrade --install ${{ vars.DOCKER_IMAGE_NAME }} helm-chart/atm-layer-wf-engine/ \
           --namespace pagopa \
           -f helm-chart/atm-layer-wf-engine/environments/values-${{ matrix.environment }}.yaml \
           --set image.tag=${{ inputs.release }} \
