@@ -61,6 +61,8 @@ webuser:
     username: WEB_USER
     password: WEB_PASSWORD
 
+tracingEndpoint: http://jaeger-collector.default.svc.cluster.local:4317
+
 configmap:
   enabled: true
 
