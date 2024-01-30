@@ -1,0 +1,47 @@
+
+camunda:
+  bpm:
+    admin-user:
+      id: admin
+      password: AurigaNtt.2023
+    authorization:
+      enabled: true
+    database:
+      schema-update: true
+      type: postgres
+      schema-name: atm_layer_engine
+      table-prefix: atm_layer_engine.
+    filter:
+      create: All
+    generic-properties.properties:
+      deserialization-type-validation-enabled: true
+      deserialization-allowed-packages:
+      deserialization-allowed-classes:
+      enable-password-policy: true
+    webapp:
+      csrf:
+        enable-same-site-cookie: true
+        same-site-cookie-option: STRICT
+      header-security:
+        hsts-disabled: false
+
+spring:
+  application:
+    name: atm-layer-workflow-engine
+  datasource:
+    url: jdbc:postgresql://localhost:5433/postgres?currentSchema=atm_layer_engine
+    username: postgres
+    password: password
+  web.resources:
+    static-locations: NULL
+
+
+tracing:
+  url: ${TRACING_ENDPOINT:http://localhost:4317}
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+server:
+  port: 8080
