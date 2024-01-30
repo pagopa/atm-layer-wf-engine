@@ -2,15 +2,15 @@
 camunda:
   bpm:
     admin-user:
-      id: admin
-      password: AurigaNtt.2023
+      id: ${CAMUNDA_ENGINE_ADMIN_USER}
+      password: ${CAMUNDA_ENGINE_ADMIN_PASSWORD}
     authorization:
       enabled: true
     database:
-      schema-update: true
-      type: postgres
-      schema-name: atm_layer_engine
-      table-prefix: atm_layer_engine.
+      schema-update: ${CAMUNDA_ENGINE_DB_SCHEMA_UPDATE_CONFIG}
+      type:  ${CAMUNDA_ENGINE_DB_TYPE}
+      schema-name: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}
+      table-prefix: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}.
     filter:
       create: All
     generic-properties.properties:
@@ -29,9 +29,10 @@ spring:
   application:
     name: atm-layer-workflow-engine
   datasource:
-    url: jdbc:postgresql://localhost:5433/postgres?currentSchema=atm_layer_engine
-    username: postgres
-    password: password
+    url: ${CAMUNDA_ENGINE_DB_BASE_URL}/${CAMUNDA_ENGINE_DB_NAME}?currentSchema=${CAMUNDA_ENGINE_DB_SCHEMA:camunda}
+    driver-class-name: ${CAMUNDA_ENGINE_DB_DRIVER}
+    username: ${CAMUNDA_ENGINE_DB_USERNAME}
+    password: ${CAMUNDA_ENGINE_DB_PASSWORD}
   web.resources:
     static-locations: NULL
 
