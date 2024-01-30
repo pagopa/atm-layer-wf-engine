@@ -34,13 +34,6 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Setup JDK
-        uses: graalvm/setup-graalvm@v1
-        with:
-          java-version: '17'
-          distribution: 'graalvm'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build docker image
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
