@@ -77,6 +77,8 @@ spec:
               value: "{{ .Values.database.db_schema_update_config }}"
             - name: CAMUNDA_ENGINE_DB_SCHEMA
               value: "{{ .Values.database.schema }}"
+            - name: TRACING_ENDPOINT
+              value: "{{ .Values.tracingEndpoint }}"
             {{- if .Values.database.credentialsSecretEnabled }}
             - name: CAMUNDA_ENGINE_DB_USERNAME
               valueFrom:
@@ -181,3 +183,5 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  strategy:
+    type: Recreate

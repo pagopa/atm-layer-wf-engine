@@ -24,9 +24,9 @@ image:
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
-  pullSecrets: []
-  command: ['./camunda.sh']
-  args: ['--production','--webapps','--rest','--swaggerui']
+  # pullSecrets: []
+  # command: ['./camunda.sh']
+  # args: ['--production','--webapps','--rest','--swaggerui']
 
 # Extra environment variables to customize the deployment.
 # For more details: https://github.com/camunda/docker-atm-layer-wf-engine
@@ -60,6 +60,8 @@ webuser:
   credentialsSecretKeys:
     username: WEB_USER
     password: WEB_PASSWORD
+
+tracingEndpoint: http://jaeger-collector.default.svc.cluster.local:4317
 
 configmap:
   enabled: true
