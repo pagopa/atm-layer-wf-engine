@@ -145,9 +145,11 @@ spec:
             {{- if .Values.extraVolumeMounts }}
               {{- tpl (toYaml .Values.extraVolumeMounts) . | nindent 12 }}
             {{- end }}
+            {{- if .Values.secretProviderClass.enabled }}
             - name: secrets-store-inline
               mountPath: "/mnt/secrets-store"
               readOnly: true
+            {{- end }}
           {{- end }}
       {{ if eq (include "atm-layer-wf-engine.withVolumes" .) "true" -}}
       volumes:
@@ -164,12 +166,14 @@ spec:
         {{- if .Values.extraVolumes }}
           {{- tpl (toYaml .Values.extraVolumes) . | nindent 8 }}
         {{- end }}
+        {{- if .Values.secretProviderClass.enabled }}
         - name: secrets-store-inline
           csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true 
             volumeAttributes:
               secretProviderClass: {{ .Values.secretProviderClass.name }}
+        {{- end }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
