@@ -93,6 +93,7 @@ deployment:
     secret.reloader.stakater.com/reload: pagopa-prod-atm-layer-wf-engine-database, pagopa-prod-atm-layer-wf-engine-camunda
 
 secretProviderClass:
+  enabled: true
   name: atm-layer-wf-engine-secrets
   env: prod
 
