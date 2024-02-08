@@ -54,6 +54,8 @@ database:
     username: DB_USERNAME
     password: DB_PASSWORD
 
+springProfilesActive: dev
+
 webuser:
   credentialsSecretEnabled: true
   credentialsSecretName: pagopa-dev-atm-layer-wf-engine-camunda

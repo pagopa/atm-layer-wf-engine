@@ -79,6 +79,8 @@ spec:
               value: "{{ .Values.database.schema }}"
             - name: TRACING_ENDPOINT
               value: "{{ .Values.tracingEndpoint }}"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "{{ .Values.springProfilesActive }}"
             {{- if .Values.database.credentialsSecretEnabled }}
             - name: CAMUNDA_ENGINE_DB_USERNAME
               valueFrom:
