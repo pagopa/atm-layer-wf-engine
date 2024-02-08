@@ -3,13 +3,6 @@ name: Manual create pre-release from dev
 on:
   workflow_dispatch:
     inputs:
-      env:
-        description: 'Environment:'
-        type: choice
-        required: true
-        default: dev
-        options:
-        - dev
       commit:
         description: 'Pre-release type:'
         type: choice
@@ -31,7 +24,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/dev'
     strategy:
       matrix:
-        environment: ["${{ inputs.env }}"]
+        environment: [dev]
 
     name: "manual-create-pre-release"
     runs-on: ubuntu-latest
@@ -99,6 +92,17 @@ jobs:
             @semantic-release/git@10.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update file pom.xml with the new version
+        if: steps.semantic-release.outputs.new_release_published == 'true'
+        run: |
+          mvn versions:set -DnewVersion=${{ steps.semantic-release.outputs.new_release_version }} --no-transfer-progress
+          git pull
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add pom.xml
+          git commit -m "pom.xml updated with new version ${{ steps.semantic-release.outputs.new_release_version }}"
+          git push
 
       - name: Update file Chart.yaml with the new version
         if: steps.semantic-release.outputs.new_release_published == 'true'

@@ -1,14 +1,10 @@
-name: Manual promote release in uat
+name: Manual create pre-release from hotfix
 
 on:
   workflow_dispatch:
     inputs:
-      release:
-        description: 'Which pre-release to promote in uat:'
-        type: string
-        required: true
       commit:
-        description: 'Release type:'
+        description: 'Pre-release type:'
         type: choice
         required: true
         default: feat
@@ -21,25 +17,41 @@ defaults:
   run:
     shell: bash
 
-permissions:
-  id-token: write
-  contents: write
+permissions: write-all
 
 jobs:
-  manual-promote-release-in-uat:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/uat'
+  manual-create-pre-release:
+    if: github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/heads/hotfix/')
     strategy:
       matrix:
-        environment: [dev]
+        environment: [uat] #pre-prod
 
-    name: "manual-promote-release-in-uat"
+    name: "manual-create-pre-release"
     runs-on: ubuntu-latest
     environment: ${{ matrix.environment }}
- 
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-                          
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
+        with:
+          role-to-assume: ${{ secrets.IAM_ROLE }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build docker image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ vars.DOCKER_IMAGE_NAME}}
+          DOCKER_IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -f Dockerfile -t $REGISTRY/$REPOSITORY:$DOCKER_IMAGE_TAG .
+
       - name: Commit with "${{ inputs.commit }}:" prefix
         run: |
           git config user.name "GitHub Action"
@@ -101,44 +113,19 @@ jobs:
           git commit -m "Chart.yaml updated with new version v${{ steps.semantic-release.outputs.new_release_version }}"
           git push
 
-      - name: Configure dev AWS Credentials
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
         with:
           role-to-assume: ${{ secrets.IAM_ROLE }}
           aws-region: ${{ vars.AWS_REGION }}
- 
-      - name: Login to dev Amazon ECR
-        id: login-ecr-dev
-        uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Copy docker image from dev ECR
-        env:
-          REGISTRY: ${{ steps.login-ecr-dev.outputs.registry }}
-          REPOSITORY: ${{ vars.DOCKER_IMAGE_NAME}}
-          DEV_IMAGE_TAG: ${{ inputs.release }}
-        run: |
-          docker pull $REGISTRY/$REPOSITORY:$DEV_IMAGE_TAG
-
-      - name: Configure uat AWS Credentials
-        uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
-        with:
-          role-to-assume: ${{ secrets.UAT_IAM_ROLE }}
-          aws-region: ${{ vars.AWS_REGION }}
-
-      - name: Login to uat Amazon ECR
-        id: login-ecr-uat
-        uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Push docker image in uat ECR
+      - name: Tag and push docker image on ECR
         if: steps.semantic-release.outputs.new_release_published == 'true'
         env:
-          UAT_REGISTRY: ${{ steps.login-ecr-uat.outputs.registry }}
-          DEV_REGISTRY: ${{ steps.login-ecr-dev.outputs.registry }}
-          UAT_REPOSITORY: ${{ vars.UAT_DOCKER_IMAGE_NAME}}
-          DEV_REPOSITORY: ${{ vars.DOCKER_IMAGE_NAME}}
-          UAT_IMAGE_TAG: "v${{ steps.semantic-release.outputs.new_release_version }}"
-          DEV_IMAGE_TAG: ${{ inputs.release }}
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ vars.DOCKER_IMAGE_NAME}}
+          DOCKER_IMAGE_TAG: ${{ github.sha }}
+          ECR_IMAGE_TAG: "v${{ steps.semantic-release.outputs.new_release_version }}"
         run: |
-          docker tag $DEV_REGISTRY/$DEV_REPOSITORY:$DEV_IMAGE_TAG $UAT_REGISTRY/$UAT_REPOSITORY:$UAT_IMAGE_TAG
-          docker push $UAT_REGISTRY/$UAT_REPOSITORY:$UAT_IMAGE_TAG
-
+          docker tag $REGISTRY/$REPOSITORY:$DOCKER_IMAGE_TAG $REGISTRY/$REPOSITORY:$ECR_IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:$ECR_IMAGE_TAG
