@@ -26,6 +26,7 @@ logging:
   level:
     root: ${CAMUNDA_ENGINE_LOG_LEVEL_ROOT:INFO}
 
+
 spring:
   application:
     name: atm-layer-workflow-engine
@@ -45,4 +46,3 @@ management:
   tracing:
     sampling:
       probability: 1.0
-
