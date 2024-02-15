@@ -7,6 +7,7 @@ camunda.bpm:
     type: ${CAMUNDA_ENGINE_DB_TYPE}
     schema-name: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}
     table-prefix: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}.
+  history-level: NONE
   filter:
     create: All
   webapp:
@@ -24,7 +25,6 @@ camunda.bpm:
 logging:
   level:
     root: ${CAMUNDA_ENGINE_LOG_LEVEL_ROOT:INFO}
-
 
 spring:
   application:
@@ -45,3 +45,4 @@ management:
   tracing:
     sampling:
       probability: 1.0
+

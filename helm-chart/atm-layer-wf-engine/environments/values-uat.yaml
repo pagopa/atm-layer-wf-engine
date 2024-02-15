@@ -54,7 +54,7 @@ database:
     username: DB_USERNAME
     password: DB_PASSWORD
 
-springProfilesActive: dev
+springProfilesActive: uat
 
 webuser:
   credentialsSecretEnabled: true
