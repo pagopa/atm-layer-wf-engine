@@ -175,15 +175,14 @@ securityContext:
   # runAsUser: 1000
 
 resources:
-  {}
   # If you do want to specify resources, uncomment the following lines,
   # adjust them as necessary, and remove the curly braces after 'resources:'.
   # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  #   cpu: 1500m
+  #   memory: 2500Mi
+  requests:
+    # cpu: 1000m
+    memory: 2000Mi
 
 extraVolumeMounts:
   []
@@ -201,7 +200,11 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 1
   targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+  memoryLimits: 2500Mi
+  memoryRequests: 2000Mi
+  cpuLimits: 1500m
+  cpuRequest: 1000m
 
 nodeSelector: {}
 
