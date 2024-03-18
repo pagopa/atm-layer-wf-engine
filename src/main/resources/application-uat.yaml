@@ -34,10 +34,10 @@ spring:
     driver-class-name: ${CAMUNDA_ENGINE_DB_DRIVER}
     username: ${CAMUNDA_ENGINE_DB_USERNAME}
     password: ${CAMUNDA_ENGINE_DB_PASSWORD}
-    max-active: 200
-    max-idle: 70
-    min-idle: 20
-    initial-size: 10
+    max-active: 1000
+    max-idle: 700
+    min-idle: 50
+    initial-size: 50
 
 spring.web.resources:
   static-locations: NULL
@@ -52,4 +52,4 @@ management:
 
 server:
   tomcat:
-    max-threads: 200
+    max-threads: 1000
