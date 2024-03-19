@@ -21,7 +21,8 @@ camunda.bpm:
     deserialization-allowed-packages:
     deserialization-allowed-classes:
     enable-password-policy: true
-
+  job-execution:
+    wait-time-in-millis: 300
 logging:
   level:
     root: ${CAMUNDA_ENGINE_LOG_LEVEL_ROOT:INFO}
@@ -56,5 +57,4 @@ server:
 
 camunda:
   bpm:
-    job-execution:
-      wait-time-in-millis: 300
+
