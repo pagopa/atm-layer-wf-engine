@@ -33,10 +33,10 @@ spring:
     driver-class-name: ${CAMUNDA_ENGINE_DB_DRIVER}
     username: ${CAMUNDA_ENGINE_DB_USERNAME}
     password: ${CAMUNDA_ENGINE_DB_PASSWORD}
-    max-active: 1000
-    max-idle: 700
+    max-active: 500
+    max-idle: 70
     min-idle: 50
-    initial-size: 50
+    initial-size: 5
 
 spring.web.resources:
   static-locations: NULL
