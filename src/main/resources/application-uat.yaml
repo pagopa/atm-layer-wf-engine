@@ -53,3 +53,8 @@ management:
 server:
   tomcat:
     max-threads: 1000
+
+camunda:
+  bpm:
+    job-execution:
+      wait-time-in-millis: 300
