@@ -1,9 +1,11 @@
 camunda.bpm:
   job-execution:
-    core-threads: 6
-    max-threads: 10
+    core-threads: 3
+    max-threads: 5
     queue-length: 10
-    max-jobs-per-acquisition: 6
+    max-jobs-per-acquisition: 5
+    lockTimeInMillis: 5000
+    waitTimeInMillis: 200
 
   admin-user:
     id: ${CAMUNDA_ENGINE_ADMIN_USER}
