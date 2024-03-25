@@ -1,9 +1,9 @@
 camunda.bpm:
   job-execution:
-    core-pool-size: 50
-    max-pool-size: 100
-    queue-capacity: 100
-    max-jobs-per-acquisition: 100
+    core-pool-size: 10
+    max-pool-size: 50
+    queue-capacity: 50
+    max-jobs-per-acquisition: 10
 
   admin-user:
     id: ${CAMUNDA_ENGINE_ADMIN_USER}
