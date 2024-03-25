@@ -2,7 +2,7 @@ camunda.bpm:
   job-execution:
     core-threads: 6
     max-threads: 10
-    queue-length: 20
+    queue-length: 10
 
   admin-user:
     id: ${CAMUNDA_ENGINE_ADMIN_USER}
