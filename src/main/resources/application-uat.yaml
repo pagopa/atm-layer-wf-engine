@@ -1,4 +1,9 @@
 camunda.bpm:
+  job-execution:
+    core-threads: 6
+    max-threads: 10
+    queue-length: 20
+
   admin-user:
     id: ${CAMUNDA_ENGINE_ADMIN_USER}
     password: ${CAMUNDA_ENGINE_ADMIN_PASSWORD}
@@ -48,8 +53,4 @@ management:
   tracing:
     sampling:
       probability: 1.0
-
-server:
-  tomcat:
-    max-threads: 1000
 
