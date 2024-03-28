@@ -4,7 +4,7 @@
 
 general:
   log_level: INFO
-  replicaCount: 3
+  replicaCount: 1
   nameOverride: ""
   fullnameOverride: ""
 
@@ -178,11 +178,11 @@ resources:
   # If you do want to specify resources, uncomment the following lines,
   # adjust them as necessary, and remove the curly braces after 'resources:'.
   # limits:
-  #   cpu: 1500m
+  #   cpu: 2000m
   #   memory: 2500Mi
-  requests:
-    # cpu: 1000m
-    memory: 2000Mi
+  # requests:
+    # cpu: 1500m
+    # memory: 2000Mi
 
 extraVolumeMounts:
   []
