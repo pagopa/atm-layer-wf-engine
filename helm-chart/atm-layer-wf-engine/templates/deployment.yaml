@@ -61,6 +61,8 @@ spec:
           {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            - name: TZ
+              value: Europe/Rome
             - name: CAMUNDA_ENGINE_LOG_LEVEL_ROOT
               value: "{{ .Values.general.log_level }}"
             - name: JMX_PROMETHEUS
