@@ -14,8 +14,15 @@ public class CustomUserTaskStartParseListener extends ProcessApplicationEventPar
         this.notificationWaitStatusCallbackBasePath = notificationWaitStatusCallbackBasePath;
     }
 
+    @Override
     public void parseUserTask(Element userTaskElement, ScopeImpl scope, ActivityImpl activity) {
         super.parseUserTask(userTaskElement, scope, activity);
+        activity.addListener("start", new WaitStateListener(notificationWaitStatusCallbackBasePath));
+    }
+
+    @Override
+    public void parseEndEvent(Element endEventElement, ScopeImpl scope, ActivityImpl activity) {
+        super.parseEndEvent(endEventElement, scope, activity);
         activity.addListener("start", new WaitStateListener(notificationWaitStatusCallbackBasePath));
     }
 }
