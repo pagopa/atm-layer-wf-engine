@@ -9,6 +9,7 @@ camunda.bpm:
     table-prefix: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}.
   filter:
     create: All
+  history-level: NONE
   webapp:
     csrf:
       enable-same-site-cookie: true
