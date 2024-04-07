@@ -12,13 +12,22 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class WaitStateListener implements ExecutionListener {
 
+
+    private final String notificationCallbackBasePath;
+
+    public WaitStateListener(String notificationCallbackBasePath) {
+        this.notificationCallbackBasePath = notificationCallbackBasePath;
+    }
+
+    private final static String CALLBACK_CONTEXT_PATH = "/workflow/listener/notify/{requestId}";
+
     @Override
     public void notify(DelegateExecution execution) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
 
-        String apiUrl = "http://localhost:8086/api/v1/model/workflow/listener/notify/{requestId}";
+        String apiUrl = notificationCallbackBasePath + CALLBACK_CONTEXT_PATH;
         String requestId = (String) execution.getVariable("requestId");
         String processInstanceId = execution.getProcessInstanceId();
         String currentActivityName = execution.getCurrentActivityName();

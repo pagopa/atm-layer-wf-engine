@@ -5,13 +5,17 @@ import org.camunda.bpm.application.impl.event.ProcessApplicationEventParseListen
 import org.camunda.bpm.engine.impl.pvm.process.ActivityImpl;
 import org.camunda.bpm.engine.impl.pvm.process.ScopeImpl;
 import org.camunda.bpm.engine.impl.util.xml.Element;
-import org.springframework.stereotype.Component;
 
-@Component
 public class CustomUserTaskStartParseListener extends ProcessApplicationEventParseListener {
+
+    private final String notificationWaitStatusCallbackBasePath;
+
+    public CustomUserTaskStartParseListener(String notificationWaitStatusCallbackBasePath) {
+        this.notificationWaitStatusCallbackBasePath = notificationWaitStatusCallbackBasePath;
+    }
 
     public void parseUserTask(Element userTaskElement, ScopeImpl scope, ActivityImpl activity) {
         super.parseUserTask(userTaskElement, scope, activity);
-        activity.addListener("start", new WaitStateListener());
+        activity.addListener("start", new WaitStateListener(notificationWaitStatusCallbackBasePath));
     }
 }
