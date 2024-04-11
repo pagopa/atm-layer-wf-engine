@@ -14,9 +14,12 @@ public class CamundaController {
 
     @PostMapping(value = "/verify/bpmn", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public Boolean verifyBpmn(@RequestParam("file") MultipartFile file) throws IOException {
-
-        Bpmn.readModelFromStream(file.getInputStream());
-        return Boolean.TRUE;
+    public Boolean verifyBpmn(@RequestParam("file") MultipartFile file) {
+        try {
+            Bpmn.readModelFromStream(file.getInputStream());
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getCause() == null ? e.getMessage() : e.getCause().getMessage());
+        }
     }
 }
