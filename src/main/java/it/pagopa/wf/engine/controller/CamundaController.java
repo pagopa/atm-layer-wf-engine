@@ -1,10 +1,10 @@
 package it.pagopa.wf.engine.controller;
 
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
 import org.camunda.bpm.model.bpmn.Bpmn;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 
@@ -12,13 +12,11 @@ import java.io.File;
 @RequestMapping(value = "/camunda")
 public class CamundaController {
 
-    @POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/verify/bpmn")
-    public Boolean verifyBpmn(@FormParam("file") File file) {
+    @PostMapping(value = "/verify/bpmn", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseStatus(HttpStatus.OK)
+    public Boolean verifyBpmn(@RequestParam("file") MultipartFile file) {
         try {
-            Bpmn.readModelFromFile(file);
+            Bpmn.readModelFromStream(file.getInputStream());
         } catch (Exception e) {
             return Boolean.FALSE;
         }
