@@ -39,6 +39,9 @@ spring:
     driver-class-name: ${CAMUNDA_ENGINE_DB_DRIVER}
     username: ${CAMUNDA_ENGINE_DB_USERNAME}
     password: ${CAMUNDA_ENGINE_DB_PASSWORD}
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
 
 spring.web.resources:
   static-locations: NULL
