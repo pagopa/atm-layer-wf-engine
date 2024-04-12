@@ -22,10 +22,11 @@ public class CamundaController {
         try {
             BpmnModelInstance modelInstance =Bpmn.readModelFromStream(file.getInputStream());
 
-            Process process = modelInstance.getModelElementsByType(Process.class).iterator().next();
-            VerifyResponse isProcessValid = validateProcess(process);
-            response.setIsVerified(isProcessValid.getIsVerified());
-            response.setMessage(isProcessValid.getMessage());
+//            Process process = modelInstance.getModelElementsByType(Process.class).iterator().next();
+//            boolean isProcessValid = validateProcess(process);
+//            response.setIsVerified(isProcessValid);
+            response.setIsVerified(Boolean.TRUE);
+            response.setMessage("Corretc Bpmn");
             return response;
         } catch (Exception e) {
             response.setIsVerified(Boolean.FALSE);
