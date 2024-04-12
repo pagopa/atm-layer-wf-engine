@@ -107,6 +107,18 @@ spec:
                   name: {{ .Values.webuser.credentialsSecretName | default $fullName }}
                   key: {{ .Values.webuser.credentialsSecretKeys.password }}
             {{- end }}
+            {{- if .Values.redis.credentialsSecretEnabled }}
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.redis.credentialsSecretName }}
+                  key: {{ .Values.redis.credentialsSecretKeys.host }}
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.redis.credentialsSecretName }}
+                  key: {{ .Values.redis.credentialsSecretKeys.port }}
+            {{- end }}
           {{- if .Values.extraEnvs }}
           {{- with tpl (toYaml .Values.extraEnvs) . }}
             {{ . | nindent 12 }}
