@@ -10,12 +10,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnProperty(prefix = "engine-notification.wait-status", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class CamundaConfiguration {
-
-    @Value("${engine-notification.wait-status.callback-base-path}")
-    String notificationWaitStatusCallbackBasePath;
+    
 
     @Autowired
     public void configureProcessEngineConfiguration(ProcessEngineConfigurationImpl config) {
-        config.getCustomPostBPMNParseListeners().add(new CustomUserTaskStartParseListener(notificationWaitStatusCallbackBasePath));
+        config.getCustomPostBPMNParseListeners().add(new CustomUserTaskStartParseListener());
     }
 }
