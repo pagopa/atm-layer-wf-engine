@@ -6,9 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.ExecutionListener;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
 @Slf4j
+@Component
 public class WaitStateListener implements ExecutionListener {
 
     @Value("${spring.redis.host}")
