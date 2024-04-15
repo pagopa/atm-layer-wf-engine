@@ -27,7 +27,7 @@ public class WaitStateListener implements ExecutionListener {
 
         log.info(" execution = " + execution);
         log.info(" BusinessKey = " + execution.getBusinessKey());
-        log.info(" altre variabili" + processInstanceId + currentActivityName + currentActivityId + processDefinitionId);
+        log.info(" processInstanceId " + processInstanceId +" currentActivityName " +currentActivityName +" currentActivityId " +currentActivityId +" processDefinitionId "+ processDefinitionId);
         Task task = new Task();
         task.setId(execution.getCurrentActivityId());
         //todo
