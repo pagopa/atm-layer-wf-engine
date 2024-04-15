@@ -37,7 +37,7 @@ public class WaitStateListener implements ExecutionListener {
         task.setForm("formKey");
         task.setPriority(1);
 
-        try (Jedis jedis = new Jedis(redisProperty.getRedisHost(), redisProperty.getRedisPort())) {
+        try (Jedis jedis = new Jedis("pagopa-dev-atm-layer-redis.vab4cc.ng.0001.eus1.cache.amazonaws.com", 6379)) {
             ObjectMapper objectMapper = new ObjectMapper();
             String taskJson = objectMapper.writeValueAsString(task);
 
