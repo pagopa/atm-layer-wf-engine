@@ -26,6 +26,11 @@ logging:
   level:
     root: ${CAMUNDA_ENGINE_LOG_LEVEL_ROOT:INFO}
 
+engine-notification:
+  wait-status:
+    callback-base-path: ${CAMUNDA_ENGINE_WAIT_STATUS_NOTIFICATION_CALLBACK_BASE_PATH}
+    enabled: ${CAMUNDA_ENGINE_WAIT_STATUS_NOTIFICATION_ENABLED:false}
+
 spring:
   application:
     name: atm-layer-workflow-engine
