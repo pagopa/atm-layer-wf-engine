@@ -1,12 +1,13 @@
 package it.pagopa.wf.engine.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.pagopa.wf.engine.config.RedisProperty;
 import it.pagopa.wf.engine.model.Task;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.ExecutionListener;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
@@ -15,11 +16,8 @@ import redis.clients.jedis.Jedis;
 @Data
 public class WaitStateListener implements ExecutionListener {
 
-    @Value("${spring.redis.host}")
-    private String redisHost;
-
-    @Value("${spring.redis.port}")
-    private int redisPort;
+    @Autowired
+    RedisProperty redisProperty;
 
     @Override
     public void notify(DelegateExecution execution) {
@@ -39,7 +37,7 @@ public class WaitStateListener implements ExecutionListener {
         task.setForm("formKey");
         task.setPriority(1);
 
-        try (Jedis jedis = new Jedis(redisHost, redisPort)) {
+        try (Jedis jedis = new Jedis(redisProperty.getRedisHost(), redisProperty.getRedisPort())) {
             ObjectMapper objectMapper = new ObjectMapper();
             String taskJson = objectMapper.writeValueAsString(task);
 
