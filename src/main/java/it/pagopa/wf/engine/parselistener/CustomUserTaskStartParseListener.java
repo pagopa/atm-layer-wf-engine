@@ -12,6 +12,7 @@ import org.camunda.bpm.engine.impl.util.xml.Element;
 @Slf4j
 public class CustomUserTaskStartParseListener extends ProcessApplicationEventParseListener {
 
+
     @Override
     public void parseUserTask(Element userTaskElement, ScopeImpl scope, ActivityImpl activity) {
         super.parseUserTask(userTaskElement, scope, activity);
