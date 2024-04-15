@@ -2,6 +2,7 @@ package it.pagopa.wf.engine.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.pagopa.wf.engine.model.Task;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.ExecutionListener;
@@ -11,6 +12,7 @@ import redis.clients.jedis.Jedis;
 
 @Slf4j
 @Component
+@Data
 public class WaitStateListener implements ExecutionListener {
 
     @Value("${spring.redis.host}")

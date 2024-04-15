@@ -35,8 +35,8 @@ spring:
     username: ${CAMUNDA_ENGINE_DB_USERNAME}
     password: ${CAMUNDA_ENGINE_DB_PASSWORD}
   redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
+    host: ${REDIS_HOST:pagopa-dev-atm-layer-redis.vab4cc.ng.0001.eus1.cache.amazonaws.com}
+    port: ${REDIS_PORT:6379}
 
 spring.web.resources:
   static-locations: NULL
