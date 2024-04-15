@@ -9,7 +9,6 @@ camunda.bpm:
     table-prefix: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}.
   filter:
     create: All
-  history-level: NONE
   webapp:
     csrf:
       enable-same-site-cookie: true
@@ -44,11 +43,6 @@ spring.web.resources:
 
 tracing:
   url: ${TRACING_ENDPOINT}
-
-engine-notification:
-  wait-status:
-    callback-base-path: ${CAMUNDA_ENGINE_WAIT_STATUS_NOTIFICATION_CALLBACK_BASE_PATH:http://localhost:8086/api/v1/model}
-    enabled: ${CAMUNDA_ENGINE_WAIT_STATUS_NOTIFICATION_ENABLED:true}
 
 management:
   tracing:
