@@ -21,8 +21,8 @@ public class CustomUserTaskStartParseListener extends ProcessApplicationEventPar
         taskDefinition.getFormKey().getExpressionText();
         taskDefinition.getPriorityExpression().getExpressionText();
         log.info("TaskDefinition = " + taskDefinition.toString() +
-                "\n FormKey = " + taskDefinition.getFormKey().getExpressionText() +
-                "\n Priority = " + taskDefinition.getPriorityExpression().getExpressionText());
+                "\n FormKey = " + (taskDefinition.getFormKey()== null? "is null": taskDefinition.getFormKey().getExpressionText()) +
+                "\n Priority = " + (taskDefinition.getPriorityExpression()==null? "is null": taskDefinition.getPriorityExpression().getExpressionText()));
         activity.addListener("start", new WaitStateListener());
     }
 
@@ -35,8 +35,8 @@ public class CustomUserTaskStartParseListener extends ProcessApplicationEventPar
         taskDefinition.getFormKey().getExpressionText();
         taskDefinition.getPriorityExpression().getExpressionText();
         log.info("TaskDefinition = " + taskDefinition.toString() +
-                "\n FormKey = " + taskDefinition.getFormKey().getExpressionText() +
-                "\n Priority = " + taskDefinition.getPriorityExpression().getExpressionText());
+                "\n FormKey = " + (taskDefinition.getFormKey()== null? "is null": taskDefinition.getFormKey().getExpressionText()) +
+                "\n Priority = " + (taskDefinition.getPriorityExpression()==null? "is null": taskDefinition.getPriorityExpression().getExpressionText()));
         activity.addListener("start", new WaitStateListener());
     }
 }
