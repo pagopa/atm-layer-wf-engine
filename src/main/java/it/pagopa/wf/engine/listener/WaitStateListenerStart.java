@@ -33,6 +33,8 @@ public class WaitStateListenerStart implements ExecutionListener {
         log.info(" execution = " + execution);
         log.info(" BusinessKey = " + execution.getBusinessKey());
         log.info(" processInstanceId " + processInstanceId + " currentActivityName " + currentActivityName + " currentActivityId " + currentActivityId + " processDefinitionId " + processDefinitionId);
+        log.info(" executionId =" + execution.getId());
+        log.info(" processInstanceId =" + execution.getProcessInstanceId());
 
         Task task = new Task();
         task.setId(execution.getProcessInstanceId());
