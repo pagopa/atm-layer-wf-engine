@@ -16,15 +16,11 @@ import redis.clients.jedis.Jedis;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WaitStateListener implements ExecutionListener {
+public class WaitStateListenerStart implements ExecutionListener {
 
     private RedisProperty redisProperty;
 
     private TaskDefinition taskDefinition;
-
-    public WaitStateListener(RedisProperty redisProperty){
-        this.redisProperty = redisProperty;
-    }
 
     @Override
     public void notify(DelegateExecution execution) {
@@ -42,7 +38,7 @@ public class WaitStateListener implements ExecutionListener {
         task.setId(execution.getCurrentActivityId());
         task.setVariables(execution.getVariables());
 
-        if(taskDefinition != null) {
+        if (taskDefinition != null) {
             log.info(" FormKey = " + (taskDefinition.getFormKey() == null ? " is null" : taskDefinition.getFormKey().getExpressionText()) +
                     "\n Priority = " + (taskDefinition.getPriorityExpression() == null ? " is null" : taskDefinition.getPriorityExpression().getExpressionText()));
             task.setForm(taskDefinition.getFormKey() == null ? null : taskDefinition.getFormKey().getExpressionText());
@@ -54,6 +50,7 @@ public class WaitStateListener implements ExecutionListener {
             }
             task.setPriority(priority);
         }
+
         try (Jedis jedis = new Jedis(redisProperty.getRedisHost(), redisProperty.getRedisPort())) {
             ObjectMapper objectMapper = new ObjectMapper();
             String taskJson = objectMapper.writeValueAsString(task);
