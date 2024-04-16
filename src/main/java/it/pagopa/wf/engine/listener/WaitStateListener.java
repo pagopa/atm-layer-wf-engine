@@ -22,6 +22,10 @@ public class WaitStateListener implements ExecutionListener {
 
     private TaskDefinition taskDefinition;
 
+    public WaitStateListener(RedisProperty redisProperty){
+        this.redisProperty = redisProperty;
+    }
+
     @Override
     public void notify(DelegateExecution execution) {
 

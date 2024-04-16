@@ -30,6 +30,6 @@ public class CustomUserTaskStartParseListener extends ProcessApplicationEventPar
     @Override
     public void parseEndEvent(Element endEventElement, ScopeImpl scope, ActivityImpl activity) {
         super.parseEndEvent(endEventElement, scope, activity);
-        activity.addListener("start", new WaitStateListener());
+        activity.addListener("start", new WaitStateListener(redisProperty));
     }
 }
