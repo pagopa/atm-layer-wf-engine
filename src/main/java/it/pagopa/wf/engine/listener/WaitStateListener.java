@@ -22,6 +22,9 @@ public class WaitStateListener implements ExecutionListener {
 
     private TaskDefinition taskDefinition;
 
+    private TaskDefinition taskDefinition;
+
+
     @Override
     public void notify(DelegateExecution execution) {
 
