@@ -23,7 +23,7 @@ public class WaitStateListenerEnd implements ExecutionListener {
     public void notify(DelegateExecution execution) {
 
         Task task = new Task();
-        if(execution.getParentId().isBlank()) {
+        if(execution.getParentId() == null || execution.getParentId().isBlank()) {
             try (Jedis jedis = new Jedis(redisProperty.getRedisHost(), redisProperty.getRedisPort())) {
                 ObjectMapper objectMapper = new ObjectMapper();
                 String taskJson = objectMapper.writeValueAsString(task);
