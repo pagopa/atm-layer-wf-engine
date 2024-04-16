@@ -16,13 +16,11 @@ public class CustomUserTaskStartParseListener extends ProcessApplicationEventPar
     @Override
     public void parseUserTask(Element userTaskElement, ScopeImpl scope, ActivityImpl activity) {
         super.parseUserTask(userTaskElement, scope, activity);
-        UserTaskActivityBehavior activityBehavior = (UserTaskActivityBehavior)activity.getActivityBehavior();
+        UserTaskActivityBehavior activityBehavior = (UserTaskActivityBehavior) activity.getActivityBehavior();
         TaskDefinition taskDefinition = activityBehavior.getTaskDefinition();
-        //aggiungere dei log per vedere tutto il bean taskdefinition
-        log.info("TaskDefinition = " + taskDefinition.toString() +
-                "\n FormKey = " + (taskDefinition.getFormKey()== null? "is null": taskDefinition.getFormKey().getExpressionText()) +
-                "\n Priority = " + (taskDefinition.getPriorityExpression()==null? "is null": taskDefinition.getPriorityExpression().getExpressionText()));
-        activity.addListener("start", new WaitStateListener());
+        WaitStateListener waitStateListener = new WaitStateListener();
+        waitStateListener.setTaskDefinition(taskDefinition);
+        activity.addListener("start", waitStateListener);
     }
 
     @Override
