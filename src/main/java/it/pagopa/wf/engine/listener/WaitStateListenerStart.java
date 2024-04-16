@@ -35,7 +35,7 @@ public class WaitStateListenerStart implements ExecutionListener {
         log.info(" processInstanceId " + processInstanceId + " currentActivityName " + currentActivityName + " currentActivityId " + currentActivityId + " processDefinitionId " + processDefinitionId);
 
         Task task = new Task();
-        task.setId(execution.getCurrentActivityId());
+        task.setId(execution.getProcessInstanceId());
         task.setVariables(execution.getVariables());
 
         if (taskDefinition != null) {
