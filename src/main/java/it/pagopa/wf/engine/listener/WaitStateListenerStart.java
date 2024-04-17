@@ -26,8 +26,6 @@ public class WaitStateListenerStart implements ExecutionListener {
 
     private TaskDefinition taskDefinition;
 
-    private String taskId;
-
     @Override
     public void notify(DelegateExecution execution) {
 
