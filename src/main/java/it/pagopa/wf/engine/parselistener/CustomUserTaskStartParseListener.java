@@ -25,6 +25,9 @@ public class CustomUserTaskStartParseListener extends ProcessApplicationEventPar
         super.parseUserTask(userTaskElement, scope, activity);
         UserTaskActivityBehavior activityBehavior = (UserTaskActivityBehavior) activity.getActivityBehavior();
         String taskId = userTaskElement.attribute("id");
+        log.info("elements: {}", userTaskElement.elements());
+        log.info("attributes: {}", userTaskElement.attributes());
+
         TaskDefinition taskDefinition = activityBehavior.getTaskDefinition();
         activity.addListener("start", new WaitStateListenerStart(redisProperty, taskDefinition,taskId ));
     }
