@@ -40,6 +40,7 @@ public class WaitStateListenerStart implements ExecutionListener {
         log.info(" getCurrentTransitionId " + execution.getCurrentTransitionId());
         log.info(" getProcessDefinitionId " + execution.getParentActivityInstanceId());
         log.info(" getKey " + taskDefinition.getKey());
+        log.info(" variables: {}"+ execution.getVariables());
         Task task = new Task();
         task.setId(execution.getProcessInstanceId());
         task.setVariables(execution.getVariables());
@@ -69,4 +70,5 @@ public class WaitStateListenerStart implements ExecutionListener {
         }
 
     }
+
 }
