@@ -81,13 +81,17 @@ public class WaitStateListenerStart implements ExecutionListener {
         TaskService taskService = delegateExecution.getProcessEngineServices().getTaskService();
 
         // Eseguire una query per recuperare i task
-        List<org.camunda.bpm.engine.task.Task> tasks = taskService.createTaskQuery()
-                .processInstanceId(delegateExecution.getProcessInstanceId())
-                .list();
-        if(!tasks.isEmpty())
-         log.info("Task: "+tasks.get(0).getId());
+        List<org.camunda.bpm.engine.task.Task> tasks1 = taskService.createTaskQuery()
+                .processInstanceBusinessKey(delegateExecution.getProcessBusinessKey()).list();
+        List<org.camunda.bpm.engine.task.Task> tasks2 = taskService.createTaskQuery()
+                .caseInstanceBusinessKey(delegateExecution.getProcessBusinessKey()).list();
 
-        return tasks.get(0).getId();
+        if(!tasks1.isEmpty())
+         log.info("Task1: "+tasks1.get(0).getId());
+        if(!tasks2.isEmpty())
+        log.info("Task2: "+tasks2.get(0).getId());
+
+        return tasks1.get(0).getId();
     }
 
 }
