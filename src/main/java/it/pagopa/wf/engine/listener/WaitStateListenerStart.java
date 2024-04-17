@@ -26,6 +26,7 @@ public class WaitStateListenerStart implements ExecutionListener {
 
     private TaskDefinition taskDefinition;
 
+
     @Override
     public void notify(DelegateExecution execution) {
 
@@ -33,7 +34,7 @@ public class WaitStateListenerStart implements ExecutionListener {
         String currentActivityName = execution.getCurrentActivityName();
         String currentActivityId = execution.getCurrentActivityId();
         String processDefinitionId = execution.getProcessDefinitionId();
-        String taskTest = getTaskId(execution);
+
         log.info(" execution = " + execution);
         log.info(" BusinessKey = " + execution.getBusinessKey());
         log.info(" processInstanceId " + processInstanceId + " currentActivityName " + currentActivityName + " currentActivityId " + currentActivityId + " processDefinitionId " + processDefinitionId);
@@ -43,8 +44,8 @@ public class WaitStateListenerStart implements ExecutionListener {
         log.info(" getTenantId " + execution.getTenantId());
         log.info(" getCurrentTransitionId " + execution.getCurrentTransitionId());
         log.info(" getProcessDefinitionId " + execution.getParentActivityInstanceId());
-        log.info(" taskId " + taskTest);
         log.info(" variables: {}"+ execution.getVariables());
+        String taskTest = getTaskId(execution);
         Task task = new Task();
         task.setId(taskTest);
         task.setVariables(execution.getVariables());
@@ -77,17 +78,14 @@ public class WaitStateListenerStart implements ExecutionListener {
 
     private String getTaskId(DelegateExecution delegateExecution) {
         // Ottenere il riferimento al TaskService
-        ProcessEngine processEngine = delegateExecution.getProcessEngine();
-        TaskService taskService = processEngine.getTaskService();
+        TaskService taskService = delegateExecution.getProcessEngineServices().getTaskService();
 
         // Eseguire una query per recuperare i task
-        List<org.camunda.bpm.engine.task.Task> tasks = taskService.createTaskQuery().processInstanceBusinessKey(delegateExecution.getBusinessKey())
-                .list();
-        List<org.camunda.bpm.engine.task.Task> tasks2 = taskService.createTaskQuery().caseInstanceBusinessKey(delegateExecution.getBusinessKey())
+        List<org.camunda.bpm.engine.task.Task> tasks = taskService.createTaskQuery()
+                .processInstanceId(delegateExecution.getProcessInstanceId())
                 .list();
         if(!tasks.isEmpty())
          log.info("Task: "+tasks.get(0).getId());
-        log.info("Task2: "+tasks2.get(0).getId());
 
         return tasks.get(0).getId();
     }
