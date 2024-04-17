@@ -22,6 +22,8 @@ public class WaitStateListenerStart implements ExecutionListener {
 
     private TaskDefinition taskDefinition;
 
+    private String taskId;
+
     @Override
     public void notify(DelegateExecution execution) {
 
@@ -39,10 +41,10 @@ public class WaitStateListenerStart implements ExecutionListener {
         log.info(" getTenantId " + execution.getTenantId());
         log.info(" getCurrentTransitionId " + execution.getCurrentTransitionId());
         log.info(" getProcessDefinitionId " + execution.getParentActivityInstanceId());
-        log.info(" getKey " + taskDefinition.getKey());
+        log.info(" taskId " + taskId);
         log.info(" variables: {}"+ execution.getVariables());
         Task task = new Task();
-        task.setId(execution.getProcessInstanceId());
+        task.setId(taskId);
         task.setVariables(execution.getVariables());
 
         if (taskDefinition != null) {
