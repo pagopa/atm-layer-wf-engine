@@ -7,10 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.ExecutionListener;
 import org.camunda.bpm.engine.impl.task.TaskDefinition;
 import redis.clients.jedis.Jedis;
+
+import java.util.List;
 
 @Slf4j
 @Data
@@ -31,7 +35,7 @@ public class WaitStateListenerStart implements ExecutionListener {
         String currentActivityName = execution.getCurrentActivityName();
         String currentActivityId = execution.getCurrentActivityId();
         String processDefinitionId = execution.getProcessDefinitionId();
-
+        String taskTest = getTaskId(execution);
         log.info(" execution = " + execution);
         log.info(" BusinessKey = " + execution.getBusinessKey());
         log.info(" processInstanceId " + processInstanceId + " currentActivityName " + currentActivityName + " currentActivityId " + currentActivityId + " processDefinitionId " + processDefinitionId);
@@ -41,10 +45,10 @@ public class WaitStateListenerStart implements ExecutionListener {
         log.info(" getTenantId " + execution.getTenantId());
         log.info(" getCurrentTransitionId " + execution.getCurrentTransitionId());
         log.info(" getProcessDefinitionId " + execution.getParentActivityInstanceId());
-        log.info(" taskId " + taskId);
+        log.info(" taskId " + taskTest);
         log.info(" variables: {}"+ execution.getVariables());
         Task task = new Task();
-        task.setId(taskId);
+        task.setId(taskTest);
         task.setVariables(execution.getVariables());
 
         if (taskDefinition != null) {
@@ -71,6 +75,19 @@ public class WaitStateListenerStart implements ExecutionListener {
             e.printStackTrace();
         }
 
+    }
+
+    private String getTaskId(DelegateExecution delegateExecution) {
+        // Ottenere il riferimento al TaskService
+        ProcessEngine processEngine = delegateExecution.getProcessEngine();
+        TaskService taskService = processEngine.getTaskService();
+
+        // Eseguire una query per recuperare i task
+        List<org.camunda.bpm.engine.task.Task> tasks = taskService.createTaskQuery()
+                .processInstanceId(delegateExecution.getProcessInstanceId())
+                .list();
+        log.info("Task: "+tasks.get(0));
+        return tasks.get(0).getId();
     }
 
 }
