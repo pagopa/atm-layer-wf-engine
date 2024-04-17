@@ -7,12 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.ExecutionListener;
-import org.camunda.bpm.engine.history.HistoricTaskInstance;
 import org.camunda.bpm.engine.impl.task.TaskDefinition;
 import redis.clients.jedis.Jedis;
 
@@ -82,15 +80,18 @@ public class WaitStateListenerStart implements ExecutionListener {
     private String getTaskId(DelegateExecution delegateExecution) {
         // Ottenere il riferimento al TaskService
         ProcessEngine processEngine = delegateExecution.getProcessEngine();
-        HistoryService historyService = processEngine.getHistoryService();
+        TaskService taskService = processEngine.getTaskService();
 
-        List<HistoricTaskInstance> historicTasks = historyService.createHistoricTaskInstanceQuery()
-                .processInstanceId(delegateExecution.getProcessInstanceId())
-                .finished() // Filtra solo i task completati
+        // Eseguire una query per recuperare i task
+        List<org.camunda.bpm.engine.task.Task> tasks = taskService.createTaskQuery().processInstanceBusinessKey(delegateExecution.getBusinessKey())
                 .list();
-        if(historicTasks.isEmpty())
-            return null;
-        return historicTasks.get(0).getId();
+        List<org.camunda.bpm.engine.task.Task> tasks2 = taskService.createTaskQuery().caseInstanceBusinessKey(delegateExecution.getBusinessKey())
+                .list();
+        if(!tasks.isEmpty())
+         log.info("Task: "+tasks.get(0).getId());
+        log.info("Task2: "+tasks2.get(0).getId());
+
+        return tasks.get(0).getId();
     }
 
 }
