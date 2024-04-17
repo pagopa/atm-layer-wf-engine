@@ -45,9 +45,8 @@ public class WaitStateListenerStart implements ExecutionListener {
         log.info(" getCurrentTransitionId " + execution.getCurrentTransitionId());
         log.info(" getProcessDefinitionId " + execution.getParentActivityInstanceId());
         log.info(" variables: {}"+ execution.getVariables());
-        String taskTest = getTaskId(execution);
         Task task = new Task();
-        task.setId(taskTest);
+        task.setId(processInstanceId);
         task.setVariables(execution.getVariables());
 
         if (taskDefinition != null) {
@@ -74,24 +73,6 @@ public class WaitStateListenerStart implements ExecutionListener {
             e.printStackTrace();
         }
 
-    }
-
-    private String getTaskId(DelegateExecution delegateExecution) {
-        // Ottenere il riferimento al TaskService
-        TaskService taskService = delegateExecution.getProcessEngineServices().getTaskService();
-
-        // Eseguire una query per recuperare i task
-        List<org.camunda.bpm.engine.task.Task> tasks1 = taskService.createTaskQuery()
-                .processInstanceBusinessKey(delegateExecution.getProcessBusinessKey()).list();
-        List<org.camunda.bpm.engine.task.Task> tasks2 = taskService.createTaskQuery()
-                .caseInstanceBusinessKey(delegateExecution.getProcessBusinessKey()).list();
-
-        if(!tasks1.isEmpty())
-         log.info("Task1: "+tasks1.get(0).getId());
-        if(!tasks2.isEmpty())
-        log.info("Task2: "+tasks2.get(0).getId());
-
-        return tasks1.get(0).getId();
     }
 
 }
