@@ -50,8 +50,6 @@ public class WaitStateListenerStart implements ExecutionListener {
         Task task = new Task();
         task.setId(processInstanceId);
         Map<String, Object> variables = execution.getVariables();
-        variables.remove("jsonn");
-        variables.remove("activityParentSpan");
         task.setVariables(variables);
 
         if (taskDefinition != null) {
