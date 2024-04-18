@@ -13,7 +13,6 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(Include.NON_NULL)
 public class Task {
     private String id;
     private Map<String, Object> variables;
