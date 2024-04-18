@@ -1,5 +1,6 @@
 package it.pagopa.wf.engine.parselistener;
 
+import it.pagopa.wf.engine.client.RedisClient;
 import it.pagopa.wf.engine.config.RedisProperty;
 import it.pagopa.wf.engine.listener.WaitStateListenerEnd;
 import it.pagopa.wf.engine.listener.WaitStateListenerStart;
@@ -18,19 +19,19 @@ import org.springframework.stereotype.Component;
 public class CustomUserTaskStartParseListener extends ProcessApplicationEventParseListener {
 
     @Autowired
-    RedisProperty redisProperty;
+    RedisClient redisClient;
 
     @Override
     public void parseUserTask(Element userTaskElement, ScopeImpl scope, ActivityImpl activity) {
         super.parseUserTask(userTaskElement, scope, activity);
         UserTaskActivityBehavior activityBehavior = (UserTaskActivityBehavior) activity.getActivityBehavior();
         TaskDefinition taskDefinition = activityBehavior.getTaskDefinition();
-        activity.addListener("start", new WaitStateListenerStart(redisProperty, taskDefinition ));
+        activity.addListener("start", new WaitStateListenerStart(redisClient, taskDefinition));
     }
 
     @Override
     public void parseEndEvent(Element endEventElement, ScopeImpl scope, ActivityImpl activity) {
         super.parseEndEvent(endEventElement, scope, activity);
-        activity.addListener("end", new WaitStateListenerEnd(redisProperty));
+        activity.addListener("end", new WaitStateListenerEnd(redisClient));
     }
 }
