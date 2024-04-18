@@ -16,6 +16,7 @@ import org.camunda.bpm.engine.impl.task.TaskDefinition;
 import redis.clients.jedis.Jedis;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Data
@@ -48,7 +49,10 @@ public class WaitStateListenerStart implements ExecutionListener {
         log.info(" variables: {}", execution.getVariables());
         Task task = new Task();
         task.setId(processInstanceId);
-        task.setVariables(execution.getVariables());
+        Map<String, Object> variables = execution.getVariables();
+        variables.remove("jsonn");
+        variables.remove("activityParentSpan");
+        task.setVariables(variables);
 
         if (taskDefinition != null) {
             log.info(" FormKey = " + (taskDefinition.getFormKey() == null ? " is null" : taskDefinition.getFormKey().getExpressionText()) +
