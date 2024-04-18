@@ -17,6 +17,7 @@ public class RedisClient {
         try (Jedis jedis = new Jedis(redisProperty.getRedisHost(), redisProperty.getRedisPort())) {
             ObjectMapper objectMapper = new ObjectMapper();
             String taskJson = objectMapper.writeValueAsString(object).replaceAll("\"", "");
+            log.info("Bkey = {}, taskJson = {}", key, taskJson);
             jedis.publish(key, taskJson);
             log.info("Messaggio pubblicato con successo sul topic.");
         } catch (Exception e) {
