@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.ExecutionListener;
 import org.camunda.bpm.engine.impl.task.TaskDefinition;
 import redis.clients.jedis.Jedis;
@@ -46,15 +47,19 @@ public class WaitStateListenerStart implements ExecutionListener {
         log.info(" getTenantId " + execution.getTenantId());
         log.info(" getCurrentTransitionId " + execution.getCurrentTransitionId());
         log.info(" getProcessDefinitionId " + execution.getParentActivityInstanceId());
-        log.info(" variables: {}", execution.getVariables());
+
+        Task task = populateTask(execution,taskDefinition);
+        log.info(" task: {}", task);
+
+        redisClient.publish(execution.getBusinessKey(), task);
+    }
+
+    private Task populateTask(DelegateExecution delegateExecution, TaskDefinition taskDefinition) {
         Task task = new Task();
-        task.setId(processInstanceId);
-        Map<String, Object> variables = execution.getVariables();
-        task.setVariables(variables);
+        task.setId(delegateExecution.getProcessInstanceId());
+        task.setVariables(delegateExecution.getVariables());
 
         if (taskDefinition != null) {
-            log.info(" FormKey = " + (taskDefinition.getFormKey() == null ? " is null" : taskDefinition.getFormKey().getExpressionText()) +
-                    "\n Priority = " + (taskDefinition.getPriorityExpression() == null ? " is null" : taskDefinition.getPriorityExpression().getExpressionText()));
             task.setForm(taskDefinition.getFormKey() == null ? null : taskDefinition.getFormKey().getExpressionText());
             int priority = 0;
             try {
@@ -64,8 +69,7 @@ public class WaitStateListenerStart implements ExecutionListener {
             }
             task.setPriority(priority);
         }
-
-        redisClient.publish(execution.getBusinessKey(), task);
+        return task;
     }
 
 }
