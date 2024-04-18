@@ -7,10 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.ExecutionListener;
 import org.camunda.bpm.engine.impl.task.TaskDefinition;
 import redis.clients.jedis.Jedis;
+
+import java.util.List;
 
 @Slf4j
 @Data
@@ -21,6 +25,7 @@ public class WaitStateListenerStart implements ExecutionListener {
     private RedisProperty redisProperty;
 
     private TaskDefinition taskDefinition;
+
 
     @Override
     public void notify(DelegateExecution execution) {
@@ -39,9 +44,9 @@ public class WaitStateListenerStart implements ExecutionListener {
         log.info(" getTenantId " + execution.getTenantId());
         log.info(" getCurrentTransitionId " + execution.getCurrentTransitionId());
         log.info(" getProcessDefinitionId " + execution.getParentActivityInstanceId());
-
+        log.info(" variables: {}", execution.getVariables());
         Task task = new Task();
-        task.setId(execution.getProcessInstanceId());
+        task.setId(processInstanceId);
         task.setVariables(execution.getVariables());
 
         if (taskDefinition != null) {
@@ -69,4 +74,5 @@ public class WaitStateListenerStart implements ExecutionListener {
         }
 
     }
+
 }
