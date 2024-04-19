@@ -10,6 +10,7 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.TaskListener;
+import org.camunda.bpm.engine.form.TaskFormData;
 import org.camunda.bpm.engine.impl.task.TaskDefinition;
 
 @Slf4j
@@ -46,22 +47,14 @@ public class WaitStateListenerStart implements TaskListener {
         task.setVariables(delegateTask.getVariables());
 
         if (taskDefinition != null) {
-
-            RuntimeService runtimeService = delegateTask.getProcessEngineServices().getRuntimeService();
-
-            String processInstanceId = delegateTask.getProcessInstanceId();
-            if (processInstanceId != null) {
-                String formKey = (String) runtimeService.getVariable(processInstanceId, "camunda:formKey");
+            String formKey;
+            TaskFormData taskFormData = delegateTask.getProcessEngineServices().getFormService().getTaskFormData(delegateTask.getId());
+            if (taskFormData != null) {
+                formKey = taskFormData.getFormKey();
                 log.info("FormKey = {}", formKey);
                 task.setForm(formKey);
             }
-            int priority = 0;
-            try {
-                priority = taskDefinition.getPriorityExpression() == null ? 0 : Integer.parseInt(taskDefinition.getPriorityExpression().getExpressionText());
-            } catch (Exception e) {
-                log.error("priority not a number");
-            }
-            task.setPriority(priority);
+            task.setPriority(delegateTask.getPriority());
         }
         return task;
     }
