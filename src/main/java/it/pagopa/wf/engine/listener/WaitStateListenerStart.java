@@ -1,29 +1,23 @@
 package it.pagopa.wf.engine.listener;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import it.pagopa.wf.engine.client.RedisClient;
-import it.pagopa.wf.engine.config.RedisProperty;
 import it.pagopa.wf.engine.model.Task;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.TaskService;
+import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.DelegateTask;
-import org.camunda.bpm.engine.delegate.ExecutionListener;
+import org.camunda.bpm.engine.delegate.TaskListener;
+import org.camunda.bpm.engine.form.TaskFormData;
 import org.camunda.bpm.engine.impl.task.TaskDefinition;
-import redis.clients.jedis.Jedis;
-
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WaitStateListenerStart implements ExecutionListener {
+public class WaitStateListenerStart implements TaskListener {
 
     private RedisClient redisClient;
 
@@ -31,45 +25,37 @@ public class WaitStateListenerStart implements ExecutionListener {
 
 
     @Override
-    public void notify(DelegateExecution execution) {
+    public void notify(DelegateTask delegateTask) {
 
-        String processInstanceId = execution.getProcessInstanceId();
-        String currentActivityName = execution.getCurrentActivityName();
-        String currentActivityId = execution.getCurrentActivityId();
-        String processDefinitionId = execution.getProcessDefinitionId();
+        log.info("DelegateTask : id = {} , processInstanceId = {} , processDefinitionId = {} , TenantId = {} , Priority = {} , TaskDefinitionKey = {}",
+                delegateTask.getId(), delegateTask.getProcessInstanceId(), delegateTask.getProcessDefinitionId(), delegateTask.getTenantId(), delegateTask.getPriority(), delegateTask.getTaskDefinitionKey());
 
-        log.info(" execution = " + execution);
-        log.info(" BusinessKey = " + execution.getBusinessKey());
-        log.info(" processInstanceId " + processInstanceId + " currentActivityName " + currentActivityName + " currentActivityId " + currentActivityId + " processDefinitionId " + processDefinitionId);
-        log.info(" executionId =" + execution.getId());
-        log.info(" getParentId " + execution.getParentId());
-        log.info(" getActivityInstanceId " + execution.getActivityInstanceId());
-        log.info(" getTenantId " + execution.getTenantId());
-        log.info(" getCurrentTransitionId " + execution.getCurrentTransitionId());
-        log.info(" getProcessDefinitionId " + execution.getParentActivityInstanceId());
+        DelegateExecution execution = delegateTask.getExecution();
+        log.info("getExecution() : BusinessKey = {} , currentActivityName = {} , currentActivityId = {} , parentId = {} , ActivityInstanceId = {} , CurrentTransitionId = {} , ProcessDefinitionId = {}, Id = {}",
+                execution.getBusinessKey(), execution.getCurrentActivityName(), execution.getCurrentActivityId(),execution.getParentId(),
+                execution.getActivityInstanceId(), execution.getCurrentTransitionId(), execution.getParentActivityInstanceId(), execution.getId());
 
-        Task task = populateTask(execution,taskDefinition);
+        Task task = populateTask(delegateTask,taskDefinition);
         log.info(" task: {}", task);
 
-        redisClient.publish(execution.getBusinessKey(), task);
+        redisClient.publish(delegateTask.getExecution().getBusinessKey(), task);
     }
 
-    private Task populateTask(DelegateExecution delegateExecution, TaskDefinition taskDefinition) {
+    private Task populateTask(DelegateTask delegateTask, TaskDefinition taskDefinition) {
         Task task = new Task();
-        task.setId(delegateExecution.getProcessInstanceId());
-        task.setVariables(delegateExecution.getVariables());
+        task.setId(delegateTask.getId());
+        task.setVariables(delegateTask.getVariables());
 
         if (taskDefinition != null) {
-            task.setForm(taskDefinition.getFormKey() == null ? null : taskDefinition.getFormKey().getExpressionText());
-            int priority = 0;
-            try {
-                priority = taskDefinition.getPriorityExpression() == null ? 0 : Integer.parseInt(taskDefinition.getPriorityExpression().getExpressionText());
-            } catch (Exception e) {
-                log.error("priority not a number");
+            String formKey;
+            TaskFormData taskFormData = delegateTask.getProcessEngineServices().getFormService().getTaskFormData(delegateTask.getId());
+            if (taskFormData != null) {
+                formKey = taskFormData.getFormKey();
+                log.info("FormKey = {}", formKey);
+                task.setForm(formKey);
             }
-            task.setPriority(priority);
+            task.setPriority(delegateTask.getPriority());
         }
         return task;
     }
-
 }

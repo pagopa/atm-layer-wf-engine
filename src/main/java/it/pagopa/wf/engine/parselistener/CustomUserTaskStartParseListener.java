@@ -1,7 +1,6 @@
 package it.pagopa.wf.engine.parselistener;
 
 import it.pagopa.wf.engine.client.RedisClient;
-import it.pagopa.wf.engine.config.RedisProperty;
 import it.pagopa.wf.engine.listener.WaitStateListenerEnd;
 import it.pagopa.wf.engine.listener.WaitStateListenerStart;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,7 @@ public class CustomUserTaskStartParseListener extends ProcessApplicationEventPar
         super.parseUserTask(userTaskElement, scope, activity);
         UserTaskActivityBehavior activityBehavior = (UserTaskActivityBehavior) activity.getActivityBehavior();
         TaskDefinition taskDefinition = activityBehavior.getTaskDefinition();
-        activity.addListener("start", new WaitStateListenerStart(redisClient, taskDefinition));
+        taskDefinition.addTaskListener("create",new WaitStateListenerStart(redisClient, taskDefinition) );
     }
 
     @Override
