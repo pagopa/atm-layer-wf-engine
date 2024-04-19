@@ -6,7 +6,7 @@
 
   <groupId>it.pagopa</groupId>
   <artifactId>atm-layer-workflow-engine</artifactId>
-  <version>1.1.0-dev.56</version>
+  <version>1.1.0-dev.62</version>
   <packaging>jar</packaging>
 
   <properties>
@@ -89,7 +89,7 @@
             <groupId>org.camunda.spin</groupId>
             <artifactId>camunda-spin-dataformat-all</artifactId>
         </dependency>
-
+    
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-redis</artifactId>

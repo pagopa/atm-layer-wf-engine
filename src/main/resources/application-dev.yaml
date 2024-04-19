@@ -37,14 +37,17 @@ spring:
   redis:
     host: ${REDIS_HOST:pagopa-dev-atm-layer-redis.vab4cc.ng.0001.eus1.cache.amazonaws.com}
     port: ${REDIS_PORT:6379}
+  web.resources:
+    static-locations: NULL
 
-spring.web.resources:
-  static-locations: NULL
 
 tracing:
-  url: ${TRACING_ENDPOINT}
+  url: ${TRACING_ENDPOINT:http://localhost:4317}
 
 management:
   tracing:
     sampling:
       probability: 1.0
+
+server:
+  port: 8080
