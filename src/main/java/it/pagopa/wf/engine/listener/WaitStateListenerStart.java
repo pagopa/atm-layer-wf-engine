@@ -27,16 +27,15 @@ public class WaitStateListenerStart implements TaskListener {
     @Override
     public void notify(DelegateTask delegateTask) {
 
-        log.info("DelegateTask : id = {} , processInstanceId = {} , processDefinitionId = {} , TenantId = {} , Priority = {} , TaskDefinitionKey = {}",
-                delegateTask.getId(), delegateTask.getProcessInstanceId(), delegateTask.getProcessDefinitionId(), delegateTask.getTenantId(), delegateTask.getPriority(), delegateTask.getTaskDefinitionKey());
-
-        DelegateExecution execution = delegateTask.getExecution();
-        log.info("getExecution() : BusinessKey = {} , currentActivityName = {} , currentActivityId = {} , parentId = {} , ActivityInstanceId = {} , CurrentTransitionId = {} , ProcessDefinitionId = {}, Id = {}",
-                execution.getBusinessKey(), execution.getCurrentActivityName(), execution.getCurrentActivityId(),execution.getParentId(),
-                execution.getActivityInstanceId(), execution.getCurrentTransitionId(), execution.getParentActivityInstanceId(), execution.getId());
+//        log.info("DelegateTask : id = {} , processInstanceId = {} , processDefinitionId = {} , TenantId = {} , Priority = {} , TaskDefinitionKey = {}",
+//                delegateTask.getId(), delegateTask.getProcessInstanceId(), delegateTask.getProcessDefinitionId(), delegateTask.getTenantId(), delegateTask.getPriority(), delegateTask.getTaskDefinitionKey());
+//
+//        DelegateExecution execution = delegateTask.getExecution();
+//        log.info("getExecution() : BusinessKey = {} , currentActivityName = {} , currentActivityId = {} , parentId = {} , ActivityInstanceId = {} , CurrentTransitionId = {} , ProcessDefinitionId = {}, Id = {}",
+//                execution.getBusinessKey(), execution.getCurrentActivityName(), execution.getCurrentActivityId(),execution.getParentId(),
+//                execution.getActivityInstanceId(), execution.getCurrentTransitionId(), execution.getParentActivityInstanceId(), execution.getId());
 
         Task task = populateTask(delegateTask,taskDefinition);
-        log.info(" task: {}", task);
 
         redisClient.publish(delegateTask.getExecution().getBusinessKey(), task);
     }
@@ -51,7 +50,6 @@ public class WaitStateListenerStart implements TaskListener {
             TaskFormData taskFormData = delegateTask.getProcessEngineServices().getFormService().getTaskFormData(delegateTask.getId());
             if (taskFormData != null) {
                 formKey = taskFormData.getFormKey();
-                log.info("FormKey = {}", formKey);
                 task.setForm(formKey);
             }
             task.setPriority(delegateTask.getPriority());
