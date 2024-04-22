@@ -6,6 +6,7 @@ import it.pagopa.wf.engine.listener.StartServiceTaskListener;
 import it.pagopa.wf.engine.listener.StartUserTaskListener;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.application.impl.event.ProcessApplicationEventParseListener;
+import org.camunda.bpm.engine.impl.bpmn.behavior.ExternalTaskActivityBehavior;
 import org.camunda.bpm.engine.impl.bpmn.behavior.UserTaskActivityBehavior;
 import org.camunda.bpm.engine.impl.pvm.process.ActivityImpl;
 import org.camunda.bpm.engine.impl.pvm.process.ScopeImpl;
@@ -32,9 +33,7 @@ public class CustomUserTaskStartParseListener extends ProcessApplicationEventPar
     @Override
     public void parseServiceTask(Element serviceTaskElement, ScopeImpl scope, ActivityImpl activity) {
         super.parseServiceTask(serviceTaskElement, scope, activity);
-        UserTaskActivityBehavior activityBehavior = (UserTaskActivityBehavior) activity.getActivityBehavior();
-        TaskDefinition taskDefinition = activityBehavior.getTaskDefinition();
-        taskDefinition.addTaskListener("create",new StartServiceTaskListener(redisClient, taskDefinition) );
+        activity.addListener("start", new StartServiceTaskListener(redisClient));
     }
 
     @Override
