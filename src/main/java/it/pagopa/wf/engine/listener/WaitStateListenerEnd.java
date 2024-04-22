@@ -21,6 +21,7 @@ public class WaitStateListenerEnd implements ExecutionListener {
     public void notify(DelegateExecution execution) {
 
         Task task = new Task();
+        log.info("ENDEVENT with  parentId: {}", execution.getParentId());
         if(execution.getParentId() == null || execution.getParentId().isBlank()) {
             redisClient.publish(execution.getBusinessKey(), task);
         }
