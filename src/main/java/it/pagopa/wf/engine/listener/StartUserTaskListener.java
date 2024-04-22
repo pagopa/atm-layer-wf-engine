@@ -24,6 +24,7 @@ public class StartUserTaskListener implements TaskListener {
 
     @Override
     public void notify(DelegateTask delegateTask) {
+        log.info( "Start user task BusinessKey: {}",delegateTask.getExecution().getBusinessKey());
 
 //        log.info("DelegateTask : id = {} , processInstanceId = {} , processDefinitionId = {} , TenantId = {} , Priority = {} , TaskDefinitionKey = {}",
 //                delegateTask.getId(), delegateTask.getProcessInstanceId(), delegateTask.getProcessDefinitionId(), delegateTask.getTenantId(), delegateTask.getPriority(), delegateTask.getTaskDefinitionKey());

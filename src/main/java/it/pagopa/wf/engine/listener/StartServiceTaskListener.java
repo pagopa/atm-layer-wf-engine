@@ -24,7 +24,7 @@ public class StartServiceTaskListener implements ExecutionListener {
 
         Task task = new Task();
         task.setExternal(true);
-        log.info( "External task BusinessKey: {}",execution.getBusinessKey());
+        log.info( "Start External task BusinessKey: {}",execution.getBusinessKey());
         redisClient.publish(execution.getBusinessKey(), task);
         }
     }
