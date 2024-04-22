@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.camunda.bpm.engine.RuntimeService;
-import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.TaskListener;
 import org.camunda.bpm.engine.form.TaskFormData;
@@ -17,7 +15,7 @@ import org.camunda.bpm.engine.impl.task.TaskDefinition;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WaitStateListenerStart implements TaskListener {
+public class StartUserTaskListener implements TaskListener {
 
     private RedisClient redisClient;
 
@@ -35,25 +33,26 @@ public class WaitStateListenerStart implements TaskListener {
 //                execution.getBusinessKey(), execution.getCurrentActivityName(), execution.getCurrentActivityId(),execution.getParentId(),
 //                execution.getActivityInstanceId(), execution.getCurrentTransitionId(), execution.getParentActivityInstanceId(), execution.getId());
 
-        Task task = populateTask(delegateTask,taskDefinition);
+        Task userTask = populateUserTask(delegateTask,taskDefinition);
+        log.info("UserTask: {}", userTask);
 
-        redisClient.publish(delegateTask.getExecution().getBusinessKey(), task);
+        redisClient.publish(delegateTask.getExecution().getBusinessKey(), userTask);
     }
 
-    private Task populateTask(DelegateTask delegateTask, TaskDefinition taskDefinition) {
-        Task task = new Task();
-        task.setId(delegateTask.getId());
-        task.setVariables(delegateTask.getVariables());
+    public Task populateUserTask(DelegateTask delegateTask, TaskDefinition taskDefinition) {
+        Task userTask = new Task();
+        userTask.setId(delegateTask.getId());
+        userTask.setVariables(delegateTask.getVariables());
 
         if (taskDefinition != null) {
             String formKey;
             TaskFormData taskFormData = delegateTask.getProcessEngineServices().getFormService().getTaskFormData(delegateTask.getId());
             if (taskFormData != null) {
                 formKey = taskFormData.getFormKey();
-                task.setForm(formKey);
+                userTask.setForm(formKey);
             }
-            task.setPriority(delegateTask.getPriority());
+            userTask.setPriority(delegateTask.getPriority());
         }
-        return task;
+        return userTask;
     }
 }
