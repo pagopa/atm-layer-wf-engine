@@ -21,7 +21,10 @@ public class EndExecutionListener implements ExecutionListener {
     public void notify(DelegateExecution execution) {
 
         Task task = new Task();
-        log.info("ENDEVENT with  parentId: {} and BusinessKey: {}", execution.getParentId(), execution.getBusinessKey());
+        log.info("ENDEVENT with  parentId: {} and BusinessKey: {} and eventName: {}", execution.getParentId(), execution.getBusinessKey(),execution.getEventName());
+
+        // Verifica se l'evento è di completamento del processo
+        //if (ExecutionListener.EVENTNAME_END.equals(execution.getEventName())) {
         if(execution.getParentId() == null || execution.getParentId().isBlank()) {
             redisClient.publish(execution.getBusinessKey(), task);
         }
