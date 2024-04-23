@@ -16,4 +16,5 @@ public class Task {
     private Map<String, Object> variables;
     private String form;
     private int priority;
+    private boolean isExternal;
 }
