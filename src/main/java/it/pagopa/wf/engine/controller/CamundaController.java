@@ -1,8 +1,21 @@
 package it.pagopa.wf.engine.controller;
 
 import it.pagopa.wf.engine.model.VerifyResponse;
-import org.camunda.bpm.model.bpmn.Bpmn;
-import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.camunda.bpm.engine.ParseException;
+import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParse;
+import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParser;
+import org.camunda.bpm.engine.impl.cfg.BpmnParseFactory;
+import org.camunda.bpm.engine.impl.cfg.DefaultBpmnParseFactory;
+import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.engine.impl.context.Context;
+import org.camunda.bpm.engine.impl.el.Expression;
+import org.camunda.bpm.engine.impl.el.ExpressionManager;
+import org.camunda.bpm.engine.impl.form.type.BooleanFormType;
+import org.camunda.bpm.engine.impl.form.type.FormTypes;
+import org.camunda.bpm.engine.impl.form.type.LongFormType;
+import org.camunda.bpm.engine.impl.form.type.StringFormType;
+import org.camunda.bpm.engine.impl.interceptor.CommandInterceptor;
+import org.camunda.bpm.engine.impl.persistence.entity.DeploymentEntity;
 import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.model.bpmn.instance.*;
 import org.springframework.http.HttpStatus;
@@ -10,6 +23,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.Collection;
 
 @RestController
@@ -18,23 +34,72 @@ public class CamundaController {
 
     @PostMapping(value = "/verify/bpmn", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public VerifyResponse verifyBpmn(@RequestParam("file") MultipartFile file) {
-        VerifyResponse response = new VerifyResponse();
-        try {
-            BpmnModelInstance modelInstance =Bpmn.readModelFromStream(file.getInputStream());
+    public VerifyResponse verifyBpmn(@RequestParam("file") MultipartFile file) throws IOException {
+        return validateFile(file);
+    }
 
-//            Process process = modelInstance.getModelElementsByType(Process.class).iterator().next();
-//            boolean isProcessValid = validateProcess(process);
-//            response.setIsVerified(isProcessValid);
+    private VerifyResponse validateFile(MultipartFile file) throws IOException {
+        VerifyResponse response = new VerifyResponse();
+
+        try (InputStream inputStream = file.getInputStream()) {
+            final ExpressionManager testExpressionManager = new ExpressionManager() {
+                @Override
+                public Expression createExpression(String expression) {
+                    return null;
+                }
+                @Override
+                public void addFunction(String name, Method function) {
+                }
+            };
+
+            ProcessEngineConfigurationImpl processEngineConfiguration = new ProcessEngineConfigurationImpl() {
+                @Override
+                protected Collection<? extends CommandInterceptor> getDefaultCommandInterceptorsTxRequired() {
+                    return null;
+                }
+
+                @Override
+                protected Collection<? extends CommandInterceptor> getDefaultCommandInterceptorsTxRequiresNew() {
+                    return null;
+                }
+
+                @Override
+                public ExpressionManager getExpressionManager() {
+                    return testExpressionManager;
+                }
+
+                @Override
+                public FormTypes getFormTypes() {
+                    final FormTypes formTypes = new FormTypes();
+                    formTypes.addFormType(new BooleanFormType());
+                    formTypes.addFormType(new StringFormType());
+                    formTypes.addFormType(new LongFormType());
+                    return formTypes;
+                }
+            };
+
+            Context.setProcessEngineConfiguration(processEngineConfiguration);
+
+            BpmnParseFactory bpmnParseFactory = new DefaultBpmnParseFactory();
+            BpmnParser bpmnParser = new BpmnParser(testExpressionManager, bpmnParseFactory);
+            BpmnParse bpmnParse = bpmnParser.createParse()
+                    .sourceInputStream(inputStream)
+                    .deployment(new DeploymentEntity())
+                    .name(file.getName());
+            bpmnParse.execute();
+
             response.setIsVerified(Boolean.TRUE);
             response.setMessage("Corretc Bpmn");
             return response;
-        } catch (Exception e) {
+        }
+        catch (final ParseException exception) {
             response.setIsVerified(Boolean.FALSE);
-            response.setMessage(e.getCause() == null ? e.getMessage() : e.getCause().getMessage());
+            response.setMessage(exception.getCause() == null ? exception.getMessage() : exception.getCause().getMessage());
             return response;
         }
     }
+
+
 
     public static VerifyResponse validateProcess(Process process) {
         VerifyResponse response = new VerifyResponse();
