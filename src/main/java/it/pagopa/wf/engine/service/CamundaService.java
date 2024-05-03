@@ -39,7 +39,6 @@ public class CamundaService {
                     .sourceInputStream(inputStream)
                     .deployment(new DeploymentEntity())
                     .name(file.getName());
-            checkIsExecutable(bpmnParse.getRootElement());
             bpmnParse.execute();
 
             response.setIsVerified(Boolean.TRUE);
@@ -53,12 +52,4 @@ public class CamundaService {
         }
     }
 
-    private void checkIsExecutable(Element rootElement) {
-        for (Element processElement : rootElement.elements("process")) {
-            String isExecutableStr = processElement.attribute("isExecutable");
-            if (isExecutableStr == null) {
-                throw new ParseException("non-executable process. Set the attribute isExecutable=true to deploy this process.",null,null,null);
-            }
-        }
-    }
 }
