@@ -32,6 +32,8 @@ public class CustomUserTaskStartParseListener extends ProcessApplicationEventPar
         taskDefinition.addTaskListener(TaskListener.EVENTNAME_CREATE, new StartUserTaskListener(redisClient, taskDefinition));
     }
 
+
+
    /* @Override
     public void parseServiceTask(Element serviceTaskElement, ScopeImpl scope, ActivityImpl activity) {
         super.parseServiceTask(serviceTaskElement, scope, activity);
