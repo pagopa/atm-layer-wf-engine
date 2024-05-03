@@ -1,16 +1,7 @@
 package it.pagopa.wf.engine.controller;
 
 import it.pagopa.wf.engine.model.VerifyResponse;
-import org.camunda.bpm.engine.ParseException;
-import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParse;
-import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParser;
-import org.camunda.bpm.engine.impl.cfg.BpmnParseFactory;
-import org.camunda.bpm.engine.impl.cfg.DefaultBpmnParseFactory;
-import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.camunda.bpm.engine.impl.context.Context;
-import org.camunda.bpm.engine.impl.el.ExpressionManager;
-import org.camunda.bpm.engine.impl.el.JuelExpressionManager;
-import org.camunda.bpm.engine.impl.persistence.entity.DeploymentEntity;
+import it.pagopa.wf.engine.service.CamundaService;
 import org.camunda.bpm.model.bpmn.instance.EndEvent;
 import org.camunda.bpm.model.bpmn.instance.Gateway;
 import org.camunda.bpm.model.bpmn.instance.Process;
@@ -27,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collection;
 
 @RestController
@@ -35,40 +25,15 @@ import java.util.Collection;
 public class CamundaController {
 
     @Autowired
-    ProcessEngineConfigurationImpl processEngineConfiguration;
+    CamundaService camundaService;
 
     @PostMapping(value = "/verify/bpmn", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.OK)
     public VerifyResponse verifyBpmn(@RequestParam("file") MultipartFile file) throws IOException {
-        return validateFile(file);
+        return camundaService.validateFile(file);
     }
 
-    private VerifyResponse validateFile(MultipartFile file) throws IOException {
-        VerifyResponse response = new VerifyResponse();
 
-        try (InputStream inputStream = file.getInputStream()) {
-            final ExpressionManager testExpressionManager = new JuelExpressionManager();
-
-            Context.setProcessEngineConfiguration(processEngineConfiguration);
-
-            BpmnParseFactory bpmnParseFactory = new DefaultBpmnParseFactory();
-            BpmnParser bpmnParser = new BpmnParser(testExpressionManager, bpmnParseFactory);
-            BpmnParse bpmnParse = bpmnParser.createParse()
-                    .sourceInputStream(inputStream)
-                    .deployment(new DeploymentEntity())
-                    .name(file.getName());
-            bpmnParse.execute();
-
-            response.setIsVerified(Boolean.TRUE);
-            response.setMessage("Corretc Bpmn");
-            return response;
-        }
-        catch (final ParseException exception) {
-            response.setIsVerified(Boolean.FALSE);
-            response.setMessage(exception.getCause() == null ? exception.getMessage() : exception.getCause().getMessage());
-            return response;
-        }
-    }
 
 
 
