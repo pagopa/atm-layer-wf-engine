@@ -1,7 +1,6 @@
 package it.pagopa.wf.engine.controller;
 
 import it.pagopa.wf.engine.model.VerifyResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.ParseException;
 import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParse;
 import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParser;
@@ -31,7 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 
-@Slf4j
 @RestController
 @RequestMapping(value = "/camunda")
 public class CamundaController {
@@ -50,52 +48,15 @@ public class CamundaController {
 
         try (InputStream inputStream = file.getInputStream()) {
             final ExpressionManager testExpressionManager = new JuelExpressionManager();
-//            ProcessEngineConfigurationImpl processEngineConfiguration = new ProcessEngineConfigurationImpl() {
-//                @Override
-//                protected Collection<? extends CommandInterceptor> getDefaultCommandInterceptorsTxRequired() {
-//                    return null;
-//                }
-//
-//                @Override
-//                protected Collection<? extends CommandInterceptor> getDefaultCommandInterceptorsTxRequiresNew() {
-//                    return null;
-//                }
-//
-//                @Override
-//                public ExpressionManager getExpressionManager() {
-//                    return testExpressionManager;
-//                }
-//
-//                @Override
-//                public FormTypes getFormTypes() {
-//                    final FormTypes formTypes = new FormTypes();
-//                    formTypes.addFormType(new BooleanFormType());
-//                    formTypes.addFormType(new StringFormType());
-//                    formTypes.addFormType(new LongFormType());
-//                    return formTypes;
-//                }
-//            };
-
-//            log.info("TEMPORARY -- Setting new ScriptFactory");
-//            processEngineConfiguration.setScriptFactory(new ScriptFactory());
-//
-//            List<ProcessEnginePlugin> processEnginePlugins = new ArrayList<>();
-//            processEnginePlugins.add(new SpinConfiguration());
-//            processEnginePlugins.add(new SpinProcessEnginePlugin());
-//            processEnginePlugins.add(new SpringBootSpinProcessEnginePlugin());
-//            processEngineConfiguration.setProcessEnginePlugins(processEnginePlugins);
-//            log.info("Set custom plugins: {}",processEngineConfiguration.getProcessEnginePlugins());
 
             Context.setProcessEngineConfiguration(processEngineConfiguration);
 
             BpmnParseFactory bpmnParseFactory = new DefaultBpmnParseFactory();
             BpmnParser bpmnParser = new BpmnParser(testExpressionManager, bpmnParseFactory);
-            log.info("TEMPORARY -- Creating Parse");
             BpmnParse bpmnParse = bpmnParser.createParse()
                     .sourceInputStream(inputStream)
                     .deployment(new DeploymentEntity())
                     .name(file.getName());
-            log.info("TEMPORARY -- Running execute");
             bpmnParse.execute();
 
             response.setIsVerified(Boolean.TRUE);
