@@ -33,7 +33,7 @@ public class EndExecutionListener implements ExecutionListener {
         // Verifica se l'evento è di completamento del processo
         //if (ExecutionListener.EVENTNAME_END.equals(execution.getEventName())) {
         //if(execution.getParentId() == null || execution.getParentId().isBlank()) {
-        if(activeProcessInstances==1)
+        if(activeProcessInstances==0)
             redisClient.publish(execution.getBusinessKey(), task);
     }
 }
