@@ -10,19 +10,25 @@ import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.context.Context;
 import org.camunda.bpm.engine.impl.el.Expression;
 import org.camunda.bpm.engine.impl.el.ExpressionManager;
+import org.camunda.bpm.engine.impl.el.JuelExpressionManager;
 import org.camunda.bpm.engine.impl.form.type.BooleanFormType;
 import org.camunda.bpm.engine.impl.form.type.FormTypes;
 import org.camunda.bpm.engine.impl.form.type.LongFormType;
 import org.camunda.bpm.engine.impl.form.type.StringFormType;
 import org.camunda.bpm.engine.impl.interceptor.CommandInterceptor;
 import org.camunda.bpm.engine.impl.persistence.entity.DeploymentEntity;
+import org.camunda.bpm.engine.spring.SpringExpressionManager;
+import org.camunda.bpm.engine.test.mock.MockExpressionManager;
 import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.model.bpmn.instance.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -42,16 +48,7 @@ public class CamundaController {
         VerifyResponse response = new VerifyResponse();
 
         try (InputStream inputStream = file.getInputStream()) {
-            final ExpressionManager testExpressionManager = new ExpressionManager() {
-                @Override
-                public Expression createExpression(String expression) {
-                    return null;
-                }
-                @Override
-                public void addFunction(String name, Method function) {
-                }
-            };
-
+            final ExpressionManager testExpressionManager = new JuelExpressionManager();
             ProcessEngineConfigurationImpl processEngineConfiguration = new ProcessEngineConfigurationImpl() {
                 @Override
                 protected Collection<? extends CommandInterceptor> getDefaultCommandInterceptorsTxRequired() {
