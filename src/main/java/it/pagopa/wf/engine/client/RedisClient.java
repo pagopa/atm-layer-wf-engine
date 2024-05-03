@@ -15,12 +15,14 @@ public class RedisClient {
     @Value("${spring.redis.port}")
     private int redisPort;
 
+
     public void publish(String key, Object object) {
         try (Jedis jedis = new Jedis(redisHost, redisPort)) {
             ObjectMapper objectMapper = new ObjectMapper();
             String taskJson = objectMapper.writeValueAsString(object);
             log.info("Bkey = {}, taskJson = {}", key, taskJson);
             jedis.publish(key, taskJson);
+            jedis.close();
             log.info("Messaggio pubblicato con successo sul topic.");
         } catch (Exception e) {
             log.error("Failed to notify wait state for process");
