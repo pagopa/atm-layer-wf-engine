@@ -8,6 +8,7 @@ import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParser;
 import org.camunda.bpm.engine.impl.cfg.BpmnParseFactory;
 import org.camunda.bpm.engine.impl.cfg.DefaultBpmnParseFactory;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
 import org.camunda.bpm.engine.impl.context.Context;
 import org.camunda.bpm.engine.impl.el.Expression;
 import org.camunda.bpm.engine.impl.el.ExpressionManager;
@@ -23,6 +24,12 @@ import org.camunda.bpm.engine.spring.SpringExpressionManager;
 import org.camunda.bpm.engine.test.mock.MockExpressionManager;
 import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.model.bpmn.instance.*;
+import org.camunda.spin.plugin.impl.SpinBpmPlatformPlugin;
+import org.camunda.spin.plugin.impl.SpinConfiguration;
+import org.camunda.spin.plugin.impl.SpinFallbackSerializerFactory;
+import org.camunda.spin.plugin.impl.SpinObjectValueSerializer;
+import org.camunda.spin.plugin.impl.SpinProcessEnginePlugin;
+import org.camunda.spin.plugin.impl.SpinScriptEnvResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -34,7 +41,9 @@ import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -52,36 +61,42 @@ public class CamundaController {
 
         try (InputStream inputStream = file.getInputStream()) {
             final ExpressionManager testExpressionManager = new JuelExpressionManager();
-            ProcessEngineConfigurationImpl processEngineConfiguration = new ProcessEngineConfigurationImpl() {
-                @Override
-                protected Collection<? extends CommandInterceptor> getDefaultCommandInterceptorsTxRequired() {
-                    return null;
-                }
-
-                @Override
-                protected Collection<? extends CommandInterceptor> getDefaultCommandInterceptorsTxRequiresNew() {
-                    return null;
-                }
-
-                @Override
-                public ExpressionManager getExpressionManager() {
-                    return testExpressionManager;
-                }
-
-                @Override
-                public FormTypes getFormTypes() {
-                    final FormTypes formTypes = new FormTypes();
-                    formTypes.addFormType(new BooleanFormType());
-                    formTypes.addFormType(new StringFormType());
-                    formTypes.addFormType(new LongFormType());
-                    return formTypes;
-                }
-            };
-
-            log.info("TEMPORARY -- Setting new ScriptFactory");
-            processEngineConfiguration.setScriptFactory(new ScriptFactory());
-
-            Context.setProcessEngineConfiguration(processEngineConfiguration);
+//            ProcessEngineConfigurationImpl processEngineConfiguration = new ProcessEngineConfigurationImpl() {
+//                @Override
+//                protected Collection<? extends CommandInterceptor> getDefaultCommandInterceptorsTxRequired() {
+//                    return null;
+//                }
+//
+//                @Override
+//                protected Collection<? extends CommandInterceptor> getDefaultCommandInterceptorsTxRequiresNew() {
+//                    return null;
+//                }
+//
+//                @Override
+//                public ExpressionManager getExpressionManager() {
+//                    return testExpressionManager;
+//                }
+//
+//                @Override
+//                public FormTypes getFormTypes() {
+//                    final FormTypes formTypes = new FormTypes();
+//                    formTypes.addFormType(new BooleanFormType());
+//                    formTypes.addFormType(new StringFormType());
+//                    formTypes.addFormType(new LongFormType());
+//                    return formTypes;
+//                }
+//            };
+//
+//            log.info("TEMPORARY -- Setting new ScriptFactory");
+//            processEngineConfiguration.setScriptFactory(new ScriptFactory());
+//
+//            List<ProcessEnginePlugin> processEnginePlugins = new ArrayList<>();
+//            processEnginePlugins.add(new SpinProcessEnginePlugin());
+//            processEnginePlugins.add(new SpinConfiguration());
+//            processEngineConfiguration.setProcessEnginePlugins(processEnginePlugins);
+//            log.info("Set custom plugins: {}",processEngineConfiguration.getProcessEnginePlugins());
+//
+//            Context.setProcessEngineConfiguration(processEngineConfiguration);
 
             BpmnParseFactory bpmnParseFactory = new DefaultBpmnParseFactory();
             BpmnParser bpmnParser = new BpmnParser(testExpressionManager, bpmnParseFactory);
@@ -187,3 +202,4 @@ public class CamundaController {
         }
 
 }
+
