@@ -1,6 +1,7 @@
 package it.pagopa.wf.engine.controller;
 
 import it.pagopa.wf.engine.model.VerifyResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.ParseException;
 import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParse;
 import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParser;
@@ -17,6 +18,7 @@ import org.camunda.bpm.engine.impl.form.type.LongFormType;
 import org.camunda.bpm.engine.impl.form.type.StringFormType;
 import org.camunda.bpm.engine.impl.interceptor.CommandInterceptor;
 import org.camunda.bpm.engine.impl.persistence.entity.DeploymentEntity;
+import org.camunda.bpm.engine.impl.scripting.ScriptFactory;
 import org.camunda.bpm.engine.spring.SpringExpressionManager;
 import org.camunda.bpm.engine.test.mock.MockExpressionManager;
 import org.camunda.bpm.model.bpmn.instance.Process;
@@ -34,6 +36,7 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.Collection;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/camunda")
 public class CamundaController {
@@ -75,14 +78,19 @@ public class CamundaController {
                 }
             };
 
+            log.info("TEMPORARY -- Setting new ScriptFactory");
+            processEngineConfiguration.setScriptFactory(new ScriptFactory());
+
             Context.setProcessEngineConfiguration(processEngineConfiguration);
 
             BpmnParseFactory bpmnParseFactory = new DefaultBpmnParseFactory();
             BpmnParser bpmnParser = new BpmnParser(testExpressionManager, bpmnParseFactory);
+            log.info("TEMPORARY -- Creating Parse");
             BpmnParse bpmnParse = bpmnParser.createParse()
                     .sourceInputStream(inputStream)
                     .deployment(new DeploymentEntity())
                     .name(file.getName());
+            log.info("TEMPORARY -- Running execute");
             bpmnParse.execute();
 
             response.setIsVerified(Boolean.TRUE);
