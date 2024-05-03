@@ -24,6 +24,7 @@ import org.camunda.bpm.engine.spring.SpringExpressionManager;
 import org.camunda.bpm.engine.test.mock.MockExpressionManager;
 import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.model.bpmn.instance.*;
+import org.camunda.bpm.spring.boot.starter.util.SpringBootProcessEnginePlugin;
 import org.camunda.spin.plugin.impl.SpinBpmPlatformPlugin;
 import org.camunda.spin.plugin.impl.SpinConfiguration;
 import org.camunda.spin.plugin.impl.SpinFallbackSerializerFactory;
@@ -61,42 +62,43 @@ public class CamundaController {
 
         try (InputStream inputStream = file.getInputStream()) {
             final ExpressionManager testExpressionManager = new JuelExpressionManager();
-//            ProcessEngineConfigurationImpl processEngineConfiguration = new ProcessEngineConfigurationImpl() {
-//                @Override
-//                protected Collection<? extends CommandInterceptor> getDefaultCommandInterceptorsTxRequired() {
-//                    return null;
-//                }
-//
-//                @Override
-//                protected Collection<? extends CommandInterceptor> getDefaultCommandInterceptorsTxRequiresNew() {
-//                    return null;
-//                }
-//
-//                @Override
-//                public ExpressionManager getExpressionManager() {
-//                    return testExpressionManager;
-//                }
-//
-//                @Override
-//                public FormTypes getFormTypes() {
-//                    final FormTypes formTypes = new FormTypes();
-//                    formTypes.addFormType(new BooleanFormType());
-//                    formTypes.addFormType(new StringFormType());
-//                    formTypes.addFormType(new LongFormType());
-//                    return formTypes;
-//                }
-//            };
-//
-//            log.info("TEMPORARY -- Setting new ScriptFactory");
-//            processEngineConfiguration.setScriptFactory(new ScriptFactory());
-//
-//            List<ProcessEnginePlugin> processEnginePlugins = new ArrayList<>();
-//            processEnginePlugins.add(new SpinProcessEnginePlugin());
-//            processEnginePlugins.add(new SpinConfiguration());
-//            processEngineConfiguration.setProcessEnginePlugins(processEnginePlugins);
-//            log.info("Set custom plugins: {}",processEngineConfiguration.getProcessEnginePlugins());
-//
-//            Context.setProcessEngineConfiguration(processEngineConfiguration);
+            ProcessEngineConfigurationImpl processEngineConfiguration = new ProcessEngineConfigurationImpl() {
+                @Override
+                protected Collection<? extends CommandInterceptor> getDefaultCommandInterceptorsTxRequired() {
+                    return null;
+                }
+
+                @Override
+                protected Collection<? extends CommandInterceptor> getDefaultCommandInterceptorsTxRequiresNew() {
+                    return null;
+                }
+
+                @Override
+                public ExpressionManager getExpressionManager() {
+                    return testExpressionManager;
+                }
+
+                @Override
+                public FormTypes getFormTypes() {
+                    final FormTypes formTypes = new FormTypes();
+                    formTypes.addFormType(new BooleanFormType());
+                    formTypes.addFormType(new StringFormType());
+                    formTypes.addFormType(new LongFormType());
+                    return formTypes;
+                }
+            };
+
+            log.info("TEMPORARY -- Setting new ScriptFactory");
+            processEngineConfiguration.setScriptFactory(new ScriptFactory());
+
+            List<ProcessEnginePlugin> processEnginePlugins = new ArrayList<>();
+            processEnginePlugins.add(new SpinConfiguration());
+            processEnginePlugins.add(new SpinProcessEnginePlugin());
+            processEnginePlugins.add(new SpringBootProcessEnginePlugin());
+            processEngineConfiguration.setProcessEnginePlugins(processEnginePlugins);
+            log.info("Set custom plugins: {}",processEngineConfiguration.getProcessEnginePlugins());
+
+            Context.setProcessEngineConfiguration(processEngineConfiguration);
 
             BpmnParseFactory bpmnParseFactory = new DefaultBpmnParseFactory();
             BpmnParser bpmnParser = new BpmnParser(testExpressionManager, bpmnParseFactory);
