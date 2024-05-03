@@ -11,6 +11,7 @@ import org.camunda.bpm.engine.impl.context.Context;
 import org.camunda.bpm.engine.impl.el.ExpressionManager;
 import org.camunda.bpm.engine.impl.el.JuelExpressionManager;
 import org.camunda.bpm.engine.impl.persistence.entity.DeploymentEntity;
+import org.camunda.bpm.engine.impl.util.xml.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,16 +39,26 @@ public class CamundaService {
                     .sourceInputStream(inputStream)
                     .deployment(new DeploymentEntity())
                     .name(file.getName());
+            checkIsExecutable(bpmnParse.getRootElement());
             bpmnParse.execute();
 
             response.setIsVerified(Boolean.TRUE);
             response.setMessage("Corretc Bpmn");
             return response;
         }
-        catch (final ParseException exception) {
+        catch (final Exception exception) {
             response.setIsVerified(Boolean.FALSE);
             response.setMessage(exception.getCause() == null ? exception.getMessage() : exception.getCause().getMessage());
             return response;
+        }
+    }
+
+    private void checkIsExecutable(Element rootElement) {
+        for (Element processElement : rootElement.elements("process")) {
+            String isExecutableStr = processElement.attribute("isExecutable");
+            if (isExecutableStr == null) {
+                throw new ParseException("non-executable process. Set the attribute isExecutable=true to deploy this process.",null,null,null);
+            }
         }
     }
 }
