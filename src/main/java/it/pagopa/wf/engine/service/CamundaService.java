@@ -1,7 +1,6 @@
 package it.pagopa.wf.engine.service;
 
 import it.pagopa.wf.engine.model.VerifyResponse;
-import org.camunda.bpm.engine.ParseException;
 import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParse;
 import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParser;
 import org.camunda.bpm.engine.impl.cfg.BpmnParseFactory;
@@ -18,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 
 @Service
 public class CamundaService {
@@ -52,12 +52,12 @@ public class CamundaService {
         for (Element processElement : rootElement.elements("process")) {
             String isExecutableStr = processElement.attribute("isExecutable");
             if (isExecutableStr != null) {
-                Boolean isExecutable = Boolean.parseBoolean(isExecutableStr);
+                boolean isExecutable = Boolean.parseBoolean(isExecutableStr);
                 if (!isExecutable) {
-                    throw new ParseException("non-executable process. Set the attribute isExecutable=true to deploy this process.", null, null, null);
+                    throw new UnsupportedOperationException("non-executable process. Set the attribute isExecutable=true to deploy this process.");
                 }
             } else {
-                throw new ParseException("non-executable process. Set the attribute isExecutable=true to deploy this process.", null, null, null);
+                throw new UnsupportedOperationException("non-executable process. Set the attribute isExecutable=true to deploy this process.");
             }
         }
     }
