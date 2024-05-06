@@ -35,6 +35,7 @@ public class CamundaService {
                     .sourceInputStream(inputStream)
                     .deployment(new DeploymentEntity())
                     .name(file.getName());
+
             bpmnParse.execute();
             checkExecutable(bpmnParse.getRootElement());
             response.setIsVerified(Boolean.TRUE);
