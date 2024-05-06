@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 
+import static org.camunda.bpm.engine.impl.bpmn.parser.BpmnParse.CAMUNDA_BPMN_EXTENSIONS_NS;
+
 @Service
 public class CamundaService {
     @Autowired
@@ -38,6 +40,7 @@ public class CamundaService {
 
             bpmnParse.execute();
             checkExecutable(bpmnParse.getRootElement());
+            checkTTL(bpmnParse.getRootElement());
             response.setIsVerified(Boolean.TRUE);
             response.setMessage("Correct Bpmn");
             return response;
@@ -59,6 +62,13 @@ public class CamundaService {
             } else {
                 throw new UnsupportedOperationException("non-executable process. Set the attribute isExecutable=true to deploy this process.");
             }
+        }
+    }
+
+    private void checkTTL(Element rootElement) {
+        String historyTimeToLiveString = rootElement.attributeNS(CAMUNDA_BPMN_EXTENSIONS_NS, "historyTimeToLive");
+        if (historyTimeToLiveString == null || historyTimeToLiveString.isEmpty()){
+            throw new UnsupportedOperationException("non-executable process. History Time To Live cannot be null.");
         }
     }
 }
