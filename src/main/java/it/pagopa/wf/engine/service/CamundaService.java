@@ -1,7 +1,8 @@
 package it.pagopa.wf.engine.service;
 
 import it.pagopa.wf.engine.model.VerifyResponse;
-import it.pagopa.wf.engine.validator.BpmnCustomParse;
+import org.camunda.bpm.engine.ParseException;
+import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParse;
 import org.camunda.bpm.engine.impl.bpmn.parser.BpmnParser;
 import org.camunda.bpm.engine.impl.cfg.BpmnParseFactory;
 import org.camunda.bpm.engine.impl.cfg.DefaultBpmnParseFactory;
@@ -10,6 +11,7 @@ import org.camunda.bpm.engine.impl.context.Context;
 import org.camunda.bpm.engine.impl.el.ExpressionManager;
 import org.camunda.bpm.engine.impl.el.JuelExpressionManager;
 import org.camunda.bpm.engine.impl.persistence.entity.DeploymentEntity;
+import org.camunda.bpm.engine.impl.util.xml.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,11 +31,12 @@ public class CamundaService {
             Context.setProcessEngineConfiguration(processEngineConfiguration);
             BpmnParseFactory bpmnParseFactory = new DefaultBpmnParseFactory();
             BpmnParser bpmnParser = new BpmnParser(testExpressionManager, bpmnParseFactory);
-            BpmnCustomParse bpmnParse = (BpmnCustomParse) bpmnParser.createParse()
+            BpmnParse bpmnParse = bpmnParser.createParse()
                     .sourceInputStream(inputStream)
                     .deployment(new DeploymentEntity())
                     .name(file.getName());
             bpmnParse.execute();
+            checkExecutable(bpmnParse.getRootElement());
             response.setIsVerified(Boolean.TRUE);
             response.setMessage("Correct Bpmn");
             return response;
@@ -41,6 +44,20 @@ public class CamundaService {
             response.setIsVerified(Boolean.FALSE);
             response.setMessage(exception.getCause() == null ? exception.getMessage() : exception.getCause().getMessage());
             return response;
+        }
+    }
+
+    private void checkExecutable(Element rootElement) {
+        for (Element processElement : rootElement.elements("process")) {
+            String isExecutableStr = processElement.attribute("isExecutable");
+            if (isExecutableStr != null) {
+                Boolean isExecutable = Boolean.parseBoolean(isExecutableStr);
+                if (!isExecutable) {
+                    throw new ParseException("non-executable process. Set the attribute isExecutable=true to deploy this process.", null, null, null);
+                }
+            } else {
+                throw new ParseException("non-executable process. Set the attribute isExecutable=true to deploy this process.", null, null, null);
+            }
         }
     }
 }
