@@ -66,7 +66,7 @@ public class CamundaService {
     }
 
     private void checkTTL(Element rootElement) {
-        String historyTimeToLiveString = rootElement.attributeNS(CAMUNDA_BPMN_EXTENSIONS_NS, "historyTimeToLive");
+        String historyTimeToLiveString = rootElement.attribute("camunda:historyTimeToLive");
         if (historyTimeToLiveString == null || historyTimeToLiveString.isEmpty()){
             throw new UnsupportedOperationException("non-executable process. History Time To Live cannot be null.");
         }
