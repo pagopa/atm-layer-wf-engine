@@ -40,7 +40,6 @@ public class CamundaService {
 
             bpmnParse.execute();
             checkExecutable(bpmnParse.getRootElement());
-            checkTTL(bpmnParse.getRootElement());
             response.setIsVerified(Boolean.TRUE);
             response.setMessage("Correct Bpmn");
             return response;
@@ -62,13 +61,11 @@ public class CamundaService {
             } else {
                 throw new UnsupportedOperationException("non-executable process. Set the attribute isExecutable=true to deploy this process.");
             }
+            String historyTimeToLiveString = processElement.attributeNS(CAMUNDA_BPMN_EXTENSIONS_NS, "historyTimeToLive");
+            if (historyTimeToLiveString == null || historyTimeToLiveString.isEmpty()){
+                throw new UnsupportedOperationException("non-executable process. History Time To Live cannot be null.");
+            }
         }
     }
 
-    private void checkTTL(Element rootElement) {
-        String historyTimeToLiveString = rootElement.attribute("camunda:historyTimeToLive");
-        if (historyTimeToLiveString == null || historyTimeToLiveString.isEmpty()){
-            throw new UnsupportedOperationException("non-executable process. History Time To Live cannot be null.");
-        }
-    }
 }
