@@ -7,7 +7,6 @@ import org.camunda.bpm.engine.impl.util.ReflectUtil;
 import org.camunda.bpm.engine.impl.util.xml.Element;
 import org.springframework.stereotype.Component;
 
-@Component
 public class BpmnCustomParse extends BpmnParse {
     public BpmnCustomParse(BpmnParser parser) {
         super(parser);
