@@ -5,7 +5,7 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "atm-layer-wf-engine.labels" . | nindent 4 }}
-  {{- with .Values.annotations }}
+  {{- with .Values.deployment.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
