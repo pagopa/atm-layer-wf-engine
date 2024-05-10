@@ -7,7 +7,6 @@ camunda.bpm:
     type: ${CAMUNDA_ENGINE_DB_TYPE}
     schema-name: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}
     table-prefix: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}.
-    jdbc-batch-processing: false
 
   filter:
     create: All
@@ -25,7 +24,10 @@ camunda.bpm:
 
 logging:
   level:
-    root: ${CAMUNDA_ENGINE_LOG_LEVEL_ROOT:INFO}
+    org.camunda.bpm.engine.cmd: DEBUG
+    org.camunda.bpm.engine.pvm: DEBUG
+    org.camunda.bpm.engine.persistence: DEBUG
+    org.camunda.bpm.engine.persistence.entity: DEBUG
 
 
 spring:
