@@ -24,10 +24,7 @@ camunda.bpm:
 
 logging:
   level:
-    org.camunda.bpm.engine.cmd: DEBUG
-    org.camunda.bpm.engine.pvm: DEBUG
-    org.camunda.bpm.engine.persistence: DEBUG
-    org.camunda.bpm.engine.persistence.entity: DEBUG
+    root: ${CAMUNDA_ENGINE_LOG_LEVEL_ROOT:INFO}
 
 
 spring:
