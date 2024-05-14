@@ -49,7 +49,7 @@ public class CamundaService {
         }
     }
 
-    private void checkExecutable(Element rootElement) {
+    public void checkExecutable(Element rootElement) {
         for (Element processElement : rootElement.elements("process")) {
             String isExecutableStr = processElement.attribute("isExecutable");
             if (isExecutableStr != null) {
