@@ -23,6 +23,7 @@
     <postgres.version>42.7.1</postgres.version>
     <springboot.version>3.1.8</springboot.version>
     <version.graal.js>21.1.0</version.graal.js>
+    <lombok.version>1.18.30</lombok.version>
   </properties>
 
   <parent>
@@ -152,6 +153,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
     </dependency>
 
     <dependency>
