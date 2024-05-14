@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TaskTest {
     @Test
@@ -25,5 +27,9 @@ public class TaskTest {
         assertEquals(testTask1.getForm(), testTask2.getForm());
         assertEquals(testTask1.getPriority(), testTask2.getPriority());
         assertEquals(testTask1.isExternal(),testTask2.isExternal());
+        assertTrue(testTask1.equals(testTask2));
+        assertTrue(testTask1.canEqual(testTask2));
+        assertNotEquals(testTask3.hashCode(), testTask2.hashCode());
+        assertEquals("Task(id=id, variables=null, form=form, priority=3, isExternal=false)", testTask3.toString());
     }
 }
