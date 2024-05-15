@@ -210,6 +210,10 @@ autoscaling:
   maxReplicas: 1
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
+  memoryLimits: 2500Mi
+  memoryRequests: 2000Mi
+  cpuLimits: 1500m
+  cpuRequest: 1000m
 
 nodeSelector: {}
 
