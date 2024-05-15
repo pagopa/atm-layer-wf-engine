@@ -1,0 +1,9 @@
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/main/java/it/pagopa/wf/engine/WorkflowEngineApplication.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/main/java/it/pagopa/wf/engine/service/CamundaService.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/main/java/it/pagopa/wf/engine/model/Task.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/main/java/it/pagopa/wf/engine/model/VerifyResponse.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/main/java/it/pagopa/wf/engine/config/SecurityFilter.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/main/java/it/pagopa/wf/engine/delegate/TracerDelegateStart.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/main/java/it/pagopa/wf/engine/model/ParentSpanContext.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/main/java/it/pagopa/wf/engine/controller/CamundaController.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/main/java/it/pagopa/wf/engine/config/OpenTelemetryConfig.java
