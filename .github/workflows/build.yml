@@ -87,5 +87,5 @@ jobs:
 
       - name: Code Review
         run: |
-          mvn sonar:sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.projectKey=pagopa_atm-layer-mil-integration \
+          mvn sonar:sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.projectKey=pagopa_atm-layer-wf-model \
           -Dsonar.organization=pagopa -Dsonar.java.binaries=src/main -Pcoverage
