@@ -7,7 +7,7 @@
   <groupId>it.pagopa</groupId>
   <artifactId>atm-layer-workflow-engine</artifactId>
 
-  <version>1.9.0</version>
+  <version>1.9.0-dev.2</version>
 
   <packaging>jar</packaging>
 
@@ -23,6 +23,9 @@
     <version.graal.js>21.1.0</version.graal.js>
     <lombok.version>1.18.30</lombok.version>
     <jacoco.version>0.8.11</jacoco.version>
+    <sonarsource.scanner.version>3.11.0.3922</sonarsource.scanner.version>
+
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
 
   <parent>
@@ -93,7 +96,7 @@
             <groupId>org.camunda.spin</groupId>
             <artifactId>camunda-spin-dataformat-all</artifactId>
         </dependency>
-
+    
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -173,6 +176,12 @@
       <version>${version.graal.js}</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.sonarsource.scanner.maven</groupId>
+      <artifactId>sonar-maven-plugin</artifactId>
+      <version>${sonarsource.scanner.version}</version>
+    </dependency>
+
   </dependencies>
 
   <profiles>
@@ -220,6 +229,13 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco.version}</version>
+        <configuration>
+          <excludes>
+            <exclude>it/pagopa/wf/engine/service/*</exclude>
+            <exclude>it/pagopa/wf/engine/delegate/*</exclude>
+            <exclude>it/pagopa/wf/engine/WorkflowEngineApplication.class</exclude>
+          </excludes>
+        </configuration>
         <executions>
           <execution>
             <goals>
