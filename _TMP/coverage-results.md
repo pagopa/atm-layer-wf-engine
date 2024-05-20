@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 74.7%               |
-| :heavy_check_mark: Number of Lines Covered | 62    |
-| :x: Number of Lines Missed  | 21     |
-| Total Number of Lines   | 83     |
+| Code Coverage %         | 100%               |
+| :heavy_check_mark: Number of Lines Covered | 14    |
+| :x: Number of Lines Missed  | 0     |
+| Total Number of Lines   | 14     |
 
 
 ## Details:
@@ -57,11 +57,9 @@
 
 <details>
     <summary>
-:heavy_check_mark: Task.java
+:x: Task.java
     </summary>
 
-        
-#### All Lines Covered!
         
 </details>
 
@@ -69,11 +67,9 @@
 
 <details>
     <summary>
-:heavy_check_mark: VerifyResponse.java
+:x: VerifyResponse.java
     </summary>
 
-        
-#### All Lines Covered!
         
 </details>
 
@@ -81,63 +77,10 @@
 
 <details>
     <summary>
-:heavy_check_mark: ParentSpanContext.java
+:x: ParentSpanContext.java
     </summary>
 
         
-#### All Lines Covered!
-        
-</details>
-
-    
-### it/pagopa/wf/engine/service
-
-<details>
-    <summary>
-:x: CamundaService.java
-    </summary>
-
-        
-#### Lines Missed:
-        
-- Line #67
-```
-        }
-```
-- Line #68
-```
-    }
-```
-</details>
-
-    
-### it/pagopa/wf/engine/delegate
-
-<details>
-    <summary>
-:x: TracerDelegateStart.java
-    </summary>
-
-        
-#### Lines Missed:
-        
-</details>
-
-    
-### it/pagopa/wf/engine
-
-<details>
-    <summary>
-:x: WorkflowEngineApplication.java
-    </summary>
-
-        
-#### Lines Missed:
-        
-- Line #13
-```
-    }
-```
 </details>
 
     
