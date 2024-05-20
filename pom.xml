@@ -7,7 +7,7 @@
   <groupId>it.pagopa</groupId>
   <artifactId>atm-layer-workflow-engine</artifactId>
 
-  <version>1.8.0</version>
+  <version>1.9.0-dev.2</version>
 
   <packaging>jar</packaging>
 
