@@ -6,7 +6,9 @@
 
   <groupId>it.pagopa</groupId>
   <artifactId>atm-layer-workflow-engine</artifactId>
-  <version>1.1.0</version>
+
+  <version>1.10.0</version>
+
   <packaging>jar</packaging>
 
   <properties>
@@ -16,9 +18,14 @@
     <camunda.bom.version>7.20.0</camunda.bom.version>
     <micrometer.observation.version>1.0.3</micrometer.observation.version>
     <micrometer.tracing.version>1.2.2</micrometer.tracing.version>
-    <postgres.version>42.7.1</postgres.version>
+    <postgres.version>42.7.2</postgres.version>
     <springboot.version>3.1.8</springboot.version>
     <version.graal.js>21.1.0</version.graal.js>
+    <lombok.version>1.18.30</lombok.version>
+    <jacoco.version>0.8.11</jacoco.version>
+    <sonarsource.scanner.version>3.11.0.3922</sonarsource.scanner.version>
+
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
 
   <parent>
@@ -89,6 +96,16 @@
             <groupId>org.camunda.spin</groupId>
             <artifactId>camunda-spin-dataformat-all</artifactId>
         </dependency>
+    
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>3.7.0</version>
+    </dependency>
 
     <dependency>
       <groupId>net.ttddyy.observation</groupId>
@@ -138,6 +155,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
     </dependency>
 
     <dependency>
@@ -156,6 +174,12 @@
       <groupId>org.graalvm.js</groupId>
       <artifactId>js-scriptengine</artifactId>
       <version>${version.graal.js}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.sonarsource.scanner.maven</groupId>
+      <artifactId>sonar-maven-plugin</artifactId>
+      <version>${sonarsource.scanner.version}</version>
     </dependency>
 
   </dependencies>
@@ -200,6 +224,39 @@
             </exclude>
           </excludes>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco.version}</version>
+        <configuration>
+          <excludes>
+            <exclude>it/pagopa/wf/engine/service/*</exclude>
+            <exclude>it/pagopa/wf/engine/delegate/*</exclude>
+            <exclude>it/pagopa/wf/engine/WorkflowEngineApplication.class</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

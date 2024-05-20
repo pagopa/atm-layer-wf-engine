@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TracerDelegateStart.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">atm-layer-workflow-engine</a> &gt; <a href="index.source.html" class="el_package">it.pagopa.wf.engine.delegate</a> &gt; <span class="el_source">TracerDelegateStart.java</span></div><h1>TracerDelegateStart.java</h1><pre class="source lang-java linenums">package it.pagopa.wf.engine.delegate;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.SpanContext;
+import io.opentelemetry.api.trace.Tracer;
+import it.pagopa.wf.engine.model.ParentSpanContext;
+import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.camunda.bpm.engine.delegate.ExecutionListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+
+@Component(&quot;tracerStart&quot;)
+<span class="fc" id="L15">public class TracerDelegateStart implements ExecutionListener {</span>
+
+    @Autowired
+    Tracer tracer;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
+    @Override
+    public void notify(DelegateExecution delegateExecution) throws Exception {
+<span class="fc" id="L25">        Span activeSpan = Span.current();</span>
+<span class="fc" id="L26">        ParentSpanContext parentSpanContext = new ParentSpanContext();</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        if (activeSpan != null) {</span>
+<span class="fc" id="L28">            SpanContext parentContext = activeSpan.getSpanContext();</span>
+<span class="fc" id="L29">            parentSpanContext.setTraceId(parentContext.getTraceId());</span>
+<span class="fc" id="L30">            parentSpanContext.setSpanId(parentContext.getSpanId());</span>
+
+<span class="fc" id="L32">        } else {</span>
+<span class="nc" id="L33">            Span newParentSpan = tracer.spanBuilder(&quot;Tracer Delegate&quot;).startSpan();</span>
+<span class="nc" id="L34">            parentSpanContext.setTraceId(newParentSpan.getSpanContext().getTraceId());</span>
+<span class="nc" id="L35">            parentSpanContext.setSpanId(newParentSpan.getSpanContext().getSpanId());</span>
+<span class="nc" id="L36">            newParentSpan.end();</span>
+        }
+<span class="fc" id="L38">        delegateExecution.setVariable(&quot;activityParentSpan&quot;,objectMapper.writeValueAsString(parentSpanContext));</span>
+<span class="fc" id="L39">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
