@@ -7,7 +7,6 @@ camunda.bpm:
     type: ${CAMUNDA_ENGINE_DB_TYPE}
     schema-name: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}
     table-prefix: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}.
-    jdbc-batch-processing: false
   history-level: NONE
   filter:
     create: All
