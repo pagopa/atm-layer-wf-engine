@@ -4,7 +4,7 @@
 
 general:
   log_level: INFO
-  replicaCount: 2
+  replicaCount: 1
   nameOverride: ""
   fullnameOverride: ""
 
