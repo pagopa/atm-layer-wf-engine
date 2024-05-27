@@ -30,7 +30,7 @@ class CamundaServiceTest {
     private CamundaService camundaService;
 
     @BeforeEach
-    void setUp() throws NoSuchMethodException {
+    void setUp() {
         JuelExpressionManager expressionManager = new JuelExpressionManager();
         when(processEngineConfiguration.getExpressionManager()).thenReturn(expressionManager);
     }
