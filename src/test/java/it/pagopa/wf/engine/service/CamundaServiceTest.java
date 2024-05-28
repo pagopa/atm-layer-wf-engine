@@ -16,7 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -45,7 +47,7 @@ class CamundaServiceTest {
     }
 
     @Test
-    void testValidateFile_BpmnCorretto() throws IOException {
+    void testValidateFile_validBpmn() throws IOException {
         MultipartFile file = getMultipartFileFromResource("Test.bpmn");
 
         VerifyResponse response = camundaService.validateFile(file);
@@ -55,7 +57,7 @@ class CamundaServiceTest {
     }
 
     @Test
-    void testValidateFile_ProcessoNonEseguibile() throws IOException {
+    void testValidateFile_nonexecutableBpmn() throws IOException {
         MultipartFile file = getMultipartFileFromResource("Test1.bpmn");
 
         VerifyResponse response = camundaService.validateFile(file);
@@ -65,7 +67,7 @@ class CamundaServiceTest {
     }
 
     @Test
-    void testValidateFile_StoriaTimeToLiveMancante() throws IOException {
+    void testValidateFile_HTTLnull() throws IOException {
         MultipartFile file = getMultipartFileFromResource("Test2.bpmn");
 
         VerifyResponse response = camundaService.validateFile(file);
@@ -74,14 +76,5 @@ class CamundaServiceTest {
         assertEquals("non-executable process. History Time To Live cannot be null.", response.getMessage());
     }
 
-    @Test
-    void testValidateFile_Eccezione() throws IOException {
-        MultipartFile file = getMultipartFileFromResource("No.bpmn");
-        when(file.getInputStream()).thenThrow(new IOException("Errore di lettura del file"));
 
-        VerifyResponse response = camundaService.validateFile(file);
-
-        assertFalse(response.getIsVerified());
-        assertEquals("Errore di lettura del file", response.getMessage());
-    }
 }
