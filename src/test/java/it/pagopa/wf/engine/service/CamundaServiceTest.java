@@ -1,63 +1,80 @@
 package it.pagopa.wf.engine.service;
 
-import camundajar.impl.scala.Array;
 import it.pagopa.wf.engine.model.VerifyResponse;
-import org.camunda.bpm.engine.impl.util.xml.Element;
-import org.camunda.bpm.engine.impl.util.xml.Namespace;
+import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.engine.impl.el.JuelExpressionManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CamundaServiceTest {
+@ExtendWith(MockitoExtension.class)
+class CamundaServiceTest {
 
-    CamundaService camundaService = new CamundaService();
-    @Test
-    void testValidateFileException() throws IOException {
-        MultipartFile testFile = mock(MultipartFile.class);
-        VerifyResponse testResponse = camundaService.validateFile(testFile);
-        assertEquals(Boolean.FALSE, testResponse.getIsVerified());
+    @Mock
+    private ProcessEngineConfigurationImpl processEngineConfiguration;
+
+    @InjectMocks
+    private CamundaService camundaService;
+
+    @BeforeEach
+    void setUp() {
+        JuelExpressionManager expressionManager = new JuelExpressionManager();
+        when(processEngineConfiguration.getExpressionManager()).thenReturn(expressionManager);
+    }
+
+    private MultipartFile getMultipartFileFromResource(String resourcePath) throws IOException {
+        Resource resource = new ClassPathResource(resourcePath);
+        MultipartFile file = mock(MultipartFile.class);
+        InputStream inputStream = resource.getInputStream();
+        when(file.getInputStream()).thenReturn(inputStream);
+        when(file.getName()).thenReturn(resource.getFilename());
+        return file;
     }
 
     @Test
-    void testCheckExecutable(){
-        Element mockRootElement = mock(Element.class);
-        List<Element> mockProcessElements = new ArrayList<>();
-        mockProcessElements.add(mockRootElement);
-        when(mockRootElement.elements("process")).thenReturn(mockProcessElements);
-        String testResponse = "";
-        try {
-            camundaService.checkExecutable(mockRootElement);
-        } catch (UnsupportedOperationException e){
-            testResponse = "method failed";
-        }
-        assertEquals("method failed", testResponse);
+    void testValidateFile_validBpmn() throws IOException {
+        MultipartFile file = getMultipartFileFromResource("Test.bpmn");
 
-        testResponse = "";
-        when(mockRootElement.attribute("isExecutable")).thenReturn("false");
-        try {
-            camundaService.checkExecutable(mockRootElement);
-        } catch (UnsupportedOperationException e){
-            testResponse = "method failed";
-        }
-        assertEquals("method failed", testResponse);
+        VerifyResponse response = camundaService.validateFile(file);
 
-        testResponse = "";
-        when(mockRootElement.attribute("isExecutable")).thenReturn("true");
-        when(mockRootElement.attributeNS(any(Namespace.class), any(String.class))).thenReturn("");
-        try {
-            camundaService.checkExecutable(mockRootElement);
-        } catch (UnsupportedOperationException e){
-            testResponse = "method failed";
-        }
-        assertEquals("method failed", testResponse);
+        assertTrue(response.getIsVerified());
+        assertEquals("Correct Bpmn", response.getMessage());
     }
+
+    @Test
+    void testValidateFile_nonexecutableBpmn() throws IOException {
+        MultipartFile file = getMultipartFileFromResource("Test1.bpmn");
+
+        VerifyResponse response = camundaService.validateFile(file);
+
+        assertFalse(response.getIsVerified());
+        assertEquals("non-executable process. Set the attribute isExecutable=true to deploy this process.", response.getMessage());
+    }
+
+    @Test
+    void testValidateFile_HTTLnull() throws IOException {
+        MultipartFile file = getMultipartFileFromResource("Test2.bpmn");
+
+        VerifyResponse response = camundaService.validateFile(file);
+
+        assertFalse(response.getIsVerified());
+        assertEquals("non-executable process. History Time To Live cannot be null.", response.getMessage());
+    }
+
+
 }
