@@ -2,3 +2,4 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 atm-layer-workflow-engine,it.pagopa.wf.engine.controller,CamundaController,0,8,0,0,0,2,0,2,0,2
 atm-layer-workflow-engine,it.pagopa.wf.engine.config,OpenTelemetryConfig,0,8,0,0,0,4,0,2,0,2
 atm-layer-workflow-engine,it.pagopa.wf.engine.config,SecurityFilter,0,31,0,0,0,8,0,2,0,2
+atm-layer-workflow-engine,it.pagopa.wf.engine.service,CamundaService,3,121,1,11,0,33,1,8,0,3
