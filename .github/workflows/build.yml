@@ -89,6 +89,5 @@ jobs:
         run: |
           mvn sonar:sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.projectKey=pagopa_atm-layer-wf-model \
           -Dsonar.organization=pagopa -Dsonar.java.binaries=src/main \
-          -Dsonar.coverage.exclusions=src/main/java/it/pagopa/wf/engine/service/CamundaService.java,\
-          src/main/java/it/pagopa/wf/engine/delegate/TracerDelegateStart.java,\
+          -Dsonar.coverage.exclusions=src/main/java/it/pagopa/wf/engine/delegate/TracerDelegateStart.java,\
           src/main/java/it/pagopa/wf/engine/WorkflowEngineApplication.java -Pcoverage
