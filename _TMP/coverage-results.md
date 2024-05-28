@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 70.49%               |
-| :heavy_check_mark: Number of Lines Covered | 43    |
-| :x: Number of Lines Missed  | 18     |
-| Total Number of Lines   | 61     |
+| Code Coverage %         | 100%               |
+| :heavy_check_mark: Number of Lines Covered | 47    |
+| :x: Number of Lines Missed  | 0     |
+| Total Number of Lines   | 47     |
 
 
 ## Details:
@@ -88,32 +88,11 @@
 
 <details>
     <summary>
-:x: CamundaService.java
+:heavy_check_mark: CamundaService.java
     </summary>
 
         
-#### Lines Missed:
-        
-- Line #67
-```
-        }
-```
-- Line #68
-```
-    }
-```
-</details>
-
-    
-### it/pagopa/wf/engine/delegate
-
-<details>
-    <summary>
-:x: TracerDelegateStart.java
-    </summary>
-
-        
-#### Lines Missed:
+#### All Lines Covered!
         
 </details>
 
