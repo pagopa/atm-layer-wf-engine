@@ -6,9 +6,9 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 100%               |
-| :heavy_check_mark: Number of Lines Covered | 47    |
-| :x: Number of Lines Missed  | 0     |
+| Code Coverage %         | 97.87%               |
+| :heavy_check_mark: Number of Lines Covered | 46    |
+| :x: Number of Lines Missed  | 1     |
 | Total Number of Lines   | 47     |
 
 
@@ -88,11 +88,11 @@
 
 <details>
     <summary>
-:heavy_check_mark: CamundaService.java
+:x: CamundaService.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
 </details>
 

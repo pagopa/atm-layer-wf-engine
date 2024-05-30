@@ -1,0 +1,10 @@
+it/pagopa/wf/engine/controller/CamundaController.class
+it/pagopa/wf/engine/service/CamundaService.class
+it/pagopa/wf/engine/model/VerifyResponse.class
+it/pagopa/wf/engine/model/Task$TaskBuilder.class
+it/pagopa/wf/engine/config/OpenTelemetryConfig.class
+it/pagopa/wf/engine/config/SecurityFilter.class
+it/pagopa/wf/engine/delegate/TracerDelegateStart.class
+it/pagopa/wf/engine/model/ParentSpanContext.class
+it/pagopa/wf/engine/model/Task.class
+it/pagopa/wf/engine/WorkflowEngineApplication.class
