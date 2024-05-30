@@ -54,14 +54,14 @@ import static org.camunda.bpm.engine.impl.bpmn.parser.BpmnParse.CAMUNDA_BPMN_EXT
 <span class="fc" id="L54">            String isExecutableStr = processElement.attribute(&quot;isExecutable&quot;);</span>
 <span class="fc bfc" id="L55" title="All 2 branches covered.">            if (isExecutableStr != null) {</span>
 <span class="fc" id="L56">                boolean isExecutable = Boolean.parseBoolean(isExecutableStr);</span>
-<span class="fc bfc" id="L57" title="All 2 branches covered.">                if (!isExecutable) {</span>
-<span class="fc" id="L58">                    throw new UnsupportedOperationException(&quot;non-executable process. Set the attribute isExecutable=true to deploy this process.&quot;);</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">                if (!isExecutable) {</span>
+<span class="nc" id="L58">                    throw new UnsupportedOperationException(&quot;non-executable process. Set the attribute isExecutable=true to deploy this process.&quot;);</span>
                 }
 <span class="fc" id="L60">            } else {</span>
 <span class="fc" id="L61">                throw new UnsupportedOperationException(&quot;non-executable process. Set the attribute isExecutable=true to deploy this process.&quot;);</span>
             }
 <span class="fc" id="L63">            String historyTimeToLiveString = processElement.attributeNS(CAMUNDA_BPMN_EXTENSIONS_NS, &quot;historyTimeToLive&quot;);</span>
-<span class="fc bfc" id="L64" title="All 4 branches covered.">            if (historyTimeToLiveString == null || historyTimeToLiveString.isEmpty()){</span>
+<span class="pc bpc" id="L64" title="1 of 4 branches missed.">            if (historyTimeToLiveString == null || historyTimeToLiveString.isEmpty()){</span>
 <span class="fc" id="L65">                throw new UnsupportedOperationException(&quot;non-executable process. History Time To Live cannot be null.&quot;);</span>
             }
 <span class="fc" id="L67">        }</span>
