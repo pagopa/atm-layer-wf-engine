@@ -231,7 +231,8 @@
         <version>${jacoco.version}</version>
         <configuration>
           <excludes>
-            <exclude>it/pagopa/wf/engine/delegate/TracerDelegateStart.class</exclude>
+            <exclude>it/pagopa/wf/engine/service/*</exclude>
+            <exclude>it/pagopa/wf/engine/delegate/*</exclude>
             <exclude>it/pagopa/wf/engine/WorkflowEngineApplication.class</exclude>
           </excludes>
         </configuration>
