@@ -2,10 +2,4 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 atm-layer-workflow-engine,it.pagopa.wf.engine.controller,CamundaController,0,8,0,0,0,2,0,2,0,2
 atm-layer-workflow-engine,it.pagopa.wf.engine.config,OpenTelemetryConfig,0,8,0,0,0,4,0,2,0,2
 atm-layer-workflow-engine,it.pagopa.wf.engine.config,SecurityFilter,0,31,0,0,0,8,0,2,0,2
-atm-layer-workflow-engine,it.pagopa.wf.engine.model,ParentSpanContext,16,108,11,11,0,7,9,12,0,10
-atm-layer-workflow-engine,it.pagopa.wf.engine.model,VerifyResponse,32,83,15,7,0,3,11,9,0,9
-atm-layer-workflow-engine,it.pagopa.wf.engine.model,Task.TaskBuilder,18,37,0,0,0,1,2,6,2,6
-atm-layer-workflow-engine,it.pagopa.wf.engine.model,Task,29,199,19,17,0,9,16,19,0,17
-atm-layer-workflow-engine,it.pagopa.wf.engine.service,CamundaService,47,77,4,8,14,19,4,5,0,3
-atm-layer-workflow-engine,it.pagopa.wf.engine.delegate,TracerDelegateStart,18,31,1,1,4,10,1,2,0,2
-atm-layer-workflow-engine,it.pagopa.wf.engine,WorkflowEngineApplication,8,0,0,0,3,0,2,0,2,0
+atm-layer-workflow-engine,it.pagopa.wf.engine.service,CamundaService,8,116,3,9,1,32,3,6,0,3

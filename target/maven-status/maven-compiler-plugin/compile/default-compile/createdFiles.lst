@@ -1,6 +1,6 @@
+it/pagopa/wf/engine/controller/CamundaController.class
 it/pagopa/wf/engine/service/CamundaService.class
 it/pagopa/wf/engine/model/VerifyResponse.class
-it/pagopa/wf/engine/controller/CamundaController.class
 it/pagopa/wf/engine/model/Task$TaskBuilder.class
 it/pagopa/wf/engine/config/OpenTelemetryConfig.class
 it/pagopa/wf/engine/config/SecurityFilter.class

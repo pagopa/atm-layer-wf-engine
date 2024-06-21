@@ -156,7 +156,15 @@ ingress:
     alb.ingress.kubernetes.io/load-balancer-name: "pagopa-uat-atm-layer-alb-ext"
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
     alb.ingress.kubernetes.io/target-type: 'ip'
-    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.type=source_ip
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    alb.ingress.kubernetes.io/healthcheck-path: /camunda/app/welcome/default/
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+    alb.ingress.kubernetes.io/success-codes: '200'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true
   hosts:
     - paths:
         - /
@@ -209,7 +217,7 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 4
   targetCPUUtilizationPercentage: 80
-  targetMemoryUtilizationPercentage: 100
+  # targetMemoryUtilizationPercentage: 100
 
 nodeSelector: {}
 

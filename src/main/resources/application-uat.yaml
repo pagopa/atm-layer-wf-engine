@@ -7,8 +7,10 @@ camunda.bpm:
     type: ${CAMUNDA_ENGINE_DB_TYPE}
     schema-name: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}
     table-prefix: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}.
-    jdbc-batch-processing: false
   history-level: NONE
+  job-execution:
+    core-pool-size: 10
+    max-pool-size: 50
   filter:
     create: All
   webapp:
@@ -35,9 +37,13 @@ spring:
     driver-class-name: ${CAMUNDA_ENGINE_DB_DRIVER}
     username: ${CAMUNDA_ENGINE_DB_USERNAME}
     password: ${CAMUNDA_ENGINE_DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 50
+
   redis:
     host: ${REDIS_HOST}
     port: ${REDIS_PORT}
+
 
 spring.web.resources:
   static-locations: NULL
