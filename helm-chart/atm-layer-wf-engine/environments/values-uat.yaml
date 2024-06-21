@@ -70,7 +70,7 @@ redis:
     host: host
     port: port
 
-tracingEndpoint: http://jaeger-collector.default.svc.cluster.local:4317
+tracingEndpoint: http://jeager-manual-trace-ecs-priv-b19cfd091be2d616.elb.eu-south-1.amazonaws.com:4317
 
 configmap:
   enabled: true
