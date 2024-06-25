@@ -9,8 +9,21 @@ camunda.bpm:
     table-prefix: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}.
   history-level: NONE
   job-execution:
-    core-pool-size: 10
-    max-pool-size: 50
+    core-pool-size: 50
+    max-pool-size: 100
+    enabled: true
+    deployment-aware: false
+    keep-alive-seconds:	0
+    lock-time-in-millis: 300000
+    max-jobs-per-acquisition: 3
+    queue-capacity:	3
+    wait-time-in-millis: 5000
+    max-wait: 60000
+    backoff-time-in-millis: 0
+    max-backoff: 0
+    backoff-decrease-threshold:	100
+    wait-increase-factor: 2
+
   filter:
     create: All
   webapp:
