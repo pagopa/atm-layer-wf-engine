@@ -13,15 +13,15 @@ camunda.bpm:
     max-pool-size: 100
     enabled: true
     deployment-aware: false
-    keep-alive-seconds:	0
+    keep-alive-seconds: 0
     lock-time-in-millis: 300000
     max-jobs-per-acquisition: 3
-    queue-capacity:	3
+    queue-capacity: 3
     wait-time-in-millis: 5000
     max-wait: 60000
     backoff-time-in-millis: 0
     max-backoff: 0
-    backoff-decrease-threshold:	100
+    backoff-decrease-threshold: 100
     wait-increase-factor: 2
 
   filter:
