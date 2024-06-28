@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 97.87%               |
-| :heavy_check_mark: Number of Lines Covered | 46    |
+| Code Coverage %         | 98.44%               |
+| :heavy_check_mark: Number of Lines Covered | 63    |
 | :x: Number of Lines Missed  | 1     |
-| Total Number of Lines   | 47     |
+| Total Number of Lines   | 64     |
 
 
 ## Details:
@@ -45,6 +45,18 @@
 <details>
     <summary>
 :heavy_check_mark: SecurityFilter.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:heavy_check_mark: AppConfig.java
     </summary>
 
         
@@ -93,6 +105,31 @@
 
         
 #### Lines Missed:
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:heavy_check_mark: CallRestService.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+### it/pagopa/wf/engine/delegate
+
+<details>
+    <summary>
+:heavy_check_mark: ExternalTaskDelegator.java
+    </summary>
+
+        
+#### All Lines Covered!
         
 </details>
 
