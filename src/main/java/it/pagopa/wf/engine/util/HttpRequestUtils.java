@@ -46,22 +46,27 @@ public class HttpRequestUtils {
 
     public static HttpHeaders fromMapToHeaders(Map<String, Object> map) {
         MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-        for (String key : map.keySet()) {
-            if (StringUtils.isBlank((String) map.get(key))) {
-                throw new RuntimeException("declared path param cannot be empty or null");
+
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+
+            if (value instanceof String) {
+                String stringValue = (String) value;
+                if (StringUtils.isBlank(stringValue)) {
+                    throw new RuntimeException("declared path param cannot be empty or null");
+                }
+                multiValueMap.put(key, Collections.singletonList(stringValue));
+            } else {
+                throw new RuntimeException("Value for key " + key + " is not a String");
             }
-            multiValueMap.put(key, Collections.singletonList((String)map.get(key)));
         }
+
         return new HttpHeaders(multiValueMap);
     }
 
-    public static void checkNotNullPathParams(Map<String, String> map) {
-        for (String key : map.keySet()) {
-            if (StringUtils.isBlank(map.get(key))) {
-                throw new RuntimeException("declared path param cannot be empty or null");
-            }
-        }
-    }
+
+
 
 
 
