@@ -1,19 +1,19 @@
 package it.pagopa.wf.engine.delegate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import it.pagopa.wf.engine.service.CallRestService;
-import it.pagopa.wf.engine.util.HttpRequestUtils;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpHeaders;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class ExternalTaskDelegatorTest {
@@ -33,22 +33,23 @@ class ExternalTaskDelegatorTest {
     }
 
     @Test
-    void testExecute() {
-        when(delegateExecution.getVariables()).thenReturn(Map.of("Authorization", "Bearer token"));
+    void testExecute() throws JsonProcessingException {
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("key1", "value1");
+        variables.put("key2", "value2");
+
+        when(delegateExecution.getVariables()).thenReturn(variables);
         when(delegateExecution.getBusinessKey()).thenReturn("businessKey123");
 
-        HttpHeaders mockHeaders = new HttpHeaders();
-        mockHeaders.set("Authorization", "Bearer token");
+        externalTaskDelegator.execute(delegateExecution);
 
-        try (MockedStatic<HttpRequestUtils> mockedHttpRequestUtils = mockStatic(HttpRequestUtils.class)) {
-            mockedHttpRequestUtils.when(() -> HttpRequestUtils.createHttpHeaders(any())).thenReturn(mockHeaders);
+        ArgumentCaptor<Map<String, Object>> variablesCaptor = ArgumentCaptor.forClass(Map.class);
+        verify(callRestService, times(1)).callAdapter(variablesCaptor.capture());
 
-            externalTaskDelegator.execute(delegateExecution);
+        Map<String, Object> capturedVariables = variablesCaptor.getValue();
+        assertEquals(variables, capturedVariables);
 
-            verify(callRestService).callAdapter(mockHeaders);
-            verify(delegateExecution).getVariables();
-            verify(delegateExecution).getBusinessKey();
-            mockedHttpRequestUtils.verify(() -> HttpRequestUtils.createHttpHeaders(any()));
-        }
+        verify(delegateExecution, times(1)).getVariables();
+        verify(delegateExecution, times(1)).getBusinessKey();
     }
 }

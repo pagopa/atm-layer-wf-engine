@@ -1,5 +1,7 @@
 package it.pagopa.wf.engine.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -13,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,10 +27,13 @@ import static org.mockito.Mockito.when;
 class CallRestServiceTest {
 
     @Mock
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
+
+    @Mock
+    private ObjectMapper objectMapper;
 
     @InjectMocks
-    CallRestService callRestService;
+    private CallRestService callRestService;
 
     @BeforeEach
     void setUp() throws IllegalAccessException, NoSuchFieldException {
@@ -38,22 +45,34 @@ class CallRestServiceTest {
     }
 
     @Test
-    void testCallAdapter() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer token");
+    void testCallAdapter() throws JsonProcessingException {
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("key1", "value1");
+        variables.put("key2", "value2");
+
+        String jsonBody = "{\"key1\":\"value1\",\"key2\":\"value2\"}";
+
+        HttpHeaders expectedHeaders = new HttpHeaders();
+        expectedHeaders.set("Content-Type", "application/json");
+
         ResponseEntity<String> mockResponse = ResponseEntity.ok("Success");
 
-        when(restTemplate.exchange(eq("http://mock.api/endpoint"), eq(HttpMethod.GET), any(HttpEntity.class), eq(String.class)))
+        when(objectMapper.writeValueAsString(variables)).thenReturn(jsonBody);
+
+        when(restTemplate.exchange(eq("http://mock.api/endpoint"), eq(HttpMethod.POST), any(HttpEntity.class), eq(String.class)))
                 .thenReturn(mockResponse);
 
-        String result = callRestService.callAdapter(headers);
+        String result = callRestService.callAdapter(variables);
 
         assertEquals("Success", result);
 
         ArgumentCaptor<HttpEntity<String>> httpEntityCaptor = ArgumentCaptor.forClass(HttpEntity.class);
-        verify(restTemplate).exchange(eq("http://mock.api/endpoint"), eq(HttpMethod.GET), httpEntityCaptor.capture(), eq(String.class));
+        verify(restTemplate).exchange(eq("http://mock.api/endpoint"), eq(HttpMethod.POST), httpEntityCaptor.capture(), eq(String.class));
 
         HttpEntity<String> capturedHttpEntity = httpEntityCaptor.getValue();
-        assertEquals(headers, capturedHttpEntity.getHeaders());
+        assertEquals(jsonBody, capturedHttpEntity.getBody());
+        assertEquals(expectedHeaders, capturedHttpEntity.getHeaders());
+
+        verify(objectMapper).writeValueAsString(variables);
     }
 }

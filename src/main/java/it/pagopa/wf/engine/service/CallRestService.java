@@ -27,14 +27,11 @@ public class CallRestService {
 
     public String callAdapter(Map<String,Object> variables) throws JsonProcessingException {
 
-        // Convertire il body in JSON
         String jsonBody = objectMapper.writeValueAsString(variables);
 
-        // Impostare gli headers
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
 
-        // Creare l'entity con il body e gli headers
         HttpEntity<String> entity = new HttpEntity<>(jsonBody, headers);
 
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.POST, entity, String.class);
