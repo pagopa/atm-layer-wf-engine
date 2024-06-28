@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: it.pagopa.wf.engine.config.AppConfigTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.832 s - in it.pagopa.wf.engine.config.AppConfigTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.812 s - in it.pagopa.wf.engine.config.AppConfigTest
