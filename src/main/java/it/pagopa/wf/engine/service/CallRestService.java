@@ -1,5 +1,7 @@
 package it.pagopa.wf.engine.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -9,18 +11,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Map;
+
 @Service
 public class CallRestService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private ObjectMapper objectMapper;
     @Value("${external.api.adapter.url}")
     private String apiUrl;
 
 
-    public String callAdapter(HttpHeaders headers) {
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
+    public String callAdapter(Map<String,Object> variables) throws JsonProcessingException {
+
+        // Convertire il body in JSON
+        String jsonBody = objectMapper.writeValueAsString(variables);
+
+        // Impostare gli headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+
+        // Creare l'entity con il body e gli headers
+        HttpEntity<String> entity = new HttpEntity<>(jsonBody, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.POST, entity, String.class);
         return response.getBody();
 
     }
