@@ -72,6 +72,8 @@ redis:
 
 tracingEndpoint: http://jeager-manual-trace-ecs-priv-b19cfd091be2d616.elb.eu-south-1.amazonaws.com:4317
 
+milAdapterBaseUrl: http://pagopa-dev-atm-layer-mil-adapter.pagopa.svc.cluster.local:8080
+
 configmap:
   enabled: true
 
