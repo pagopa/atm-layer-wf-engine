@@ -83,6 +83,8 @@ spec:
               value: "{{ .Values.tracingEndpoint }}"
             - name: SPRING_PROFILES_ACTIVE
               value: "{{ .Values.springProfilesActive }}"
+            - name: MIL_ADAPTER_BASE_URL
+              value: "{{ .Values.milAdapterBaseUrl }}"
             {{- if .Values.database.credentialsSecretEnabled }}
             - name: CAMUNDA_ENGINE_DB_USERNAME
               valueFrom:

@@ -45,6 +45,12 @@ spring:
 tracing:
   url: ${TRACING_ENDPOINT:http://localhost:4317}
 
+
+external:
+  api:
+    adapter:
+      url: ${MIL_ADAPTER_BASE_URL:http://pagopa-dev-atm-layer-mil-adapter.pagopa.svc.cluster.local:8080}/externalcall
+
 management:
   tracing:
     sampling:

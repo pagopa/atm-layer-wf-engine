@@ -72,6 +72,8 @@ redis:
 
 tracingEndpoint: http://jaeger-collector.default.svc.cluster.local:4317
 
+milAdapterBaseUrl: http://pagopa-dev-atm-layer-mil-adapter.pagopa.svc.cluster.local:8080
+
 configmap:
   enabled: true
 
