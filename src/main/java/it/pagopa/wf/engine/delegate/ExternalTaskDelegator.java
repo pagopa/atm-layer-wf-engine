@@ -24,6 +24,7 @@ public class ExternalTaskDelegator implements JavaDelegate {
         Map<String, Object> variables = delegateExecution.getVariablesLocal();
         variables.put("processInstanceId",delegateExecution.getProcessInstanceId());
         log.info("--- Call Adapter with variables {}: and businessKey: {} ",variables, delegateExecution.getBusinessKey());
-        delegateExecution.setVariables(callRestService.callAdapter(variables));
+//        delegateExecution.setVariable("response", callRestService.callAdapter(variables));
+        delegateExecution.setVariables( callRestService.callAdapter(variables));
     }
 }
