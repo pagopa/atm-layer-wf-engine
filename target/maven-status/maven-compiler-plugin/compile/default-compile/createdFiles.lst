@@ -10,4 +10,5 @@ it/pagopa/wf/engine/model/ParentSpanContext.class
 it/pagopa/wf/engine/delegate/ExternalTaskDelegator.class
 it/pagopa/wf/engine/model/Task.class
 it/pagopa/wf/engine/service/CallRestService.class
+it/pagopa/wf/engine/delegate/TracerDelegateWaitMessageStart.class
 it/pagopa/wf/engine/WorkflowEngineApplication.class
