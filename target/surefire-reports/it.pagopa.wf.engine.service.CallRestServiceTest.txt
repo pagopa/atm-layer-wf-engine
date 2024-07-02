@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: it.pagopa.wf.engine.service.CallRestServiceTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.239 s - in it.pagopa.wf.engine.service.CallRestServiceTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.147 s - in it.pagopa.wf.engine.service.CallRestServiceTest
