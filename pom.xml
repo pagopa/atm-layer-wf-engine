@@ -237,6 +237,7 @@
                 <configuration>
                     <excludes>
                         <exclude>it/pagopa/wf/engine/delegate/TracerDelegateStart.class</exclude>
+                        <exclude>it/pagopa/wf/engine/delegate/TracerDelegateWaitMessageStart.class</exclude>
                         <exclude>it/pagopa/wf/engine/WorkflowEngineApplication.class</exclude>
                     </excludes>
                 </configuration>
