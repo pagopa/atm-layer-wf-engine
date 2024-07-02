@@ -7,6 +7,10 @@ camunda.bpm:
     type: ${CAMUNDA_ENGINE_DB_TYPE}
     schema-name: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}
     table-prefix: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}.
+  job-execution:
+    core-pool-size: 50
+    max-pool-size: 100
+    queue-capacity: 500
 
   filter:
     create: All
@@ -49,7 +53,7 @@ tracing:
 external:
   api:
     adapter:
-      url: ${MIL_ADAPTER_BASE_URL:http://pagopa-dev-atm-layer-mil-adapter.pagopa.svc.cluster.local:8080}/externalcall
+      url: ${MIL_ADAPTER_BASE_URL:http://pagopa-dev-atm-layer-mil-adapter.pagopa.svc.cluster.local:8080}/externalcall}
 
 management:
   tracing:

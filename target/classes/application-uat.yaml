@@ -9,20 +9,9 @@ camunda.bpm:
     table-prefix: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}.
   history-level: NONE
   job-execution:
-    core-pool-size: 10
-    max-pool-size: 50
-    enabled: true
-    deployment-aware: false
-    keep-alive-seconds: 0
-    lock-time-in-millis: 300000
-    max-jobs-per-acquisition: 3
-    queue-capacity: 3
-    wait-time-in-millis: 5000
-    max-wait: 60000
-    backoff-time-in-millis: 0
-    max-backoff: 0
-    backoff-decrease-threshold: 100
-    wait-increase-factor: 2
+    core-pool-size: 50
+    max-pool-size: 100
+    queue-capacity: 500
 
   filter:
     create: All
@@ -51,7 +40,7 @@ spring:
     username: ${CAMUNDA_ENGINE_DB_USERNAME}
     password: ${CAMUNDA_ENGINE_DB_PASSWORD}
     hikari:
-      maximum-pool-size: 50
+      maximum-pool-size: 100
 
   redis:
     host: ${REDIS_HOST}
@@ -67,7 +56,7 @@ tracing:
 external:
   api:
     adapter:
-      url: ${MIL_ADAPTER_BASE_URL:http://pagopa-uat-atm-layer-mil-adapter.pagopa.svc.cluster.local:8080}/externalcall}
+      url: ${MIL_ADAPTER_BASE_URL:http://pagopa-uat-atm-layer-mil-adapter.pagopa.svc.cluster.local:8080}/externalcall
 
 management:
   tracing:
