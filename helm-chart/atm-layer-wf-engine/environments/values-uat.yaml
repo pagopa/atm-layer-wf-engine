@@ -197,8 +197,8 @@ resources:
   # If you do want to specify resources, uncomment the following lines,
   # adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
-    cpu: 2000m
-    memory: 2000Mi
+    cpu: 2500m
+    memory: 2500Mi
   requests:
     cpu: 1000m
     memory: 800Mi
@@ -216,7 +216,7 @@ extraVolumes:
 
 autoscaling:
   enabled: true
-  minReplicas: 1
+  minReplicas: 4
   maxReplicas: 4
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 100
