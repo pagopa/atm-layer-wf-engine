@@ -41,6 +41,7 @@ extraContainers: []
 # By default H2 database is used, which is handy for demos and tests,
 # however, H2 is not supported in a clustered scenario.
 # So for real-world workloads, an external database like PostgreSQL should be used.
+
 database:
   driver: org.postgresql.Driver
   url: jdbc:postgresql://pagopa-dev-atm-layer-rds.cluster-cyezwzpjc2tj.eu-south-1.rds.amazonaws.com:5431
@@ -73,6 +74,11 @@ redis:
 tracingEndpoint: http://jaeger-collector.default.svc.cluster.local:4317
 
 milAdapterBaseUrl: http://pagopa-dev-atm-layer-mil-adapter.pagopa.svc.cluster.local:8080
+
+camunda:
+  corePoolSize: 200
+  maxPoolSize: 400
+  queueCapacity: 500
 
 configmap:
   enabled: true
