@@ -43,17 +43,10 @@ public class CallRestService {
         HttpEntity<String> entity = new HttpEntity<>(jsonBody, headers);
 
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.POST, entity, String.class);
-//        Map<String, Object> variablesResponse = null;
-//
-//        try {
-//            variablesResponse = objectMapper.readValue(response.getBody(), new TypeReference<Map<String, Object>>() {});
-//            // Stampa o usa la mappa come desideri
-//            System.out.println("Mappa deserializzata: " + variables);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
-        SpinJsonNode headersJsonNode = JSON(response.getBody());
+
+        SpinJsonNode responseJsonNode = JSON(response.getBody());
+        SpinJsonNode responseHeaders = JSON(response.getHeaders());
 
         JsonValue jsonValue;
         if (StringUtils.isNotBlank(response.getBody())
@@ -64,8 +57,9 @@ public class CallRestService {
             jsonValue = ClientValues.jsonValue("{}");
         }
         VariableMap output = Variables.createVariables();
-        output.putValue("response", headersJsonNode);
+        output.putValue("response", responseJsonNode);
         output.putValue("statusCode", response.getStatusCode().value());
+        output.putValue("responseHeaders", responseHeaders);
 
         return output;
     }
