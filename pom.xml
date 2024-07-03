@@ -93,13 +93,6 @@
             <artifactId>camunda-engine-plugin-spin</artifactId>
             <version>7.20.0</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.camunda.bpm</groupId>
-            <artifactId>camunda-external-task-client</artifactId>
-            <version>7.20.0</version>
-        </dependency>
-
         <dependency>
             <groupId>org.camunda.spin</groupId>
             <artifactId>camunda-spin-core</artifactId>
@@ -244,7 +237,6 @@
                 <configuration>
                     <excludes>
                         <exclude>it/pagopa/wf/engine/delegate/TracerDelegateStart.class</exclude>
-                        <exclude>it/pagopa/wf/engine/delegate/TracerDelegateWaitMessageStart.class</exclude>
                         <exclude>it/pagopa/wf/engine/WorkflowEngineApplication.class</exclude>
                     </excludes>
                 </configuration>
