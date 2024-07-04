@@ -48,14 +48,7 @@ public class CallRestService {
         SpinJsonNode responseJsonNode = JSON(response.getBody());
         SpinJsonNode responseHeaders = JSON(response.getHeaders());
 
-        JsonValue jsonValue;
-        if (StringUtils.isNotBlank(response.getBody())
-                && response.getStatusCode() != null
-                && response.getStatusCode().is2xxSuccessful()) {
-            jsonValue = ClientValues.jsonValue(response.getBody());
-        } else {
-            jsonValue = ClientValues.jsonValue("{}");
-        }
+
         VariableMap output = Variables.createVariables();
         output.putValue("response", responseJsonNode);
         output.putValue("statusCode", response.getStatusCode().value());
