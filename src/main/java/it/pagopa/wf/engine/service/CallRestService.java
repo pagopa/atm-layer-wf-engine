@@ -1,6 +1,7 @@
 package it.pagopa.wf.engine.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.spin.json.SpinJsonNode;
@@ -17,17 +18,15 @@ import java.util.Map;
 import static org.camunda.spin.Spin.JSON;
 
 @Service
+@Slf4j
 public class CallRestService {
 
     @Autowired
     private RestTemplate restTemplate;
-
     @Autowired
     private ObjectMapper objectMapper;
     @Value("${external.api.adapter.url}")
     private String apiUrl;
-
-
 
 
 
@@ -53,16 +52,18 @@ public class CallRestService {
                 // Gestione delle risposte HTTP non 2xx
                 output.putValue("error", "HTTP error: " + e.getStatusCode() + " " + e.getResponseBodyAsString());
                 output.putValue("statusCode", e.getStatusCode().value());
+                log.error("HTTP error: " + e.getStatusCode() + " " + e.getResponseBodyAsString());
 
             } catch (ResourceAccessException e) {
                 // Gestione degli errori di accesso alle risorse, come timeout o problemi di connettività
                 output.putValue("error", "Resource access error: " + e.getMessage());
-                output.putValue("statusCode", HttpStatus.INTERNAL_SERVER_ERROR);
-
+                output.putValue("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
+                log.error("Resource access error: " +  e.getMessage());
             } catch (Exception e) {
                 // Gestione di altre eccezioni generiche
                 output.putValue("error", "An unexpected error occurred: " + e.getMessage());
-                output.putValue("statusCode", HttpStatus.INTERNAL_SERVER_ERROR);
+                output.putValue("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
+                log.error("An unexpected error occurred: " +  e.getMessage());
             }
 
             return output;
