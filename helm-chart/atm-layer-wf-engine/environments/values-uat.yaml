@@ -41,6 +41,7 @@ extraContainers: []
 # By default H2 database is used, which is handy for demos and tests,
 # however, H2 is not supported in a clustered scenario.
 # So for real-world workloads, an external database like PostgreSQL should be used.
+
 database:
   driver: org.postgresql.Driver
   url: jdbc:postgresql://pagopa-uat-atm-layer-rds.cluster-csdbokdg0q4t.eu-south-1.rds.amazonaws.com:5432
@@ -73,6 +74,11 @@ redis:
 tracingEndpoint: http://jeager-manual-trace-ecs-priv-b19cfd091be2d616.elb.eu-south-1.amazonaws.com:4317
 
 milAdapterBaseUrl: http://pagopa-uat-atm-layer-mil-adapter.pagopa.svc.cluster.local:8080
+
+camunda:
+  corePoolSize: 200
+  maxPoolSize: 400
+  queueCapacity: 500
 
 configmap:
   enabled: true
@@ -197,8 +203,8 @@ resources:
   # If you do want to specify resources, uncomment the following lines,
   # adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
-    cpu: 2000m
-    memory: 2000Mi
+    cpu: 2500m
+    memory: 2500Mi
   requests:
     cpu: 1000m
     memory: 800Mi
@@ -216,8 +222,8 @@ extraVolumes:
 
 autoscaling:
   enabled: true
-  minReplicas: 1
-  maxReplicas: 4
+  minReplicas: 6
+  maxReplicas: 6
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 100
 
