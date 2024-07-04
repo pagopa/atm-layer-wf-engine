@@ -76,8 +76,8 @@ tracingEndpoint: http://jeager-manual-trace-ecs-priv-b19cfd091be2d616.elb.eu-sou
 milAdapterBaseUrl: http://pagopa-uat-atm-layer-mil-adapter.pagopa.svc.cluster.local:8080
 
 camunda:
-  corePoolSize: 200
-  maxPoolSize: 400
+  corePoolSize: 150
+  maxPoolSize: 250
   queueCapacity: 500
 
 configmap:
@@ -203,7 +203,7 @@ resources:
   # If you do want to specify resources, uncomment the following lines,
   # adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
-    cpu: 2000m
+    cpu: 2500m
     memory: 2000Mi
   requests:
     cpu: 1000m
@@ -222,8 +222,8 @@ extraVolumes:
 
 autoscaling:
   enabled: true
-  minReplicas: 8
-  maxReplicas: 10
+  minReplicas: 6
+  maxReplicas: 6
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 100
 
