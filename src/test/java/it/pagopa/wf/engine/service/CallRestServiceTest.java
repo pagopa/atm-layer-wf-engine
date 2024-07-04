@@ -45,35 +45,36 @@ class CallRestServiceTest {
         apiUrlField.set(callRestService, "http://mock.api/endpoint");
     }
 
-//    @Test
-//    void testCallAdapter() throws JsonProcessingException {
-//        Map<String, Object> variables = new HashMap<>();
-//        variables.put("key1", "value1");
-//        variables.put("key2", "value2");
-//
-//        String jsonBody = "{\"key1\":\"value1\",\"key2\":\"value2\"}";
-//
-//        HttpHeaders expectedHeaders = new HttpHeaders();
-//        expectedHeaders.set("Content-Type", "application/json");
-//
-//        ResponseEntity<String> mockResponse = ResponseEntity.ok("Success");
-//
-//        when(objectMapper.writeValueAsString(variables)).thenReturn(jsonBody);
-//
-//        when(restTemplate.exchange(eq("http://mock.api/endpoint"), eq(HttpMethod.POST), any(HttpEntity.class), eq(String.class)))
-//                .thenReturn(mockResponse);
-//
-//        VariableMap result = callRestService.callAdapter(variables);
-//
-//        assertEquals("Success", result);
-//
-//        ArgumentCaptor<HttpEntity<String>> httpEntityCaptor = ArgumentCaptor.forClass(HttpEntity.class);
-//        verify(restTemplate).exchange(eq("http://mock.api/endpoint"), eq(HttpMethod.POST), httpEntityCaptor.capture(), eq(String.class));
-//
-//        HttpEntity<String> capturedHttpEntity = httpEntityCaptor.getValue();
-//        assertEquals(jsonBody, capturedHttpEntity.getBody());
-//        assertEquals(expectedHeaders, capturedHttpEntity.getHeaders());
-//
-//        verify(objectMapper).writeValueAsString(variables);
-//    }
+    @Test
+    void testCallAdapter() throws JsonProcessingException {
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("key1", "value1");
+        variables.put("key2", "value2");
+
+        String jsonBody = "{\"key1\":\"value1\",\"key2\":\"value2\"}";
+
+        HttpHeaders expectedHeaders = new HttpHeaders();
+        expectedHeaders.set("Content-Type", "application/json");
+
+        ResponseEntity<String> mockResponse = ResponseEntity.ok("{\"outcome\":\"success\"}");
+
+        when(objectMapper.writeValueAsString(variables)).thenReturn(jsonBody);
+
+        when(restTemplate.exchange(eq("http://mock.api/endpoint"), eq(HttpMethod.POST), any(HttpEntity.class), eq(String.class)))
+                .thenReturn(mockResponse);
+
+        VariableMap result = callRestService.callAdapter(variables);
+
+        assertEquals(200, result.get("statusCode"));
+
+        ArgumentCaptor<HttpEntity<String>> httpEntityCaptor = ArgumentCaptor.forClass(HttpEntity.class);
+        verify(restTemplate).exchange(eq("http://mock.api/endpoint"), eq(HttpMethod.POST), httpEntityCaptor.capture(), eq(String.class));
+
+        HttpEntity<String> capturedHttpEntity = httpEntityCaptor.getValue();
+        assertEquals(jsonBody, capturedHttpEntity.getBody());
+        assertEquals(expectedHeaders, capturedHttpEntity.getHeaders());
+
+        verify(objectMapper).writeValueAsString(variables);
+    }
+
 }
