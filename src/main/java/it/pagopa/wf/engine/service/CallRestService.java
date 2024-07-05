@@ -38,6 +38,7 @@ public class CallRestService {
                 HttpHeaders headers = new HttpHeaders();
                 headers.set("Content-Type", "application/json");
                 String jsonBody = objectMapper.writeValueAsString(variables);
+                log.info("Call url: {} with transactionId: {}", variables.get("url"),variables.get("transactionId"));
                 HttpEntity<String> entity = new HttpEntity<>(jsonBody, headers);
                 ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.POST, entity, String.class);
 
