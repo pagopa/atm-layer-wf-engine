@@ -66,6 +66,8 @@ public class CallRestService {
                 log.error("An unexpected error occurred: " +  e.getMessage());
             }
 
+            log.info("Status code with transactionId: {} and url: {} is: {}",variables.get("transactionId"),variables.get("url"), output.get("statusCode"));
+
             return output;
         }
 
