@@ -2,6 +2,7 @@ package it.pagopa.wf.engine.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.spin.json.SpinJsonNode;
@@ -42,7 +43,7 @@ public class CallRestService {
                 HttpEntity<String> entity = new HttpEntity<>(jsonBody, headers);
                 ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.POST, entity, String.class);
 
-                SpinJsonNode responseJsonNode = JSON(response.getBody());
+                SpinJsonNode responseJsonNode = JSON(StringUtils.isNotBlank(response.getBody()) ? response.getBody() : "{}");
                 SpinJsonNode responseHeaders = JSON(response.getHeaders());
 
                 output.putValue("response", responseJsonNode);
