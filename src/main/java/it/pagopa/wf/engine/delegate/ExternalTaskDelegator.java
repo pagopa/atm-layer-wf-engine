@@ -20,9 +20,9 @@ public class ExternalTaskDelegator implements JavaDelegate {
 
 
     @Override
-    public void execute(DelegateExecution delegateExecution) throws JsonProcessingException {
+    public void execute(DelegateExecution delegateExecution) {
         Map<String, Object> variables = delegateExecution.getVariables();
-        log.info("--- Call Adapter with variables {}: and businessKey: {} ",variables, delegateExecution.getBusinessKey());
-        delegateExecution.setVariables( callRestService.callAdapter(variables));
+        log.info("--- Call Adapter with transactionId {}: and businessKey: {} ",variables.get("transactionId"), delegateExecution.getBusinessKey());
+        delegateExecution.setVariables(callRestService.callAdapter(variables));
     }
 }
