@@ -32,7 +32,6 @@ public class CallRestService {
 
 
         public VariableMap callAdapter(Map<String,Object> variables)  {
-            RestTemplate restTemplate = new RestTemplate();
             VariableMap output = Variables.createVariables();
 
             try {
