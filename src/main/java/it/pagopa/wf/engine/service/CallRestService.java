@@ -59,7 +59,7 @@ public class CallRestService {
             } catch (ResourceAccessException e) {
                 // Gestione degli errori di accesso alle risorse, come timeout o problemi di connettività
                 output.putValue("error", "Resource access error: " + e.getMessage());
-                output.putValue("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
+                output.putValue("statusCode", HttpStatus.GATEWAY_TIMEOUT.value());
                 log.error("Resource access error: " +  e.getMessage());
             } catch (Exception e) {
                 // Gestione di altre eccezioni generiche
