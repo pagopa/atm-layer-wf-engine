@@ -203,7 +203,7 @@ resources:
   # If you do want to specify resources, uncomment the following lines,
   # adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
-    cpu: 2500m
+    cpu: 1500m
     memory: 2000Mi
   requests:
     cpu: 1000m
@@ -222,9 +222,9 @@ extraVolumes:
 
 autoscaling:
   enabled: true
-  minReplicas: 6
-  maxReplicas: 6
-  targetCPUUtilizationPercentage: 80
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 50
   # targetMemoryUtilizationPercentage: 100
 
 nodeSelector: {}
