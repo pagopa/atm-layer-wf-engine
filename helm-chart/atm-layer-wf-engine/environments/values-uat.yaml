@@ -222,7 +222,7 @@ extraVolumes:
 
 autoscaling:
   enabled: true
-  minReplicas: 1
+  minReplicas: 2
   maxReplicas: 6
   targetCPUUtilizationPercentage: 50
   # targetMemoryUtilizationPercentage: 100
