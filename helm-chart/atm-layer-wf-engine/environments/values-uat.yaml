@@ -221,7 +221,7 @@ extraVolumes:
   #     path: /tmp/dummy-volume
 
 autoscaling:
-  enabled: true
+  enabled: false
   minReplicas: 1
   maxReplicas: 1
   targetCPUUtilizationPercentage: 50
