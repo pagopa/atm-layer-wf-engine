@@ -68,7 +68,7 @@ public class CallRestService {
             }
 
             log.info("Status code with transactionId: {} and url: {} is: {}",variables.get("transactionId"),variables.get("url"), output.get("statusCode"));
-
+            output.putValue("externalComm", true);
             return output;
         }
 
