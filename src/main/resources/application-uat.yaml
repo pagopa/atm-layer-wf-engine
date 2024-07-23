@@ -40,7 +40,7 @@ spring:
     username: ${CAMUNDA_ENGINE_DB_USERNAME}
     password: ${CAMUNDA_ENGINE_DB_PASSWORD}
     hikari:
-      maximum-pool-size: 100
+      maximum-pool-size: 10
 
   redis:
     host: ${REDIS_HOST}
