@@ -73,11 +73,11 @@ redis:
 
 tracingEndpoint: http://jaeger-collector.default.svc.cluster.local:4317
 
-milAdapterBaseUrl: http://pagopa-dev-atm-layer-mil-adapter.pagopa.svc.cluster.local:8080
+milAdapterBaseUrl: http://pagopa-prod-atm-layer-mil-adapter.pagopa.svc.cluster.local:8080
 
 camunda:
-  corePoolSize: 200
-  maxPoolSize: 400
+  corePoolSize: 150
+  maxPoolSize: 250
   queueCapacity: 500
 
 configmap:
@@ -205,7 +205,7 @@ resources:
   # If you do want to specify resources, uncomment the following lines,
   # adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
-    cpu: 2000m
+    cpu: 1500m
     memory: 2000Mi
   requests:
     cpu: 1000m
@@ -224,9 +224,9 @@ extraVolumes:
 
 autoscaling:
   enabled: true
-  minReplicas: 1
-  maxReplicas: 4
-  targetCPUUtilizationPercentage: 80
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 50
   # targetMemoryUtilizationPercentage: 100
 
 nodeSelector: {}
