@@ -45,7 +45,12 @@ public class CallRestService {
                 SpinJsonNode responseJsonNode = JSON(StringUtils.isNotBlank(response.getBody()) ? response.getBody() : "{}");
                 SpinJsonNode responseHeaders = JSON(response.getHeaders());
 
-                output.putValue("response", responseJsonNode);
+                if (variables.get("flow") != null && variables.get("flow") == "AUTH"){
+                    log.info("--TEMPORARY-- Setting milAccessToken variable in output. Received responsejsonnode: {}", responseJsonNode);
+                    output.putValue("millAccessToken", responseJsonNode.prop("access_token"));
+                } else {
+                    output.putValue("response", responseJsonNode);
+                }
                 output.putValue("responseHeaders", responseHeaders);
                 output.putValue("statusCode", response.getStatusCode().value());
 
