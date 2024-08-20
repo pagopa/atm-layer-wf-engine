@@ -102,17 +102,20 @@ public class CallRestService {
             // Gestione delle risposte HTTP non 2xx
             output.putValue("error", "HTTP error: " + e.getStatusCode() + " " + e.getResponseBodyAsString());
             output.putValue("statusCode", e.getStatusCode().value());
+            output.putValue("response", JSON("{}"));
             log.error("HTTP error: " + e.getStatusCode() + " " + e.getResponseBodyAsString());
 
         } catch (ResourceAccessException e) {
             // Gestione degli errori di accesso alle risorse, come timeout o problemi di connettività
             output.putValue("error", "Resource access error: " + e.getMessage());
             output.putValue("statusCode", HttpStatus.GATEWAY_TIMEOUT.value());
+            output.putValue("response", JSON("{}"));
             log.error("Resource access error: " +  e.getMessage());
         } catch (Exception e) {
             // Gestione di altre eccezioni generiche
             output.putValue("error", "An unexpected error occurred: " + e.getMessage());
             output.putValue("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            output.putValue("response", JSON("{}"));
             log.error("An unexpected error occurred: " +  e.getMessage());
         }
 
@@ -120,6 +123,8 @@ public class CallRestService {
         output.putValue("externalComm", true);
         return output;
     }
+
+
 
 
 
