@@ -64,12 +64,6 @@ webuser:
     username: WEB_USER
     password: WEB_PASSWORD
 
-redis:
-  credentialsSecretEnabled: true
-  credentialsSecretName: pagopa-prod-atm-layer-wf-engine-redis
-  credentialsSecretKeys:
-    host: host
-    port: port
 
 tracingEndpoint: http://jaeger-collector.default.svc.cluster.local:4317
 
@@ -108,7 +102,7 @@ metrics:
 deployment:
   annotations:
     reloader.stakater.com/auto: "true"
-    secret.reloader.stakater.com/reload: pagopa-prod-atm-layer-wf-engine-database, pagopa-prod-atm-layer-wf-engine-camunda, pagopa-prod-atm-layer-wf-engine-redis
+    secret.reloader.stakater.com/reload: pagopa-prod-atm-layer-wf-engine-database, pagopa-prod-atm-layer-wf-engine-camunda
 
 secretProviderClass:
   enabled: true
