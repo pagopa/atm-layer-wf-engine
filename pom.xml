@@ -7,7 +7,12 @@
     <groupId>it.pagopa</groupId>
     <artifactId>atm-layer-workflow-engine</artifactId>
 
-    <version>1.17.7</version>
+
+
+    <version>2.4.2</version>
+
+
+
 
     <packaging>jar</packaging>
 
@@ -93,6 +98,13 @@
             <artifactId>camunda-engine-plugin-spin</artifactId>
             <version>7.20.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.camunda.bpm</groupId>
+            <artifactId>camunda-external-task-client</artifactId>
+            <version>7.20.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.camunda.spin</groupId>
             <artifactId>camunda-spin-core</artifactId>
@@ -101,17 +113,6 @@
             <groupId>org.camunda.spin</groupId>
             <artifactId>camunda-spin-dataformat-all</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>3.7.0</version>
-        </dependency>
-
         <dependency>
             <groupId>net.ttddyy.observation</groupId>
             <artifactId>datasource-micrometer-spring-boot</artifactId>

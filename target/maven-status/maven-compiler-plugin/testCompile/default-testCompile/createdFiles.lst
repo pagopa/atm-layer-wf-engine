@@ -1,0 +1,11 @@
+it/pagopa/wf/engine/delegate/TracerDelegateStartTest.class
+it/pagopa/wf/engine/config/AppConfigTest.class
+it/pagopa/wf/engine/delegate/ExternalTaskDelegatorTest.class
+it/pagopa/wf/engine/model/TaskTest.class
+it/pagopa/wf/engine/config/OpenTelemetryConfigTest.class
+it/pagopa/wf/engine/model/VerifyResponseTest.class
+it/pagopa/wf/engine/service/CallRestServiceTest.class
+it/pagopa/wf/engine/config/SecurityFilterTest.class
+it/pagopa/wf/engine/controller/CamundaControllerTest.class
+it/pagopa/wf/engine/model/ParentSpanContextTest.class
+it/pagopa/wf/engine/service/CamundaServiceTest.class

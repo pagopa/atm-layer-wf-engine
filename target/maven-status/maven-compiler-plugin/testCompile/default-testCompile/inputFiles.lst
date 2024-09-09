@@ -1,0 +1,11 @@
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/test/java/it/pagopa/wf/engine/delegate/TracerDelegateStartTest.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/test/java/it/pagopa/wf/engine/delegate/ExternalTaskDelegatorTest.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/test/java/it/pagopa/wf/engine/model/ParentSpanContextTest.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/test/java/it/pagopa/wf/engine/model/VerifyResponseTest.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/test/java/it/pagopa/wf/engine/model/TaskTest.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/test/java/it/pagopa/wf/engine/config/SecurityFilterTest.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/test/java/it/pagopa/wf/engine/service/CallRestServiceTest.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/test/java/it/pagopa/wf/engine/config/OpenTelemetryConfigTest.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/test/java/it/pagopa/wf/engine/controller/CamundaControllerTest.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/test/java/it/pagopa/wf/engine/service/CamundaServiceTest.java
+/home/runner/work/atm-layer-wf-engine/atm-layer-wf-engine/src/test/java/it/pagopa/wf/engine/config/AppConfigTest.java

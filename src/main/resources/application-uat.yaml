@@ -8,6 +8,11 @@ camunda.bpm:
     schema-name: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}
     table-prefix: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}.
   history-level: NONE
+  job-execution:
+    core-pool-size: ${CAMUNDA_CORE_POOL_SIZE:100}
+    max-pool-size: ${CAMUNDA_MAX_POOL_SIZE:200}
+    queue-capacity: ${CAMUNDA_QUEUE_CAPACITY:500}
+
   filter:
     create: All
   webapp:
@@ -35,22 +40,18 @@ spring:
     username: ${CAMUNDA_ENGINE_DB_USERNAME}
     password: ${CAMUNDA_ENGINE_DB_PASSWORD}
     hikari:
-      maximum-pool-size: 2
-      minimum-idle: 2
-      idle-timeout: 30000
-      pool-name: SpringBootHikariCP
-      max-lifetime: 1800000
-      connection-timeout: 30000
-  redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
-
+      maximum-pool-size: 10
 
 spring.web.resources:
   static-locations: NULL
 
 tracing:
   url: ${TRACING_ENDPOINT}
+
+external:
+  api:
+    adapter:
+      url: ${MIL_ADAPTER_BASE_URL:http://pagopa-uat-atm-layer-mil-adapter.pagopa.svc.cluster.local:8080}/externalcall
 
 management:
   tracing:

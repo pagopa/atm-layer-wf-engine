@@ -1,0 +1,64 @@
+camunda.bpm:
+  admin-user:
+    id: ${CAMUNDA_ENGINE_ADMIN_USER}
+    password: ${CAMUNDA_ENGINE_ADMIN_PASSWORD}
+  database:
+    schema-update: ${CAMUNDA_ENGINE_DB_SCHEMA_UPDATE_CONFIG}
+    type: ${CAMUNDA_ENGINE_DB_TYPE}
+    schema-name: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}
+    table-prefix: ${CAMUNDA_ENGINE_DB_SCHEMA:camunda}.
+  job-execution:
+    core-pool-size: 50
+    max-pool-size: 100
+    queue-capacity: 500
+
+  filter:
+    create: All
+  webapp:
+    csrf:
+      enable-same-site-cookie: true
+      same-site-cookie-option: STRICT
+    header-security:
+      hsts-disabled: false
+  generic-properties.properties:
+    deserialization-type-validation-enabled: true
+    deserialization-allowed-packages:
+    deserialization-allowed-classes:
+    enable-password-policy: true
+
+logging:
+  level:
+    root: ${CAMUNDA_ENGINE_LOG_LEVEL_ROOT:INFO}
+
+
+spring:
+  application:
+    name: atm-layer-workflow-engine
+  datasource:
+    url: ${CAMUNDA_ENGINE_DB_BASE_URL}/${CAMUNDA_ENGINE_DB_NAME}?currentSchema=${CAMUNDA_ENGINE_DB_SCHEMA:camunda}
+    driver-class-name: ${CAMUNDA_ENGINE_DB_DRIVER}
+    username: ${CAMUNDA_ENGINE_DB_USERNAME}
+    password: ${CAMUNDA_ENGINE_DB_PASSWORD}
+  redis:
+    host: ${REDIS_HOST:pagopa-dev-atm-layer-redis.vab4cc.ng.0001.eus1.cache.amazonaws.com}
+    port: ${REDIS_PORT:6379}
+  web.resources:
+    static-locations: NULL
+
+
+tracing:
+  url: ${TRACING_ENDPOINT:http://localhost:4317}
+
+
+external:
+  api:
+    adapter:
+      url: ${MIL_ADAPTER_BASE_URL:http://pagopa-dev-atm-layer-mil-adapter.pagopa.svc.cluster.local:8080}/externalcall}
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+server:
+  port: 8080

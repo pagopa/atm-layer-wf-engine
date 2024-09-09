@@ -1,3 +1,5 @@
 # Default ignored files
 .idea/*
 .target/*
+/target/
+/atm-layer-workflow-engine.iml

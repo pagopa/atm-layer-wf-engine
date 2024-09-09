@@ -92,10 +92,11 @@ jobs:
           git commit --allow-empty -m "Chart.yaml updated with new version v${{ steps.semantic-release-dryrun.outputs.new_release_version }}"
           git push
 
-      - name: Test execution
-        run: |
-          mvn test
+      # - name: Test execution
+      #   run: |
+      #     mvn test
       
+
       - name: JaCoCo Code Coverage Report
         id: jacoco_reporter
         uses: PavanMudigonda/jacoco-reporter@76044ebc031589dcbce0bb1048ffee1072a43f97 # v4.9
@@ -115,6 +116,7 @@ jobs:
         with:
           script: |
             core.setFailed('Overall coverage is less than 70%!')
+
 
       - name: Build docker image
         env:

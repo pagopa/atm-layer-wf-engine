@@ -83,6 +83,14 @@ spec:
               value: "{{ .Values.tracingEndpoint }}"
             - name: SPRING_PROFILES_ACTIVE
               value: "{{ .Values.springProfilesActive }}"
+            - name: CAMUNDA_CORE_POOL_SIZE
+              value: "{{ .Values.camunda.corePoolSize }}"
+            - name: CAMUNDA_MAX_POOL_SIZE
+              value: "{{ .Values.camunda.maxPoolSize }}"
+            - name: CAMUNDA_QUEUE_CAPACITY
+              value: "{{ .Values.camunda.queueCapacity }}"
+            - name: MIL_ADAPTER_BASE_URL
+              value: "{{ .Values.milAdapterBaseUrl }}"
             {{- if .Values.database.credentialsSecretEnabled }}
             - name: CAMUNDA_ENGINE_DB_USERNAME
               valueFrom:
@@ -106,18 +114,6 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.webuser.credentialsSecretName | default $fullName }}
                   key: {{ .Values.webuser.credentialsSecretKeys.password }}
-            {{- end }}
-            {{- if .Values.redis.credentialsSecretEnabled }}
-            - name: REDIS_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.redis.credentialsSecretName }}
-                  key: {{ .Values.redis.credentialsSecretKeys.host }}
-            - name: REDIS_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.redis.credentialsSecretName }}
-                  key: {{ .Values.redis.credentialsSecretKeys.port }}
             {{- end }}
           {{- if .Values.extraEnvs }}
           {{- with tpl (toYaml .Values.extraEnvs) . }}
