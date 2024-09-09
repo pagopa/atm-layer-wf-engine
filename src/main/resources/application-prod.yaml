@@ -43,6 +43,10 @@ spring.web.resources:
 tracing:
   url: ${TRACING_ENDPOINT}
 
+external:
+  api:
+    adapter:
+      url: ${MIL_ADAPTER_BASE_URL}/externalcall
 
 management:
   tracing:
