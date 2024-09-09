@@ -39,9 +39,6 @@ spring:
     driver-class-name: ${CAMUNDA_ENGINE_DB_DRIVER}
     username: ${CAMUNDA_ENGINE_DB_USERNAME}
     password: ${CAMUNDA_ENGINE_DB_PASSWORD}
-  redis:
-    host: ${REDIS_HOST:pagopa-dev-atm-layer-redis.vab4cc.ng.0001.eus1.cache.amazonaws.com}
-    port: ${REDIS_PORT:6379}
   web.resources:
     static-locations: NULL
 
