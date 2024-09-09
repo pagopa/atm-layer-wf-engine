@@ -96,25 +96,27 @@ jobs:
       #   run: |
       #     mvn test
       
-      # - name: JaCoCo Code Coverage Report
-      #   id: jacoco_reporter
-      #   uses: PavanMudigonda/jacoco-reporter@76044ebc031589dcbce0bb1048ffee1072a43f97 # v4.9
-      #   with:
-      #     coverage_results_path: target/site/jacoco/jacoco.xml
-      #     coverage_report_name: 'Coverage build ${{ github.run_number }}'
-      #     coverage_report_title: JaCoCo
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     skip_check_run: false
-      #     minimum_coverage: 70
-      #     fail_below_threshold: false
-      #     publish_only_summary: false
 
-      # - name: Fail Build if overall coverage is less than 70%
-      #   if: steps.jacoco_reporter.outputs.coverage_percentage < 70.0 
-      #   uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6
-      #   with:
-      #     script: |
-      #       core.setFailed('Overall coverage is less than 70%!')
+      - name: JaCoCo Code Coverage Report
+        id: jacoco_reporter
+        uses: PavanMudigonda/jacoco-reporter@76044ebc031589dcbce0bb1048ffee1072a43f97 # v4.9
+        with:
+          coverage_results_path: target/site/jacoco/jacoco.xml
+          coverage_report_name: 'Coverage build ${{ github.run_number }}'
+          coverage_report_title: JaCoCo
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          skip_check_run: false
+          minimum_coverage: 70
+          fail_below_threshold: false
+          publish_only_summary: false
+
+      - name: Fail Build if overall coverage is less than 70%
+        if: steps.jacoco_reporter.outputs.coverage_percentage < 70.0 
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6
+        with:
+          script: |
+            core.setFailed('Overall coverage is less than 70%!')
+
 
       - name: Build docker image
         env:
