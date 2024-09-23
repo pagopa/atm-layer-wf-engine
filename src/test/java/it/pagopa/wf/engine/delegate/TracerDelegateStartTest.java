@@ -1,15 +1,11 @@
 package it.pagopa.wf.engine.delegate;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.context.Context;
-import it.pagopa.wf.engine.controller.CamundaController;
 import it.pagopa.wf.engine.model.ParentSpanContext;
-import it.pagopa.wf.engine.service.CamundaService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,11 +14,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-public class TracerDelegateStartTest {
+class TracerDelegateStartTest {
 
     @Mock
     Tracer tracer;
@@ -55,6 +49,7 @@ public class TracerDelegateStartTest {
         when(objectMapper.writeValueAsString(any(ParentSpanContext.class))).thenReturn("valueAsString");
         DelegateExecution testDelegateExecution = mock(DelegateExecution.class);
         tracerDelegateStart.notify(testDelegateExecution);
+        verify(objectMapper).writeValueAsString(any(ParentSpanContext.class));
     }
 
 }
