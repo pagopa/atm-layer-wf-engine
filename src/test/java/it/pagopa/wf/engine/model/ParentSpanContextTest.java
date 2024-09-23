@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ParentSpanContextTest {
+class ParentSpanContextTest {
     @Test
     void testAnnotations() {
         ParentSpanContext testSpan1 = new ParentSpanContext();
@@ -21,7 +21,7 @@ public class ParentSpanContextTest {
         assertEquals(testSpan1.hashCode(), testSpan2.hashCode());
         assertEquals(testSpan1, testSpan2);
         assertNotEquals(testSpan3, testSpan1);
-        assertNotEquals("different object type", testSpan3);
+        assertFalse(testSpan3.equals("different object type"));
         assertTrue(testSpan1.canEqual(testSpan2));
         testSpan1.setTraceId("differentTraceId");
         assertNotEquals(testSpan1, testSpan2);
