@@ -29,6 +29,11 @@ public class CallRestService {
     @Value("${external.api.adapter.url}")
     private String apiUrl;
 
+    private static final String RESPONSE_STRING = "response";
+
+    private static final String STATUS_CODE_STRING = "statusCode";
+
+    private static final String ERROR_STRING = "error";
 
 
         public VariableMap callAdapter(Map<String,Object> variables)  {
@@ -51,33 +56,33 @@ public class CallRestService {
                     log.info("--TEMPORARY-- Setting milAccessToken variable in output. Received responsejsonnode: {}", responseJsonNode);
                     output.putValue("millAccessToken", responseJsonNode.prop("access_token").stringValue());
                 } else {
-                    output.putValue("response", responseJsonNode);
+                    output.putValue(RESPONSE_STRING, responseJsonNode);
                 }
                 output.putValue("responseHeaders", responseHeaders);
-                output.putValue("statusCode", response.getStatusCode().value());
+                output.putValue(STATUS_CODE_STRING, response.getStatusCode().value());
 
             } catch (HttpStatusCodeException e) {
                 // Gestione delle risposte HTTP non 2xx
-                output.putValue("error", "HTTP error: " + e.getStatusCode() + " " + e.getResponseBodyAsString());
-                output.putValue("statusCode", e.getStatusCode().value());
-                output.putValue("response", JSON("{}"));
+                output.putValue(ERROR_STRING, "HTTP error: " + e.getStatusCode() + " " + e.getResponseBodyAsString());
+                output.putValue(STATUS_CODE_STRING, e.getStatusCode().value());
+                output.putValue(RESPONSE_STRING, JSON("{}"));
                 log.error("HTTP error: " + e.getStatusCode() + " " + e.getResponseBodyAsString());
 
             } catch (ResourceAccessException e) {
                 // Gestione degli errori di accesso alle risorse, come timeout o problemi di connettività
-                output.putValue("error", "Resource access error: " + e.getMessage());
-                output.putValue("statusCode", HttpStatus.GATEWAY_TIMEOUT.value());
-                output.putValue("response", JSON("{}"));
+                output.putValue(ERROR_STRING, "Resource access error: " + e.getMessage());
+                output.putValue(STATUS_CODE_STRING, HttpStatus.GATEWAY_TIMEOUT.value());
+                output.putValue(RESPONSE_STRING, JSON("{}"));
                 log.error("Resource access error: " +  e.getMessage());
             } catch (Exception e) {
                 // Gestione di altre eccezioni generiche
-                output.putValue("error", "An unexpected error occurred: " + e.getMessage());
-                output.putValue("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
-                output.putValue("response", JSON("{}"));
+                output.putValue(ERROR_STRING, "An unexpected error occurred: " + e.getMessage());
+                output.putValue(STATUS_CODE_STRING, HttpStatus.INTERNAL_SERVER_ERROR.value());
+                output.putValue(RESPONSE_STRING, JSON("{}"));
                 log.error("An unexpected error occurred: " +  e.getMessage());
             }
 
-            log.info("Status code with transactionId: {} and url: {} is: {}",variables.get("transactionId"),variables.get("url"), output.get("statusCode"));
+            log.info("Status code with transactionId: {} and url: {} is: {}",variables.get("transactionId"),variables.get("url"), output.get(STATUS_CODE_STRING));
             output.putValue("externalComm", true);
             return output;
         }
