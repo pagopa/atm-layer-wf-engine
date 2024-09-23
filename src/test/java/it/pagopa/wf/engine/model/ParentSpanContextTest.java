@@ -19,12 +19,12 @@ public class ParentSpanContextTest {
         assertEquals(testSpan2.getTraceId(), testSpan1.getTraceId());
         assertEquals(testSpan2.toString(), testSpan1.toString());
         assertEquals(testSpan1.hashCode(), testSpan2.hashCode());
-        assertTrue(testSpan1.equals(testSpan2));
-        assertFalse(testSpan3.equals(testSpan1));
-        assertFalse(testSpan3.equals("different object type"));
+        assertEquals(testSpan1, testSpan2);
+        assertNotEquals(testSpan3, testSpan1);
+        assertNotEquals("different object type", testSpan3);
         assertTrue(testSpan1.canEqual(testSpan2));
         testSpan1.setTraceId("differentTraceId");
-        assertFalse(testSpan1.equals(testSpan2));
+        assertNotEquals(testSpan1, testSpan2);
         assertNotEquals(testSpan1.hashCode(), testSpan2.hashCode());
     }
 }

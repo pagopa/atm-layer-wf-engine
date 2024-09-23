@@ -19,7 +19,7 @@ public class VerifyResponseTest {
         VerifyResponse testResponse2 = new VerifyResponse();
         testResponse2.setIsVerified(Boolean.FALSE);
         testResponse2.setMessage("test message");
-        assertFalse(testResponse1.equals(testResponse2));
+        assertNotEquals(testResponse1, testResponse2);
         assertTrue(testResponse1.canEqual(testResponse2));
         assertNotEquals(testResponse1.hashCode(), testResponse2.hashCode());
     }
