@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 @Component("tracerWaitMessageStart")
 public class TracerDelegateWaitMessageStart implements ExecutionListener {
 
-    @Autowired
-    Tracer tracer;
+//    @Autowired
+//    Tracer tracer;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -32,9 +32,9 @@ public class TracerDelegateWaitMessageStart implements ExecutionListener {
         // ParentSpanContext parentSpanContext = objectMapper.readValue((String) delegateExecution.getVariable("processSpan2"), ParentSpanContext.class);
         SpanContext parentContext = SpanContext.createFromRemoteParent(parentSpanContext.getTraceId(), parentSpanContext.getSpanId(), TraceFlags.getSampled(), TraceState.getDefault());
         Context context = Context.current().with(Span.wrap(parentContext));
-        try (Scope scope = context.makeCurrent()) {
-            tracer.spanBuilder("Start Wait Message").setParent(context).startSpan().end();
-        }
+//        try (Scope scope = context.makeCurrent()) {
+//            tracer.spanBuilder("Start Wait Message").setParent(context).startSpan().end();
+//        }
 
     }
 }

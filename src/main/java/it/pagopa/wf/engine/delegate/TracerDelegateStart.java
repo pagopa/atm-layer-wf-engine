@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 @Component("tracerStart")
 public class TracerDelegateStart implements ExecutionListener {
 
-    @Autowired
-    Tracer tracer;
+//    @Autowired
+//    Tracer tracer;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -28,13 +28,13 @@ public class TracerDelegateStart implements ExecutionListener {
             SpanContext parentContext = activeSpan.getSpanContext();
             parentSpanContext.setTraceId(parentContext.getTraceId());
             parentSpanContext.setSpanId(parentContext.getSpanId());
-
-        } else {
-            Span newParentSpan = tracer.spanBuilder("Tracer Delegate").startSpan();
-            parentSpanContext.setTraceId(newParentSpan.getSpanContext().getTraceId());
-            parentSpanContext.setSpanId(newParentSpan.getSpanContext().getSpanId());
-            newParentSpan.end();
         }
+//        else {
+//            Span newParentSpan = tracer.spanBuilder("Tracer Delegate").startSpan();
+//            parentSpanContext.setTraceId(newParentSpan.getSpanContext().getTraceId());
+//            parentSpanContext.setSpanId(newParentSpan.getSpanContext().getSpanId());
+//            newParentSpan.end();
+//        }
         delegateExecution.setVariable("activityParentSpan",objectMapper.writeValueAsString(parentSpanContext));
     }
 }
