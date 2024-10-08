@@ -114,7 +114,7 @@ public class CamundaService {
             String scriptContent = scriptTask.getText();
 
             if (containsJavaReferences(scriptContent)) {
-                throw new UnsupportedOperationException("Lo script JavaScript contiene riferimenti a codice Java.");
+                throw new UnsupportedOperationException("Lo script JavaScript contiene riferimenti a codice Java non Consentito.");
             }
         } else if ("groovy".equalsIgnoreCase(scriptFormat) || "java".equalsIgnoreCase(scriptFormat)) {
             throw new UnsupportedOperationException("Rilevato script in linguaggio pericoloso (Java o Groovy).");

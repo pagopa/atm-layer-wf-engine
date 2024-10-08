@@ -106,7 +106,7 @@ class CamundaServiceTest {
         UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
                 () -> camundaService.checkScriptTaskForJava(scriptTask));
 
-        assertEquals("Lo script JavaScript contiene riferimenti a codice Java.", exception.getMessage());
+        assertEquals("Lo script JavaScript contiene riferimenti a codice Java non Consentito.", exception.getMessage());
     }
 
     @Test
