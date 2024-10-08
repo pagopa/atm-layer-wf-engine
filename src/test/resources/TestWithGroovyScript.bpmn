@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" targetNamespace="http://bpmn.io/schema/bpmn"><process id="test_process" name="Test Process" isExecutable="true" camunda:historyTimeToLive="180"><startEvent id="start" name="Start Event" /><serviceTask id="task1" name="Test Task" camunda:class="println 'Hello, World!'" /></process></definitions>
