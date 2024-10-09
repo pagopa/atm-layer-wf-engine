@@ -64,7 +64,7 @@ class CamundaServiceTest {
         VerifyResponse response = camundaService.validateFile(file);
 
         assertFalse(response.getIsVerified());
-        assertEquals("non-executable process. Set the attribute isExecutable=true to deploy this process.", response.getMessage());
+        assertEquals("Errore durante la validazione del BPMN. Controlla che il file sia conforme allo standard BPMN e ben formato. Dettagli: non-executable process. Set the attribute isExecutable=true to deploy this process.", response.getMessage());
     }
 
     @Test
@@ -74,7 +74,7 @@ class CamundaServiceTest {
         VerifyResponse response = camundaService.validateFile(file);
 
         assertFalse(response.getIsVerified());
-        assertEquals("non-executable process. History Time To Live cannot be null.", response.getMessage());
+        assertEquals("Errore durante la validazione del BPMN. Controlla che il file sia conforme allo standard BPMN e ben formato. Dettagli: non-executable process. History Time To Live cannot be null.", response.getMessage());
     }
 
     @Test
@@ -84,7 +84,7 @@ class CamundaServiceTest {
         VerifyResponse response = camundaService.validateFile(file);
 
         assertFalse(response.getIsVerified());
-        assertEquals("Rilevato codice Java: some.java.Class", response.getMessage());
+        assertEquals("Errore durante la validazione del BPMN. Controlla che il file sia conforme allo standard BPMN e ben formato. Dettagli: Rilevato codice Java: some.java.Class", response.getMessage());
     }
 
     @Test
@@ -94,7 +94,7 @@ class CamundaServiceTest {
         VerifyResponse response = camundaService.validateFile(file);
 
         assertFalse(response.getIsVerified());
-        assertEquals("Rilevato codice Java: println 'Hello, World!'", response.getMessage());
+        assertEquals("Errore durante la validazione del BPMN. Controlla che il file sia conforme allo standard BPMN e ben formato. Dettagli: Rilevato codice Java: println 'Hello, World!'", response.getMessage());
     }
 
     @Test

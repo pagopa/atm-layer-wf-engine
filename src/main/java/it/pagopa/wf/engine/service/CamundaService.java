@@ -44,12 +44,16 @@ public class CamundaService {
             checkExecutable(bpmnParse.getRootElement());
             response.setIsVerified(Boolean.TRUE);
             response.setMessage("Correct Bpmn");
-            return response;
         } catch (Exception exception) {
+            String errorMessage = "Errore durante la validazione del BPMN. Controlla che il file sia conforme allo standard BPMN e ben formato.";
+            if (exception.getMessage() != null && !exception.getMessage().isEmpty()) {
+                errorMessage += " Dettagli: " + exception.getMessage();
+            }
+
             response.setIsVerified(Boolean.FALSE);
-            response.setMessage(exception.getCause() == null ? exception.getMessage() : exception.getCause().getMessage());
-            return response;
+            response.setMessage(errorMessage);
         }
+        return response;
     }
 
     public void checkExecutable(Element rootElement) {
