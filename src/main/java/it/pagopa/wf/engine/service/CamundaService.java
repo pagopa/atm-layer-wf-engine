@@ -13,6 +13,7 @@ import org.camunda.bpm.engine.impl.persistence.entity.DeploymentEntity;
 import org.camunda.bpm.engine.impl.util.xml.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -126,29 +127,12 @@ public class CamundaService {
     }
 
     boolean containsJavaReferences(String scriptContent) {
+        String javaPattern = "java.";
+        String allowedPattern = "java.util.ArrayList";
 
-        String[] javaPatterns = {
-                "task\\.",
-                "runtimeService\\.",
-                "importPackage\\(",
-                "Packages\\.",
-                "new java\\.",
-                "java\\.io\\." ,
-                "java\\.lang\\." ,
-                "java\\.net\\." ,
-                "java\\.nio\\." ,
-                "sun\\.misc\\.Unsafe" ,
-                "System\\." ,
-                "java\\.beans\\." ,
-                "java\\.security\\." ,
-                "javax\\.crypto\\." ,
-        };
+        int javaOccurrences = StringUtils.countOccurrencesOf(scriptContent, javaPattern);
+        int allowedOccurrences = StringUtils.countOccurrencesOf(scriptContent, allowedPattern);
 
-        for (String pattern : javaPatterns) {
-            if (scriptContent.matches("(?s).*" + pattern + ".*")) {
-                return true;
-            }
-        }
-        return false;
+        return javaOccurrences != allowedOccurrences;
     }
 }
