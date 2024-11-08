@@ -16,6 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,10 +35,18 @@ class CamundaServiceTest {
     @InjectMocks
     private CamundaService camundaService;
 
+    @Mock
+    private List<String> allowedJavaPatterns;
+
+    private Method checkScriptTaskForJavaMethod;
+
     @BeforeEach
-    void setUp() {
+    void setUp() throws NoSuchMethodException {
         JuelExpressionManager expressionManager = new JuelExpressionManager();
         lenient().when(processEngineConfiguration.getExpressionManager()).thenReturn(expressionManager);
+        lenient().when(allowedJavaPatterns.contains("java.util.ArrayList")).thenReturn(true);
+        checkScriptTaskForJavaMethod = CamundaService.class.getDeclaredMethod("checkScriptTaskForJava", Element.class);
+        checkScriptTaskForJavaMethod.setAccessible(true);
     }
 
     private MultipartFile getMultipartFileFromResource(String resourcePath) throws IOException {
@@ -103,8 +114,13 @@ class CamundaServiceTest {
         when(scriptTask.attribute("scriptFormat")).thenReturn("javascript");
         when(scriptTask.getText()).thenReturn("new java.io.File('test.txt');");
 
-        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
-                () -> camundaService.checkScriptTaskForJava(scriptTask));
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class, () -> {
+            try {
+                checkScriptTaskForJavaMethod.invoke(camundaService, scriptTask);
+            } catch (InvocationTargetException e) {
+                throw (UnsupportedOperationException) e.getCause();
+            }
+        });
 
         assertEquals("Lo script JavaScript contiene riferimenti a codice Java non Consentito.", exception.getMessage());
     }
@@ -115,7 +131,7 @@ class CamundaServiceTest {
         when(scriptTask.attribute("scriptFormat")).thenReturn("javascript");
         when(scriptTask.getText()).thenReturn("console.log('Hello, World!');");
 
-        assertDoesNotThrow(() -> camundaService.checkScriptTaskForJava(scriptTask));
+        assertDoesNotThrow(() -> checkScriptTaskForJavaMethod.invoke(camundaService, scriptTask));
     }
 
     @Test
@@ -123,8 +139,13 @@ class CamundaServiceTest {
         Element scriptTask = mock(Element.class);
         when(scriptTask.attribute("scriptFormat")).thenReturn("groovy");
 
-        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
-                () -> camundaService.checkScriptTaskForJava(scriptTask));
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class, () -> {
+            try {
+                checkScriptTaskForJavaMethod.invoke(camundaService, scriptTask);
+            } catch (InvocationTargetException e) {
+                throw (UnsupportedOperationException) e.getCause();
+            }
+        });
 
         assertEquals("Rilevato script in linguaggio pericoloso (Java o Groovy).", exception.getMessage());
     }
