@@ -12,6 +12,7 @@ import org.camunda.bpm.engine.impl.el.JuelExpressionManager;
 import org.camunda.bpm.engine.impl.persistence.entity.DeploymentEntity;
 import org.camunda.bpm.engine.impl.util.xml.Element;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +29,11 @@ public class CamundaService {
 
     @Autowired
     ProcessEngineConfigurationImpl processEngineConfiguration;
+
+    @Value("${allowed.java.patterns}")
+    private List<String> allowedJavaPatterns;
+
+    private static final String JAVA = "java.";
 
     public VerifyResponse validateFile(MultipartFile file) throws IOException {
         VerifyResponse response = new VerifyResponse();
@@ -111,12 +117,12 @@ public class CamundaService {
         return elements;
     }
 
-    void checkScriptTaskForJava(Element scriptTask) {
+    private void checkScriptTaskForJava(Element scriptTask) {
         String scriptFormat = scriptTask.attribute("scriptFormat");
 
         if ("javascript".equalsIgnoreCase(scriptFormat)) {
 
-            String scriptContent = scriptTask.getText();
+            String scriptContent = scriptTask.getText().toLowerCase();
 
             if (containsJavaReferences(scriptContent)) {
                 throw new UnsupportedOperationException("Lo script JavaScript contiene riferimenti a codice Java non Consentito.");
@@ -127,12 +133,20 @@ public class CamundaService {
     }
 
     boolean containsJavaReferences(String scriptContent) {
-        String javaPattern = "java.";
-        String allowedPattern = "java.util.ArrayList";
+        String scriptContentLowercase = scriptContent.toLowerCase();
 
-        int javaOccurrences = StringUtils.countOccurrencesOf(scriptContent, javaPattern);
-        int allowedOccurrences = StringUtils.countOccurrencesOf(scriptContent, allowedPattern);
+        int javaOccurrences = StringUtils.countOccurrencesOf(scriptContentLowercase, JAVA);
+
+        List<String> lowerCaseAllowedPatterns = allowedJavaPatterns.stream()
+                .map(String::toLowerCase)
+                .toList();
+
+        final String finalScriptContent = scriptContentLowercase;
+        int allowedOccurrences = lowerCaseAllowedPatterns.stream()
+                .mapToInt(pattern -> StringUtils.countOccurrencesOf(finalScriptContent, pattern))
+                .sum();
 
         return javaOccurrences != allowedOccurrences;
     }
+
 }
