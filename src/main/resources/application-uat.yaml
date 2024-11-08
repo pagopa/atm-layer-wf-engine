@@ -59,3 +59,6 @@ management:
       probability: 1.0
     enabled: false
 
+allowed:
+  java:
+    patterns: java.Utils.ArrayList
